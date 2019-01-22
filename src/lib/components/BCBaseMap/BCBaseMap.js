@@ -7,7 +7,7 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import { range, map } from 'lodash/fp';
 
 import { Map, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
@@ -21,25 +21,26 @@ import './BCBaseMap.css';
 
 // Set up BC Albers projection
 const maxRes = 7812.5;
-let resolutions = [];
-for (let i = 0; i < 12; i += 1) {
-    resolutions.push(maxRes / Math.pow(2, i));
-}
+const resolutions = map(i => maxRes / Math.pow(2, i))(range(0, 12));
 const crs = new L.Proj.CRS(
     'EPSG:3005',
     '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
     {
         resolutions,
-        // If we don't set the origin correctly, then the projection transforms BC Albers coordinates to lat-lng
-        // coordinates incorrectly. You have to know the magic origin value.
+        // If we don't set the origin correctly, then the projection
+        // transforms BC Albers coordinates to lat-lng coordinates incorrectly.
+        // You have to know the magic origin value.
         //
-        // It is also probably important to know that the bc_osm tile set is a TMS tile set, which has axes
-        // transposed with respect to Leaflet axes. The proj4leaflet documentation incorrectly states that
-        // there is a CRS constructor `L.Proj.CRS.TMS` for TMS tilesets. It is absent in the recent version
-        // (1.0.2) we are using. It exists in proj4leaflet ver 0.7.1 (in use in CE), and shows that the
-        // correct value for the origin option is `[bounds[0], bounds[3]]`, where `bounds` is the 3rd argument
-        // of the TMS constructor. These values are defined for us in Climate Explorer's version of this map.
-        // W00t.
+        // It is also probably important to know that the bc_osm tile set
+        // is a TMS tile set, which has axes transposed with respect to
+        // Leaflet axes. The proj4leaflet documentation incorrectly states
+        // that there is a CRS constructor `L.Proj.CRS.TMS` for TMS tilesets.
+        // It is absent in the recent version (1.0.2) we are using. It
+        // exists in proj4leaflet ver 0.7.1 (in use in CE), and shows that
+        // the correct value for the origin option is `[bounds[0], bounds[3]]`,
+        // where `bounds` is the 3rd argument of the TMS constructor.
+        // These values are defined for us in Climate Explorer's version of
+        // this map. W00t.
         origin: [-1000000, 3000000],
     }
 );
@@ -53,12 +54,6 @@ export default class BCBaseMap extends PureComponent {
 
   static defaultProps = {
     mapRef: (() => null),
-  };
-
-  static initial = {
-    lat: 55.0,
-    lng: -125,
-    zoom: 2,
   };
 
   static initialViewport = {
