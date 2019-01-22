@@ -1,13 +1,47 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { TextInput } from "../../lib/index";
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+
+import DemoBCBaseMap from '../DemoBCBaseMap';
+
+const navSpec = [
+  { label: 'BCBaseMap', path: 'BCBaseMap', component: DemoBCBaseMap },
+];
 
 
-export default function App() {
-  return (
-    <div style={{ width: 640, margin: "15px auto" }}>
-      <h1>Hello React</h1>
-      <TextInput label="Email Address" placeholder="name@example.com" />
-    </div>
-  );
-};
+export default class App extends React.Component {
+  render() {
+    return (
+      <Router basename={'/#'}>
+        <div>
+          <h1>PCIC React Leaflet Components (in-repo demo)</h1>
+          <Navbar fluid>
+            <Nav>
+              {
+                navSpec.map(({label, path}) => (
+                  <LinkContainer to={`/${path}`}>
+                    <NavItem eventKey={path}>
+                      {label}
+                    </NavItem>
+                  </LinkContainer>
+                ))
+              }
+            </Nav>
+          </Navbar>
+
+          <Switch>
+            {
+              navSpec.map(({path, component}) => (
+                <Route path={`/${path}`} component={component}/>
+              ))
+            }
+            <Redirect to={'/Simple'}/>
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
+}
