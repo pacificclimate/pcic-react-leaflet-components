@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
@@ -22,7 +21,7 @@ export default class App extends React.Component {
             <Nav>
               {
                 navSpec.map(({label, path}) => (
-                  <LinkContainer to={`/${path}`}>
+                  <LinkContainer key={path} to={`/${path}`}>
                     <NavItem eventKey={path}>
                       {label}
                     </NavItem>
@@ -35,7 +34,7 @@ export default class App extends React.Component {
           <Switch>
             {
               navSpec.map(({path, component}) => (
-                <Route path={`/${path}`} component={component}/>
+                <Route key={path} path={`/${path}`} component={component}/>
               ))
             }
             <Redirect to={'/Simple'}/>
