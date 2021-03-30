@@ -1,0 +1,6 @@
+{
+  "name": "DemoYNWTBaseMap",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./DemoYNWTBaseMap.js"
+}
