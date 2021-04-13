@@ -14,49 +14,60 @@ import 'leaflet/dist/leaflet.css';
 import './YNWTBaseMap.css';
 
 // Set up Yukon Albers projection
-const maxRes = 7812.5;
-const resolutions = map(i => maxRes / Math.pow(2, i))(range(0, 12));
+
+// The required options for this are `resolutions` and `origin`.
+//
+// In brief, once we have the value for the zoom-0 `scaleDenominator`, it is
+// straightforward to compute `resolutions`. That value can be derived, in our
+// particular case from fundamental information about the tileset, namely
+// its extents or bounds. (For details, see
+// https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818194664)
+//
+// The values for `origin` and `bounds` are also derived from the extents.
+// (See https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818231259)
+
+// From OGC Standard
+const pixelWidth = 0.00028;
+
+// From the definition of the projection (SRS)
+const metersPerUnit = 1;  // Proj.4: +units=m
+
+// From tile mill
+const [tileMatrixMinX, tileMatrixMinY, tileMatrixMaxX, tileMatrixMaxY] =
+ [-20037508, -20037508, 20037508, 20037508];
+const tileWidth = 256;
+
+const pixelSpan = (tileMatrixMaxX - tileMatrixMinX) / tileWidth;
+
+// We don't need `scaleDenominator` in our computations, but here is how to
+// compute it from the information we have.
+// const scaleDenominator0 = pixelSpan * metersPerUnit / pixelWidth;
+
+// If we had `scaleDenominator` directly, this is what we'd do.
+// const maxResolution = scaleDenominator0 * pixelWidth;
+
+// But we don't, and we compute maxResolution from the information we do have.
+const maxResolution = pixelSpan * metersPerUnit;
+
+// Compute resolutions
+let numResolutions = 14;
+const resolutions = map(
+  i => maxResolution / Math.pow(2, i)
+)(range(0, numResolutions));
+
+// Create Leaflet CRS object
 const crs = new L.Proj.CRS(
   'EPSG:3578',
   '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
   {
     bounds: L.Bounds(
-
-      // lon, lat order (as specified)
-      L.Point(26301.4186, 642942.0344),
-      L.Point(983667.7511, 1710455.0365)
-
-      // lon, lat order, corners reversed
-      // L.Point(26301.4186, 1710455.0365),
-      // L.Point(983667.7511, 642942.0344)
-
-      // lat, lon order
-      // L.Point(642942.0344, 26301.4186),
-      // L.Point(1710455.0365, 983667.7511),
+      L.Point(tileMatrixMinX, tileMatrixMinY),
+      L.Point(tileMatrixMaxX, tileMatrixMaxY),
     ),
-
-    // transformation: new L.Transformation(-1, 0, 1, 0),
-
+    origin: [tileMatrixMinX, tileMatrixMaxY],
     resolutions,
-
-    // If we don't set the origin correctly, then the projection
-    // transforms Yukon Albers coordinates to lat-lng coordinates incorrectly.
-    // You have to know the magic origin value.
-    //
-    // It is also probably important to know that the bc_osm tile set
-    // is a TMS tile set, which has axes transposed with respect to
-    // Leaflet axes. The proj4leaflet documentation incorrectly states
-    // that there is a CRS constructor `L.Proj.CRS.TMS` for TMS tilesets.
-    // It is absent in the recent version (1.0.2) we are using. It
-    // exists in proj4leaflet ver 0.7.1 (in use in CE), and shows that
-    // the correct value for the origin option is `[bounds[0], bounds[3]]`,
-    // where `bounds` is the 3rd argument of the TMS constructor.
-    // These values are defined for us in Climate Explorer's version of
-    // this map. W00t.
-    // origin: [-1000000, 3000000],
   }
 );
-console.log("### crs", crs)
 
 export default class YNWTBaseMap extends PureComponent {
   static propTypes = {
@@ -68,84 +79,35 @@ export default class YNWTBaseMap extends PureComponent {
     // Allows parent components to diddle with the map established here.
   };
 
-  static rLMapPropNames = `
-    preferCanvas
-    attributionControl
-    zoomControl
-    closePopupOnClick
-    zoomSnap
-    zoomDelta
-    trackResize
-    boxZoom
-    doubleClickZoom
-    dragging
-    crs
-    center
-    zoom
-    minZoom
-    maxZoom
-    maxBounds
-    renderer
-    zoomAnimation
-    zoomAnimationThreshold
-    fadeAnimation
-    markerZoomAnimation
-    transform3DLimit
-    inertia
-    inertiaDeceleration
-    inertiaMaxSpeed
-    easeLinearity
-    worldCopyJump
-    maxBoundsViscosity
-    keyboard
-    keyboardPanDelta
-    scrollWheelZoom
-    wheelDebounceTime
-    wheelPxPerZoomLevel
-    tap
-    tapTolerance
-    touchZoom
-    bounceAtZoomLimits
-    animate
-    bounds
-    boundsOptions
-    className
-    id
-    style
-    useFlyTo
-    viewport
-    whenReady
-    onViewportChange
-    onViewportChanged
-  `.split(/\s+/);
-
   static defaultProps = {
     mapRef: (() => null),
   };
 
   static initialViewport = {
     center: {
-      lat: 64.0,
-      lng: -127,
+      lat: 65.0,
+      lng: -121,
     },
-    zoom: 5,
+    zoom: 6,
   };
 
   render() {
+    const { mapRef, ...rest } = this.props;
     return (
       <Map
         crs={crs}
         minZoom={0}   // ?
-        maxZoom={12}  // ? There are only 12 zoom levels defined
-        ref={this.props.mapRef}
-        {...pick(YNWTBaseMap.rLMapPropNames, this.props)}
+        maxZoom={numResolutions}  // ? There are only 12 zoom levels defined
+        cursor={true}
+        ref={mapRef}
+        {...rest}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url={process.env.REACT_APP_YUKON_ALBERS_URL + '/{z}/{x}/{y}.png'}
           subdomains={'abc'}
           noWrap={true}
-          maxZoom={12}
+          maxZoom={numResolutions}
         />
         {this.props.children}
       </Map>
