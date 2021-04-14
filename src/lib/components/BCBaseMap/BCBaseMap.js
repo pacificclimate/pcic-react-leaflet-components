@@ -12,31 +12,32 @@ import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import './BCBaseMap.css';
+import { projCRSOptions } from '../../utils/crs';
 
 // Set up BC Albers projection
-const maxRes = 7812.5;
-const resolutions = map(i => maxRes / Math.pow(2, i))(range(0, 12));
+
+const numResolutions = 12;
+
+// Create Leaflet CRS object
+let options = projCRSOptions({
+  // From the definition of the projection (SRS)
+  metersPerUnit: 1,  // Proj.4: +units=m
+
+  // From tile mill
+  // For some reason, the scaleDenominator is only half what we would expect
+  // it to be. We use it here to override the default resolution computations.
+  scaleDenominator: 27901785.714285714,
+  tileMatrixMinX: -1000000,
+  tileMatrixMaxX: 3000000,
+  tileWidth: 256,
+  tileMatrixMinY: -1000000,
+  tileMatrixMaxY: 3000000,
+  numResolutions,
+});
 const crs = new L.Proj.CRS(
   'EPSG:3005',
   '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
-  {
-    resolutions,
-    // If we don't set the origin correctly, then the projection
-    // transforms BC Albers coordinates to lat-lng coordinates incorrectly.
-    // You have to know the magic origin value.
-    //
-    // It is also probably important to know that the bc_osm tile set
-    // is a TMS tile set, which has axes transposed with respect to
-    // Leaflet axes. The proj4leaflet documentation incorrectly states
-    // that there is a CRS constructor `L.Proj.CRS.TMS` for TMS tilesets.
-    // It is absent in the recent version (1.0.2) we are using. It
-    // exists in proj4leaflet ver 0.7.1 (in use in CE), and shows that
-    // the correct value for the origin option is `[bounds[0], bounds[3]]`,
-    // where `bounds` is the 3rd argument of the TMS constructor.
-    // These values are defined for us in Climate Explorer's version of
-    // this map. W00t.
-    origin: [-1000000, 3000000],
-  }
+  options
 );
 
 export default class BCBaseMap extends PureComponent {
@@ -48,57 +49,6 @@ export default class BCBaseMap extends PureComponent {
     // Callback to which a ref to the Map component is passed.
     // Allows parent components to diddle with the map established here.
   };
-
-  static rLMapPropNames = `
-    preferCanvas
-    attributionControl
-    zoomControl
-    closePopupOnClick
-    zoomSnap
-    zoomDelta
-    trackResize
-    boxZoom
-    doubleClickZoom
-    dragging
-    crs
-    center
-    zoom
-    minZoom
-    maxZoom
-    maxBounds
-    renderer
-    zoomAnimation
-    zoomAnimationThreshold
-    fadeAnimation
-    markerZoomAnimation
-    transform3DLimit
-    inertia
-    inertiaDeceleration
-    inertiaMaxSpeed
-    easeLinearity
-    worldCopyJump
-    maxBoundsViscosity
-    keyboard
-    keyboardPanDelta
-    scrollWheelZoom
-    wheelDebounceTime
-    wheelPxPerZoomLevel
-    tap
-    tapTolerance
-    touchZoom
-    bounceAtZoomLimits
-    animate
-    bounds
-    boundsOptions
-    className
-    id
-    style
-    useFlyTo
-    viewport
-    whenReady
-    onViewportChange
-    onViewportChanged
-  `.split(/\s+/);
 
   static defaultProps = {
     mapRef: (() => null),
@@ -113,22 +63,23 @@ export default class BCBaseMap extends PureComponent {
   };
 
   render() {
+    const { mapRef, children, ...rest } = this.props;
     return (
       <Map
         crs={crs}
-        minZoom={0}   // ?
-        maxZoom={12}  // ? There are only 12 zoom levels defined
-        ref={this.props.mapRef}
-        {...pick(BCBaseMap.rLMapPropNames, this.props)}
+        minZoom={0}
+        maxZoom={numResolutions}
+        ref={mapRef}
+        {...rest}
       >
         <TileLayer
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url={process.env.REACT_APP_BC_ALBERS_URL + '/1.0.0/bc_osm/{z}/{x}/{y}.png'}
           subdomains={'abc'}
           noWrap={true}
-          maxZoom={12}
+          maxZoom={numResolutions}
         />
-        {this.props.children}
+        {children}
       </Map>
     );
   }
