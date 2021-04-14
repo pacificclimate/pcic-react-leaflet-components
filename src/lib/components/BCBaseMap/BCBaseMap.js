@@ -2,7 +2,6 @@
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { pick, range, map } from 'lodash/fp';
 
 import { Map, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
@@ -19,25 +18,25 @@ import { projCRSOptions } from '../../utils/crs';
 const numResolutions = 12;
 
 // Create Leaflet CRS object
-let options = projCRSOptions({
-  // From the definition of the projection (SRS)
-  metersPerUnit: 1,  // Proj.4: +units=m
-
-  // From tile mill
-  // For some reason, the scaleDenominator is only half what we would expect
-  // it to be. We use it here to override the default resolution computations.
-  scaleDenominator: 27901785.714285714,
-  tileMatrixMinX: -1000000,
-  tileMatrixMaxX: 3000000,
-  tileWidth: 256,
-  tileMatrixMinY: -1000000,
-  tileMatrixMaxY: 3000000,
-  numResolutions,
-});
-const crs = new L.Proj.CRS(
+const bcAlbersCrs = new L.Proj.CRS(
   'EPSG:3005',
   '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
-  options
+  projCRSOptions({
+    // From the definition of the projection (SRS)
+    metersPerUnit: 1,  // Proj.4: +units=m
+
+    // From tile mill
+    // For some reason, `scaleDenominator` is only half what we would expect it to
+    // be. We specify it here to override the extents-based resolution
+    // computations.
+    scaleDenominator: 27901785.714285714,
+    tileMatrixMinX: -1000000,
+    tileMatrixMaxX: 3000000,
+    tileWidth: 256,
+    tileMatrixMinY: -1000000,
+    tileMatrixMaxY: 3000000,
+    numResolutions,
+  })
 );
 
 export default class BCBaseMap extends PureComponent {
@@ -66,7 +65,7 @@ export default class BCBaseMap extends PureComponent {
     const { mapRef, children, ...rest } = this.props;
     return (
       <Map
-        crs={crs}
+        crs={bcAlbersCrs}
         minZoom={0}
         maxZoom={numResolutions}
         ref={mapRef}
