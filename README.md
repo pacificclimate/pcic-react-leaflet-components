@@ -38,6 +38,13 @@ Establishes a map of B.C. in the BC Albers projection, and nothing more.
 
 Renders its children inside the Map.
 
+### `YNWTBaseMap`
+
+Establishes a map of the Yukon and NWT in the Yukon Albers projection, 
+and nothing more.
+
+Renders its children inside the Map.
+
 ## Contributing and "publishing"
 
 We put the term "publishing" in quotes because we don't publish to a

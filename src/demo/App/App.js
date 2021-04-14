@@ -5,9 +5,11 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import DemoBCBaseMap from '../DemoBCBaseMap';
+import DemoYNWTBaseMap from '../DemoYNWTBaseMap';
 
 const navSpec = [
   { label: 'BCBaseMap', path: 'BCBaseMap', component: DemoBCBaseMap },
+  { label: 'YNWTBaseMap', path: 'YNWTBaseMap', component: DemoYNWTBaseMap },
 ];
 
 

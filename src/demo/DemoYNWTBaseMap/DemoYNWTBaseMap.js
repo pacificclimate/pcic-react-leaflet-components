@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { pick, range, map, flow, flatten } from 'lodash/fp';
+import { pick, range, map, flow, flatten, tap } from 'lodash/fp';
 
-import { BCBaseMap, YNWTBaseMap } from '../../lib/index';
-import './DemoBCBaseMap.css'
-import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
+import { YNWTBaseMap } from '../../lib/index';
+import { LayerGroup, CircleMarker, Popup } from 'react-leaflet';
+import './DemoYNWTBaseMap.css'
 
 
 const markerPositions = map(
   ([lng, lat, comment]) => ({lng, lat, comment})
 )([
+  // These coordinates verify between QGIS display of map tiles and this one
   [-140.9970,69.6443, 'Alaska-Yukon border at Beaufort Sea (QGIS)'],
   [-140.99697,69.88835, 'Alaska-Yukon border N point (QGIS)'],
   [-141.00172,60.30576, 'South corner of NS line of Alaska-Yukon border (QGIS)'],
@@ -22,21 +23,20 @@ const markerPositions = map(
   [-102.00919,59.99888, 'Sask, Manitoba, NWT (QGIS)'],
   [-94.82658,59.99878, 'Man-Nunavut border at Hudson Bay (QGIS)'],
   [-102.0001,64.2327, 'Corner of Nunavut-NWT border (QGIS)'],
+
 ]);
 
-
-
-export default class DemoBCBaseMap extends React.Component {
+export default class DemoYNWTBaseMap extends React.Component {
   static propTypes = {
     numMaps: PropTypes.number,
   };
 
   static defaultProps = {
-    numMaps: 1,
+    numMaps: 2,
   };
 
   state = {
-    viewport: BCBaseMap.initialViewport,
+    viewport: YNWTBaseMap.initialViewport,
   };
 
   handleViewportChange = viewport => this.setState({ viewport });
@@ -54,7 +54,7 @@ export default class DemoBCBaseMap extends React.Component {
           {
             map(i => (
               <Col key={i} lg={colWidth}>
-                <BCBaseMap
+                <YNWTBaseMap
                   viewport={this.state.viewport}
                   onViewportChange={this.handleViewportChange}
                 >
@@ -76,7 +76,7 @@ export default class DemoBCBaseMap extends React.Component {
                       )
                     }
                   </LayerGroup>
-                </BCBaseMap>
+                </YNWTBaseMap>
               </Col>
             ))(range(0,this.props.numMaps))
           }
