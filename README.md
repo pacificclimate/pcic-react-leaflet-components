@@ -83,15 +83,16 @@ When you modify this package (i.e., when you modify the contents of the
     Successfully compiled 3 files with Babel.
     ```
 
-   A successful build on changed `src/lib` content will cause files in the `dist/` subtree to be modified. 
-
-1. Commit the changes in `dist/`.
+   A successful build on changed `src/lib/` content will cause files in the 
+   `dist/` subtree to be added or modified. If you have added any new files,
+   in `src/lib/` add the corresponding files in `dist/` to Git.
 
 1. Increment `version` in `package.json`.
 
 1. Summarize the changes from the last version in `NEWS.md`.
 
-1. Commit these changes, then tag the release, and push all to GitHub, including tag:
+1. Commit all these changes, then tag the release, and push all to GitHub, 
+including tag:
 
    ```bash
    git add package.json NEWS.md

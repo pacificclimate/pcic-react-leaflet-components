@@ -11,40 +11,36 @@ import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
-import './BCBaseMap.css';
-import { projCRSOptions } from '../../utils/crs'; // Set up BC Albers projection
+import { projCRSOptions } from '../../utils/crs';
+import './YNWTBaseMap.css'; // Set up Yukon Albers projection
 
-var numResolutions = 12; // Create Leaflet CRS object
+var numResolutions = 14; // Create Leaflet CRS object
 
-var bcAlbersCrs = new L.Proj.CRS('EPSG:3005', '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs', projCRSOptions({
+var yukonAlbersCrs = new L.Proj.CRS('EPSG:3578', '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs', projCRSOptions({
   // From the definition of the projection (SRS)
   metersPerUnit: 1,
   // Proj.4: +units=m
   // From tile mill
-  // For some reason, `scaleDenominator` is only half what we would expect it to
-  // be. We specify it here to override the extents-based resolution
-  // computations.
-  scaleDenominator: 27901785.714285714,
-  tileMatrixMinX: -1000000,
-  tileMatrixMaxX: 3000000,
+  tileMatrixMinX: -20037508,
+  tileMatrixMaxX: 20037508,
   tileWidth: 256,
-  tileMatrixMinY: -1000000,
-  tileMatrixMaxY: 3000000,
+  tileMatrixMinY: -20037508,
+  tileMatrixMaxY: 20037508,
   numResolutions: numResolutions
 }));
 
-var BCBaseMap =
+var YNWTBaseMap =
 /*#__PURE__*/
 function (_PureComponent) {
-  _inherits(BCBaseMap, _PureComponent);
+  _inherits(YNWTBaseMap, _PureComponent);
 
-  function BCBaseMap() {
-    _classCallCheck(this, BCBaseMap);
+  function YNWTBaseMap() {
+    _classCallCheck(this, YNWTBaseMap);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(BCBaseMap).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(YNWTBaseMap).apply(this, arguments));
   }
 
-  _createClass(BCBaseMap, [{
+  _createClass(YNWTBaseMap, [{
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -53,13 +49,14 @@ function (_PureComponent) {
           rest = _objectWithoutProperties(_this$props, ["mapRef", "children"]);
 
       return React.createElement(Map, Object.assign({
-        crs: bcAlbersCrs,
+        crs: yukonAlbersCrs,
         minZoom: 0,
         maxZoom: numResolutions,
+        cursor: true,
         ref: mapRef
       }, rest), React.createElement(TileLayer, {
         attribution: "\xA9 <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors",
-        url: process.env.REACT_APP_BC_ALBERS_URL + '/1.0.0/bc_osm/{z}/{x}/{y}.png',
+        url: process.env.REACT_APP_YUKON_ALBERS_URL + '/{z}/{x}/{y}.png',
         subdomains: 'abc',
         noWrap: true,
         maxZoom: numResolutions
@@ -67,19 +64,19 @@ function (_PureComponent) {
     }
   }]);
 
-  return BCBaseMap;
+  return YNWTBaseMap;
 }(PureComponent);
 
-BCBaseMap.defaultProps = {
+YNWTBaseMap.defaultProps = {
   mapRef: function mapRef() {
     return null;
   }
 };
-BCBaseMap.initialViewport = {
+YNWTBaseMap.initialViewport = {
   center: {
-    lat: 55.0,
-    lng: -125
+    lat: 65.0,
+    lng: -121
   },
-  zoom: 2
+  zoom: 6
 };
-export { BCBaseMap as default };
+export { YNWTBaseMap as default };
