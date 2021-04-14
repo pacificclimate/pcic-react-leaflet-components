@@ -15,18 +15,6 @@ import './YNWTBaseMap.css';
 
 // Set up Yukon Albers projection
 
-// The required options for this are `resolutions` and `origin`.
-//
-// In brief, once we have the value for the zoom-0 `scaleDenominator`, it is
-// straightforward to compute `resolutions`. That value can be derived, in our
-// particular case from fundamental information about the tileset, namely
-// its extents or bounds. (For details, see
-// https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818194664)
-//
-// The values for `origin` and `bounds` are also derived from the extents.
-// (See https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818231259)
-
-
 const numResolutions = 14;
 
 // Create Leaflet CRS object
@@ -70,7 +58,7 @@ export default class YNWTBaseMap extends PureComponent {
   };
 
   render() {
-    const { mapRef, ...rest } = this.props;
+    const { mapRef, children, ...rest } = this.props;
     return (
       <Map
         crs={crs}
@@ -87,7 +75,7 @@ export default class YNWTBaseMap extends PureComponent {
           noWrap={true}
           maxZoom={numResolutions}
         />
-        {this.props.children}
+        {children}
       </Map>
     );
   }
