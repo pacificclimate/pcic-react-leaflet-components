@@ -1,0 +1,6 @@
+{
+  "name": "BaseMap",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./BaseMap.js"
+}

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { pick, range, map, flow, flatten } from 'lodash/fp';
+import { range, map } from 'lodash/fp';
 
-import { BCBaseMap, YNWTBaseMap } from '../../lib/index';
+import { BCBaseMap } from '../../lib/index';
 import './DemoBCBaseMap.css'
 import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
 
