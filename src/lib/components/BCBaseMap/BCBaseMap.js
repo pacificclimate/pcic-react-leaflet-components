@@ -26,7 +26,7 @@ export default class BCBaseMap extends PureComponent {
   };
 
   static tileset = {
-    url: process.env.REACT_APP_BC_ALBERS_URL + '/1.0.0/bc_osm/{z}/{x}/{y}.png',
+    url: process.env.REACT_APP_BC_ALBERS_URL,
     projection: {
       code: 'EPSG:3005',
       proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
