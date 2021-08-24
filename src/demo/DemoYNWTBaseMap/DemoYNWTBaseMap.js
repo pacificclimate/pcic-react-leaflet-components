@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import { pick, range, map, flow, flatten, tap } from 'lodash/fp';
+import { range, map } from 'lodash/fp';
 
 import { YNWTBaseMap } from '../../lib/index';
 import { LayerGroup, CircleMarker, Popup } from 'react-leaflet';
@@ -32,7 +32,7 @@ export default class DemoYNWTBaseMap extends React.Component {
   };
 
   static defaultProps = {
-    numMaps: 2,
+    numMaps: 1,
   };
 
   state = {
