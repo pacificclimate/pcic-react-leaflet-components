@@ -6,11 +6,14 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 import DemoBCBaseMap from '../DemoBCBaseMap';
 import DemoYNWTBaseMap from '../DemoYNWTBaseMap';
+import DemoBCBaseMapA from '../DemoBCBaseMapA';
 
 const navSpec = [
   { label: 'BCBaseMap', path: 'BCBaseMap', component: DemoBCBaseMap },
+  { label: 'BCBaseMapA', path: 'BCBaseMapA', component: DemoBCBaseMapA },
   { label: 'YNWTBaseMap', path: 'YNWTBaseMap', component: DemoYNWTBaseMap },
 ];
+const defaultPath = 'BCBaseMapA';
 
 
 export default class App extends React.Component {
@@ -39,7 +42,7 @@ export default class App extends React.Component {
                 <Route key={path} path={`/${path}`} component={component}/>
               ))
             }
-            <Redirect to={'/Simple'}/>
+            <Redirect to={defaultPath}/>
           </Switch>
         </div>
       </Router>
