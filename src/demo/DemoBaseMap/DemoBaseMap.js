@@ -4,28 +4,31 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
 
-import { BCBaseMap } from '../../lib/index';
-import { positions } from '../markers';
-import './DemoBCBaseMap.css'
+import './DemoBaseMap.css'
 
 
-export default class DemoBCBaseMap extends React.Component {
+export default class DemoBaseMap extends React.Component {
   static propTypes = {
+    BaseMap: PropTypes.object.isRequired,
+    initialViewport: PropTypes.object.isRequired,
+    markers: PropTypes.array,
     numMaps: PropTypes.number,
   };
 
   static defaultProps = {
     numMaps: 1,
+    markers: [],
   };
 
   state = {
-    viewport: BCBaseMap.initialViewport,
+    viewport: this.props.initialViewport,
   };
 
   handleViewportChange = viewport => this.setState({ viewport });
 
   render() {
-    const colWidth = Math.floor(12 / this.props.numMaps);
+    const { BaseMap, markers, numMaps } = this.props;
+    const colWidth = Math.floor(12 / numMaps);
     return (
       <Grid fluid>
         <Row>
@@ -37,13 +40,13 @@ export default class DemoBCBaseMap extends React.Component {
           {
             map(i => (
               <Col key={i} lg={colWidth}>
-                <BCBaseMap
+                <BaseMap
                   viewport={this.state.viewport}
                   onViewportChange={this.handleViewportChange}
                 >
                   <LayerGroup>
                     {
-                      positions.map(
+                      markers.map(
                         ({ lng, lat, comment }, i) => (
                           <CircleMarker
                             key={i}
@@ -59,7 +62,7 @@ export default class DemoBCBaseMap extends React.Component {
                       )
                     }
                   </LayerGroup>
-                </BCBaseMap>
+                </BaseMap>
               </Col>
             ))(range(0,this.props.numMaps))
           }
