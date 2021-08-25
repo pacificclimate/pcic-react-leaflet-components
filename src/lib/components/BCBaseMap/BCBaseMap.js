@@ -1,5 +1,12 @@
-// BCBaseMap: Component that establishes a map of B.C.,
-// in BC Albers projection, and nothing more.
+// BCBaseMap: Component that establishes a base map of B.C., in BC Albers
+// projection, and nothing more.
+//
+// The tile server URL is specified by the environment variable
+// REACT_APP_BC_BASE_MAP_TILES_URL. The tiles must be in BC Albers projection
+// and must have been generated in a way consistent with the
+// `tileset.tileMatrix` parameters below.
+//
+// Children of this component are rendered inside its <Map> component.
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -26,7 +33,7 @@ export default class BCBaseMap extends PureComponent {
   };
 
   static tileset = {
-    url: process.env.REACT_APP_BC_ALBERS_URL,
+    url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
     projection: {
       code: 'EPSG:3005',
       proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -36,16 +43,12 @@ export default class BCBaseMap extends PureComponent {
       metersPerUnit: 1,  // Proj.4: +units=m
 
       // From tile generation
-      // For some reason, `scaleDenominator` is only half what we would expect it to
-      // be. We specify it here to override the extents-based resolution
-      // computations.
-      scaleDenominator: 27901785.714285714,
-      tileMatrixMinX: -1000000,
-      tileMatrixMaxX: 3000000,
+      tileMatrixMinX: -20037508,
+      tileMatrixMaxX: 20037508,
       tileWidth: 256,
-      tileMatrixMinY: -1000000,
-      tileMatrixMaxY: 3000000,
-      numResolutions: 12,
+      tileMatrixMinY: -20037508,
+      tileMatrixMaxY: 20037508,
+      numResolutions: 14,
     },
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   };
@@ -55,7 +58,7 @@ export default class BCBaseMap extends PureComponent {
       lat: 55.0,
       lng: -125,
     },
-    zoom: 2,
+    zoom: 6,
   };
 
   render() {
