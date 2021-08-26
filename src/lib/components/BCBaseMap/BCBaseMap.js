@@ -2,7 +2,7 @@
 // projection, and nothing more.
 //
 // The tile server URL is specified by the environment variable
-// REACT_APP_BC_BASE_MAP_TILES_URL. The tiles must be in BC Albers projection
+// `REACT_APP_BC_BASE_MAP_TILES_URL`. The tiles must be in BC Albers projection
 // and must have been generated in a way consistent with the
 // `tileset.tileMatrix` parameters below.
 //
