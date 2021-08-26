@@ -1,5 +1,12 @@
-// YNWTBaseMap: Component that establishes a map of the Yukon and NWT,
+// YNWTBaseMap: Component that establishes a base map of the Yukon and NWT,
 // in Yukon Albers projection, and nothing more.
+//
+// The tile server URL is specified by the environment variable
+// REACT_APP_YNWT_BASE_MAP_TILES_URL. The tiles must be in Yukon Albers
+// projection and must have been generated in a way consistent with the
+// `tileset.tileMatrix` parameters below.
+//
+// Children of this component are rendered inside its <Map> component.
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -25,7 +32,7 @@ export default class YNWTBaseMap extends PureComponent {
   };
 
   static tileset = {
-    url: process.env.REACT_APP_YUKON_ALBERS_URL + '/{z}/{x}/{y}.png',
+    url: process.env.REACT_APP_YNWT_BASE_MAP_TILES_URL,
     projection: {
       code: 'EPSG:3578',
       proj4def: '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',

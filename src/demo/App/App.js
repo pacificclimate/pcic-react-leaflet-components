@@ -4,13 +4,46 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import DemoBCBaseMap from '../DemoBCBaseMap';
-import DemoYNWTBaseMap from '../DemoYNWTBaseMap';
+import DemoBaseMap from '../DemoBaseMap';
+import { BCBaseMap, BCBaseMapDeprecated, YNWTBaseMap } from '../../lib/index';
+import { positions as markers } from '../markers';
 
 const navSpec = [
-  { label: 'BCBaseMap', path: 'BCBaseMap', component: DemoBCBaseMap },
-  { label: 'YNWTBaseMap', path: 'YNWTBaseMap', component: DemoYNWTBaseMap },
+  {
+    label: 'BCBaseMap',
+    path: 'BCBaseMap',
+    component: () => (
+      <DemoBaseMap
+        BaseMap={BCBaseMap}
+        initialViewport={BCBaseMap.initialViewport}
+        markers={markers}
+      />
+    ),
+  },
+  {
+    label: 'BCBaseMap - deprecated',
+    path: 'BCBaseMapDeprecated',
+    component: () => (
+      <DemoBaseMap
+        BaseMap={BCBaseMapDeprecated}
+        initialViewport={BCBaseMapDeprecated.initialViewport}
+        markers={markers}
+      />
+    ),
+  },
+  {
+    label: 'YNWTBaseMap',
+    path: 'YNWTBaseMap',
+    component: () => (
+      <DemoBaseMap
+        BaseMap={YNWTBaseMap}
+        initialViewport={YNWTBaseMap.initialViewport}
+        markers={markers}
+      />
+    ),
+  },
 ];
+const defaultPath = 'BCBaseMap';
 
 
 export default class App extends React.Component {
@@ -39,7 +72,7 @@ export default class App extends React.Component {
                 <Route key={path} path={`/${path}`} component={component}/>
               ))
             }
-            <Redirect to={'/Simple'}/>
+            <Redirect to={defaultPath}/>
           </Switch>
         </div>
       </Router>

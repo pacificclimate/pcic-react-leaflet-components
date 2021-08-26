@@ -13,7 +13,6 @@ import 'leaflet/dist/leaflet.css';
 
 import { projCRSOptions } from '../../utils/crs';
 
-// Set up BC Albers projection
 
 export default class BaseMap extends PureComponent {
   static propTypes = {
@@ -60,7 +59,7 @@ export default class BaseMap extends PureComponent {
     } = this.props;
 
     // Create Leaflet CRS object
-    const bcAlbersCrs = new L.Proj.CRS(
+    const crs = new L.Proj.CRS(
       projection.code,
       projection.proj4def,
       { ...projCRSOptions(tileMatrix), ...projection.options },
@@ -68,7 +67,7 @@ export default class BaseMap extends PureComponent {
 
     return (
       <Map
-        crs={bcAlbersCrs}
+        crs={crs}
         minZoom={0}
         maxZoom={tileMatrix.numResolutions}
         ref={mapRef}

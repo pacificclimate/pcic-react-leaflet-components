@@ -8,12 +8,24 @@ Note: This README duplicates information in code comments, and may be out
 of sync with them. It should be replaced by documentation generated from 
 comments, but that is a future project.
 
+## Table of contents
+
+- [Installation](#installation)
+- [Package contents](#package-contents)
+    - [Base maps](#base-maps)
+    - [Map controls](#map-controls)
+- [Contributing and "publishing"](#contributing-and-publishing)
+    - [Publishing and releasing](#publishing-and-releasing)
+- [Package development framework](#package-development-framework)
+    - [Create React App](#create-react-app)
+    - [Adapting a Create React App project to package development](#adapting-a-create-react-app-project-to-package-development)
+
 ## Installation
 
 This package is not published to a Node package registry.
 Instead, it is installed directly from GitHub, as follows:
 
-Using HTTPS protocol (preferred):
+Using HTTPS protocol (easier):
 ```bash
 npm install git+https://git@github.com/pacificclimate/pcic-react-leaflet-components.git#<version>
 ```
@@ -32,18 +44,95 @@ import { ExampleComponent } from 'pcic-react-leaflet-components';
 
 ## Package contents
 
-### `BCBaseMap`
+### Base maps
+
+#### `BCBaseMap`
 
 Establishes a map of B.C. in the BC Albers projection, and nothing more.
 
-Renders its children inside the Map.
+The tile server URL for this component is specified by the environment 
+variable `REACT_APP_BC_BASE_MAP_TILES_URL`. See note
+[Tile server URLs](#tile-server-urls).
 
-### `YNWTBaseMap`
+The tiles must be in BC Albers projection and must have been generated in 
+a way consistent with the tile matrix parameters defined for this
+component. For the parameter values, see `BCBaseMap.tileset`. For details
+more information, see [Tile matrix parameters](#tile-matrix-parameters)
+below.
+
+Children of this component are rendered inside its `<Map>` component.
+
+#### `YNWTBaseMap`
 
 Establishes a map of the Yukon and NWT in the Yukon Albers projection, 
 and nothing more.
 
-Renders its children inside the Map.
+The tile server URL for this component is specified by the environment
+variable `REACT_APP_YNWT_BASE_MAP_TILES_URL`. See note
+[Tile server URLs](#tile-server-urls).
+
+The tiles must be in Yukon Albers projection and must have been generated in
+a way consistent with the tile matrix parameters defined for this
+component. For the parameter values, see `YNWTBaseMap.tileset`. For details
+more information, see [Tile matrix parameters](#tile-matrix-parameters)
+below.
+
+Children of this component are rendered inside its `<Map>` component.
+
+#### `BCBaseMapDeprecated`
+
+This component is DEPRECATED and exists temporarily to support legacy
+apps. It will be removed when all apps have been appropriately updated.
+It is identical to `BCBaseMap`, except that the tile matrix parameters
+differ, and are for a highly customized tileset that will be removed
+from use in future.
+
+Establishes a map of B.C. in the BC Albers projection, and nothing more.
+
+The tile server URL for this component is specified by the environment
+variable `REACT_APP_BC_BASE_MAP_DEPRECATED_TILES_URL`. See note 
+[Tile server URLs](#tile-server-urls).
+
+The tiles must be in BC Albers projection and must have been generated in
+a way consistent with the tile matrix parameters defined for this
+component. For the parameter values, see `BCBaseMap.tileset`. For details
+more information, see [Tile matrix parameters](#tile-matrix-parameters)
+below.
+
+Children of this component are rendered inside its `<Map>` component.
+
+#### Tile server URLs
+
+A tile server URL must be a complete, valid Leaflet
+[`TileLayer`](https://leafletjs.com/reference-1.7.1.html#tilelayer)  
+URL template. Example:
+
+```
+https://services.pacificclimate.org/tiles_north/{z}/{x}/{y}.png
+```
+
+#### Tile matrix parameters
+
+A tileset is characterized by the projection it is in and by a set of
+tile matrix parameters that describe the extent of the tileset in
+projected coordinates, the size of the tile images in pixels, and
+the number of zoom levels. (This project assumes that each zoom level
+in the tileset has exactly twice the resolution of the previous zoom
+level. The tile matrix parameters describe zoom level zero.)
+
+For details on the parameters, see the documentation for module
+[`crs`](src/lib/utils/crs.js) and our Confluence page
+[How to create a Leaflet CRS object for a tileset in an arbitrary CRS](https://pcic.uvic.ca/confluence/display/CSG/How+to+create+a+Leaflet+CRS+object+for+a+tileset+in+an+arbitrary+CRS).
+
+### Map controls
+
+#### `StaticControl`
+
+Places its children inside the map as a 
+Leaflet [`Control`](https://leafletjs.com/reference-1.7.1.html#control).
+
+The children of this component are wrapped in a `<div>` with
+classes `StaticControl`, `leaflet-control`.
 
 ## Contributing and "publishing"
 
