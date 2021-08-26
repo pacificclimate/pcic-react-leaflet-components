@@ -4,30 +4,20 @@ import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "@babel/runtime/helpers/esm/inherits";
-// BCBaseMap: Component that establishes a map of B.C., and nothing more.
+// YNWTBaseMap: Component that establishes a base map of the Yukon and NWT,
+// in Yukon Albers projection, and nothing more.
+//
+// The tile server URL is specified by the environment variable
+// REACT_APP_YNWT_BASE_MAP_TILES_URL. The tiles must be in Yukon Albers
+// projection and must have been generated in a way consistent with the
+// `tileset.tileMatrix` parameters below.
+//
+// Children of this component are rendered inside its <Map> component.
 import React, { PureComponent } from 'react';
-import { Map, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
-import { projCRSOptions } from '../../utils/crs';
-import './YNWTBaseMap.css'; // Set up Yukon Albers projection
-
-var numResolutions = 14; // Create Leaflet CRS object
-
-var yukonAlbersCrs = new L.Proj.CRS('EPSG:3578', '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs', projCRSOptions({
-  // From the definition of the projection (SRS)
-  metersPerUnit: 1,
-  // Proj.4: +units=m
-  // From tile mill
-  tileMatrixMinX: -20037508,
-  tileMatrixMaxX: 20037508,
-  tileWidth: 256,
-  tileMatrixMinY: -20037508,
-  tileMatrixMaxY: 20037508,
-  numResolutions: numResolutions
-}));
+import BaseMap from '../BaseMap';
 
 var YNWTBaseMap =
 /*#__PURE__*/
@@ -48,19 +38,10 @@ function (_PureComponent) {
           children = _this$props.children,
           rest = _objectWithoutProperties(_this$props, ["mapRef", "children"]);
 
-      return React.createElement(Map, Object.assign({
-        crs: yukonAlbersCrs,
-        minZoom: 0,
-        maxZoom: numResolutions,
-        cursor: true,
+      return React.createElement(BaseMap, Object.assign({
+        tileset: YNWTBaseMap.tileset,
         ref: mapRef
-      }, rest), React.createElement(TileLayer, {
-        attribution: "\xA9 <a href=\"http://osm.org/copyright\">OpenStreetMap</a> contributors",
-        url: process.env.REACT_APP_YUKON_ALBERS_URL + '/{z}/{x}/{y}.png',
-        subdomains: 'abc',
-        noWrap: true,
-        maxZoom: numResolutions
-      }), children);
+      }, rest), children);
     }
   }]);
 
@@ -71,6 +52,26 @@ YNWTBaseMap.defaultProps = {
   mapRef: function mapRef() {
     return null;
   }
+};
+YNWTBaseMap.tileset = {
+  url: process.env.REACT_APP_YNWT_BASE_MAP_TILES_URL,
+  projection: {
+    code: 'EPSG:3578',
+    proj4def: '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
+  },
+  tileMatrix: {
+    // From the definition of the projection (SRS)
+    metersPerUnit: 1,
+    // Proj.4: +units=m
+    // From tile generation
+    tileMatrixMinX: -20037508,
+    tileMatrixMaxX: 20037508,
+    tileWidth: 256,
+    tileMatrixMinY: -20037508,
+    tileMatrixMaxY: 20037508,
+    numResolutions: 14
+  },
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 };
 YNWTBaseMap.initialViewport = {
   center: {

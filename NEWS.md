@@ -1,5 +1,15 @@
 # News / Release Notes
 
+## 1.2.0 
+
+*2021-Aug-26*
+
+- Modify component `BCBaseMap` for use with OSM Lite tileset
+- Add component `BCBaseMapDeprecated`
+- Add component `StaticControl`
+- Modify environment variable usage
+- Update documentation
+
 ## 1.1.0 
 
 *2021-Apr-14*

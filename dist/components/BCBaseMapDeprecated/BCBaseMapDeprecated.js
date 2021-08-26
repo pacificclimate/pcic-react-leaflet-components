@@ -4,13 +4,14 @@ import _createClass from "@babel/runtime/helpers/esm/createClass";
 import _possibleConstructorReturn from "@babel/runtime/helpers/esm/possibleConstructorReturn";
 import _getPrototypeOf from "@babel/runtime/helpers/esm/getPrototypeOf";
 import _inherits from "@babel/runtime/helpers/esm/inherits";
-// BCBaseMap: Component that establishes a base map of B.C., in BC Albers
-// projection, and nothing more.
+// BCBaseMapDeprecated: Component that establishes a base map of B.C., in
+// BC Albers projection, and nothing more.
 //
 // The tile server URL is specified by the environment variable
-// `REACT_APP_BC_BASE_MAP_TILES_URL`. The tiles must be in BC Albers projection
-// and must have been generated in a way consistent with the
-// `tileset.tileMatrix` parameters below.
+// REACT_APP_BC_BASE_MAP_DEPRECATED_TILES_URL. The tiles must be in BC Albers
+// projection and must have been generated in a way consistent with the
+// `tileset.tileMatrix` parameters below. This component is DEPRECATED because
+// those parameters are unique to a tileset that is now deprecated.
 //
 // Children of this component are rendered inside its <Map> component.
 import React, { PureComponent } from 'react';
@@ -19,18 +20,18 @@ import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 import BaseMap from '../BaseMap';
 
-var BCBaseMap =
+var BCBaseMapDeprecated =
 /*#__PURE__*/
 function (_PureComponent) {
-  _inherits(BCBaseMap, _PureComponent);
+  _inherits(BCBaseMapDeprecated, _PureComponent);
 
-  function BCBaseMap() {
-    _classCallCheck(this, BCBaseMap);
+  function BCBaseMapDeprecated() {
+    _classCallCheck(this, BCBaseMapDeprecated);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(BCBaseMap).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(BCBaseMapDeprecated).apply(this, arguments));
   }
 
-  _createClass(BCBaseMap, [{
+  _createClass(BCBaseMapDeprecated, [{
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -39,22 +40,22 @@ function (_PureComponent) {
           rest = _objectWithoutProperties(_this$props, ["mapRef", "children"]);
 
       return React.createElement(BaseMap, Object.assign({
-        tileset: BCBaseMap.tileset,
+        tileset: BCBaseMapDeprecated.tileset,
         ref: mapRef
       }, rest), children);
     }
   }]);
 
-  return BCBaseMap;
+  return BCBaseMapDeprecated;
 }(PureComponent);
 
-BCBaseMap.defaultProps = {
+BCBaseMapDeprecated.defaultProps = {
   mapRef: function mapRef() {
     return null;
   }
 };
-BCBaseMap.tileset = {
-  url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
+BCBaseMapDeprecated.tileset = {
+  url: process.env.REACT_APP_BC_BASE_MAP_DEPRECATED_TILES_URL,
   projection: {
     code: 'EPSG:3005',
     proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
@@ -64,20 +65,24 @@ BCBaseMap.tileset = {
     metersPerUnit: 1,
     // Proj.4: +units=m
     // From tile generation
-    tileMatrixMinX: -20037508,
-    tileMatrixMaxX: 20037508,
+    // For some reason, `scaleDenominator` is only half what we would expect it to
+    // be. We specify it here to override the extents-based resolution
+    // computations.
+    scaleDenominator: 27901785.714285714,
+    tileMatrixMinX: -1000000,
+    tileMatrixMaxX: 3000000,
     tileWidth: 256,
-    tileMatrixMinY: -20037508,
-    tileMatrixMaxY: 20037508,
-    numResolutions: 14
+    tileMatrixMinY: -1000000,
+    tileMatrixMaxY: 3000000,
+    numResolutions: 12
   },
   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 };
-BCBaseMap.initialViewport = {
+BCBaseMapDeprecated.initialViewport = {
   center: {
     lat: 55.0,
     lng: -125
   },
-  zoom: 6
+  zoom: 2
 };
-export { BCBaseMap as default };
+export { BCBaseMapDeprecated as default };
