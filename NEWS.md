@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 1.2.1
+
+*2021-Aug-26*
+
+- Include component `BaseMap` in dist build
+
 ## 1.2.0 
 
 *2021-Aug-26*
