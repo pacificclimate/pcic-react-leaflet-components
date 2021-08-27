@@ -62,13 +62,9 @@ export default class BCBaseMap extends PureComponent {
   };
 
   render() {
-    const { mapRef, children, ...rest } = this.props;
+    const { children, ...rest } = this.props;
     return (
-      <BaseMap
-        tileset={BCBaseMap.tileset}
-        ref={mapRef}
-        {...rest}
-      >
+      <BaseMap tileset={BCBaseMap.tileset} {...rest}>
         {children}
       </BaseMap>
     );

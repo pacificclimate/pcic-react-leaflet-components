@@ -67,13 +67,9 @@ export default class BCBaseMapDeprecated extends PureComponent {
   };
 
   render() {
-    const { mapRef, children, ...rest } = this.props;
+    const { children, ...rest } = this.props;
     return (
-      <BaseMap
-        tileset={BCBaseMapDeprecated.tileset}
-        ref={mapRef}
-        {...rest}
-      >
+      <BaseMap tileset={BCBaseMapDeprecated.tileset} {...rest}>
         {children}
       </BaseMap>
     );
