@@ -61,13 +61,9 @@ export default class YNWTBaseMap extends PureComponent {
   };
 
   render() {
-    const { mapRef, children, ...rest } = this.props;
+    const { children, ...rest } = this.props;
     return (
-      <BaseMap
-        tileset={YNWTBaseMap.tileset}
-        ref={mapRef}
-        {...rest}
-      >
+      <BaseMap tileset={YNWTBaseMap.tileset} {...rest}>
         {children}
       </BaseMap>
     );
