@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 1.2.2
+
+*2021-Aug-27*
+
+- Fix `mapRef` prop of base map components.
+
 ## 1.2.1
 
 *2021-Aug-26*

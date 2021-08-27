@@ -35,13 +35,11 @@ function (_PureComponent) {
     key: "render",
     value: function render() {
       var _this$props = this.props,
-          mapRef = _this$props.mapRef,
           children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, ["mapRef", "children"]);
+          rest = _objectWithoutProperties(_this$props, ["children"]);
 
       return React.createElement(BaseMap, Object.assign({
-        tileset: BCBaseMapDeprecated.tileset,
-        ref: mapRef
+        tileset: BCBaseMapDeprecated.tileset
       }, rest), children);
     }
   }]);
