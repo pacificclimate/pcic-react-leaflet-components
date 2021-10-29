@@ -9,6 +9,10 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "lodash": "^4.17.21",
+    "proj4": "^2.7.5",
+    "proj4leaflet": "^1.0.2",
+    "prop-types": "^15.7.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
@@ -54,7 +58,9 @@
     "rollup-plugin-peer-deps-external": "^2.2.4"
   },
   "peerDependencies": {
+    "leaflet": "^1.7.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-leaflet": "^3.2.2"
   }
 }
