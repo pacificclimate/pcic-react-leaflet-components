@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
+import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
 
 import './DemoBaseMap.css'
@@ -9,6 +9,17 @@ import './DemoBaseMap.css'
 
 function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
   const [viewport, setViewport] = useState(initialViewport);
+  const [zoom, setZoom] = useState(null);
+
+  const UpdateZoom = () => {
+    const map = useMapEvents({
+      zoomend: (a) => {
+        console.log("zoomend", map.getZoom())
+        setZoom(map.getZoom());
+      }
+    });
+    return null;
+  };
 
   const colWidth = Math.floor(12 / numMaps);
   return (
@@ -17,6 +28,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
         <Col xs={12}>
           <h2>{numMaps} synchronized basemaps</h2>
           <p>viewport: {JSON.stringify(viewport)}</p>
+          <p>zoom: {JSON.stringify(zoom)}</p>
         </Col>
       </Row>
       <Row>
@@ -27,6 +39,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 viewport={viewport}
                 onViewportChange={setViewport}
               >
+                <UpdateZoom/>
                 {/*<LayerGroup>*/}
                 {/*  {*/}
                 {/*    markers.map(*/}
