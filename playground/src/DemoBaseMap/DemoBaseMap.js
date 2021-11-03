@@ -26,8 +26,6 @@ export default class DemoBaseMap extends React.Component {
 
   handleViewportChange = viewport => this.setState({ viewport });
 
-  // handleEvent = name =>
-
   render() {
     const { BaseMap, markers, numMaps } = this.props;
     const colWidth = Math.floor(12 / numMaps);

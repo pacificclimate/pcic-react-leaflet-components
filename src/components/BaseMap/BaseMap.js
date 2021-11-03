@@ -58,29 +58,6 @@ export default class BaseMap extends PureComponent {
       { ...projCRSOptions(tileMatrix), ...projection.options },
     );
 
-    console.log("BaseMap", this.props)
-    console.log("BaseMap restxxx", rest)
-    // const position = [51.505, -0.09]
-    // const viewport = {
-    //   center: position,
-    //   // "center": {
-    //   //   "lat": 51.505,
-    //   //   "lng": -0.09
-    //   // },
-    //   "zoom": 13
-    // }
-    // return (
-    //   <MapContainer
-    //     // center={position} zoom={13}
-    //     viewport={viewport}
-    //     scrollWheelZoom={false}
-    //   >
-    //     <TileLayer
-    //       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    //       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    //     />
-    //   </MapContainer>
-    // )
     return (
       <MapContainer
         crs={crs}
