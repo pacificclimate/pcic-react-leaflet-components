@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
+import { CircleMarker, LayerGroup, Popup, useMap, useMapEvents } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
 
 import './DemoBaseMap.css'
@@ -12,15 +12,31 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
   const [center, setCenter] = useState(initialViewport.center);
   const [mapId, setMapId] = useState(null);
 
-  const UpdateZoom = () => {
+  const GetViewport = ({id}) => {
+    const updateViewport = map => {
+      setMapId(id);
+      setZoom(map.getZoom());
+      setCenter(map.getCenter());
+    }
     const map = useMapEvents({
-      zoomend: (a) => {
-        console.log("zoomend", map.getZoom())
-        setZoom(map.getZoom());
-      }
+      zoomend: () => {
+        updateViewport(map);
+      },
+      moveend: () => {
+        updateViewport(map);
+      },
     });
     return null;
   };
+
+  const SetViewport = ({id}) => {
+    const map = useMap();
+    if (mapId !== id) {
+      map.setView(center, zoom);
+      setMapId(null);
+    }
+    return null;
+  }
 
   const colWidth = Math.floor(12 / numMaps);
   return (
@@ -40,7 +56,8 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 zoom={zoom}
                 center={center}
               >
-                <UpdateZoom/>
+                <GetViewport id={i}/>
+                <SetViewport id={i}/>
                 {/*<LayerGroup>*/}
                 {/*  {*/}
                 {/*    markers.map(*/}
