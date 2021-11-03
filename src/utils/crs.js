@@ -56,9 +56,9 @@ export function projCRSOptions(tileMatrixParams) {
   const {tileMatrixMinX, tileMatrixMinY, tileMatrixMaxX, tileMatrixMaxY} =
     tileMatrixParams;
   return {
-    bounds: L.Bounds(
-      L.Point(tileMatrixMinX, tileMatrixMinY),
-      L.Point(tileMatrixMaxX, tileMatrixMaxY),
+    bounds: L.bounds(
+      L.point(tileMatrixMinX, tileMatrixMinY),
+      L.point(tileMatrixMaxX, tileMatrixMaxY),
     ),
     origin: [tileMatrixMinX, tileMatrixMaxY],
     resolutions: resolutions(tileMatrixParams),

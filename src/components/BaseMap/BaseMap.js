@@ -4,7 +4,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Map, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
 import 'proj4';
@@ -40,19 +40,12 @@ export default class BaseMap extends PureComponent {
       // Attribution for tileset
       attribution: PropTypes.string,
     }).isRequired,
-
-    mapRef: PropTypes.func,
-    // Callback to which a ref to the Map component is passed.
-    // Allows parent components to diddle with the map established here.
-  };
-
-  static defaultProps = {
-    mapRef: (() => null),
   };
 
   render() {
     const {
       tileset: { url, projection, tileMatrix, attribution },
+      viewport: { center, zoom },
       mapRef,
       children,
       ...rest
@@ -65,24 +58,46 @@ export default class BaseMap extends PureComponent {
       { ...projCRSOptions(tileMatrix), ...projection.options },
     );
 
+    console.log("BaseMap", this.props)
+    console.log("BaseMap restxxx", rest)
+    // const position = [51.505, -0.09]
+    // const viewport = {
+    //   center: position,
+    //   // "center": {
+    //   //   "lat": 51.505,
+    //   //   "lng": -0.09
+    //   // },
+    //   "zoom": 13
+    // }
+    // return (
+    //   <MapContainer
+    //     // center={position} zoom={13}
+    //     viewport={viewport}
+    //     scrollWheelZoom={false}
+    //   >
+    //     <TileLayer
+    //       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    //       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    //     />
+    //   </MapContainer>
+    // )
     return (
-      <Map
+      <MapContainer
         crs={crs}
+        center={center}
+        zoom={zoom}
         minZoom={0}
         maxZoom={tileMatrix.numResolutions}
-        ref={mapRef}
         {...rest}
       >
         <TileLayer
           attribution={attribution}
           url={url}
-          // TODO: Should subdomains be a prop?
-          subdomains={'abc'}
           noWrap={true}
           maxZoom={tileMatrix.numResolutions}
         />
         {children}
-      </Map>
+      </MapContainer>
     );
   }
 }
