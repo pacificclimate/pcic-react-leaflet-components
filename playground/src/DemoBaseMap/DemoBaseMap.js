@@ -8,8 +8,9 @@ import './DemoBaseMap.css'
 
 
 function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
-  const [viewport, setViewport] = useState(initialViewport);
-  const [zoom, setZoom] = useState(null);
+  const [zoom, setZoom] = useState(initialViewport.zoom);
+  const [center, setCenter] = useState(initialViewport.center);
+  const [mapId, setMapId] = useState(null);
 
   const UpdateZoom = () => {
     const map = useMapEvents({
@@ -27,8 +28,8 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
       <Row>
         <Col xs={12}>
           <h2>{numMaps} synchronized basemaps</h2>
-          <p>viewport: {JSON.stringify(viewport)}</p>
           <p>zoom: {JSON.stringify(zoom)}</p>
+          <p>center: {JSON.stringify(center)}</p>
         </Col>
       </Row>
       <Row>
@@ -36,8 +37,8 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
           map(i => (
             <Col key={i} xs={colWidth}>
               <BaseMap
-                viewport={viewport}
-                onViewportChange={setViewport}
+                zoom={zoom}
+                center={center}
               >
                 <UpdateZoom/>
                 {/*<LayerGroup>*/}

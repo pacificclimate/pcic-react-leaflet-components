@@ -46,7 +46,6 @@ export default class GenericBaseMap extends PureComponent {
   render() {
     const {
       tileset: { url, projection, tileMatrix, attribution },
-      viewport: { center, zoom },
       mapRef,
       children,
       ...rest
@@ -63,8 +62,6 @@ export default class GenericBaseMap extends PureComponent {
     return (
       <MapContainer
         crs={crs}
-        center={center}
-        zoom={zoom}
         minZoom={0}
         maxZoom={tileMatrix.numResolutions}
         {...rest}
