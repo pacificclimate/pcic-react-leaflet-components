@@ -1,0 +1,6 @@
+{
+  "name": "GenericBaseMap",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./GenericBaseMap.js"
+}

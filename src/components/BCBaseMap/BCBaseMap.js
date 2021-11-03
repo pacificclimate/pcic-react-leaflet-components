@@ -15,7 +15,7 @@ import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import BaseMap from '../BaseMap';
+import BaseMap from '../GenericBaseMap';
 
 
 export default class BCBaseMap extends PureComponent {

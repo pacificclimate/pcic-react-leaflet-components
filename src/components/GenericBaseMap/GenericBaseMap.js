@@ -1,5 +1,6 @@
-// BaseMap: Component that establishes a base map and nothing more.
-// Children of this component are rendered inside the Map component.
+// GenericBaseMap: Creates and renders a basemap, which is a MapContainer
+// containing a tile layer defined by the `tileset` prop. Children of this
+// component are rendered inside the MapContainer.
 
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
@@ -14,10 +15,10 @@ import 'leaflet/dist/leaflet.css';
 import { projCRSOptions } from '../../utils/crs';
 
 
-export default class BaseMap extends PureComponent {
+export default class GenericBaseMap extends PureComponent {
   static propTypes = {
     // Only props added by this component are defined here.
-    // All other valid props for Map component are passed through to it.
+    // All other valid props for MapContainer are passed through to it.
 
     // Describes the tileset.
     tileset: PropTypes.shape({
@@ -51,7 +52,8 @@ export default class BaseMap extends PureComponent {
       ...rest
     } = this.props;
 
-    // Create Leaflet CRS object
+    // Create Leaflet CRS object. This is where the magic of this component
+    // lies ... converting the tileMatrix specification to a correct CRS.
     const crs = new L.Proj.CRS(
       projection.code,
       projection.proj4def,
