@@ -15,7 +15,7 @@ import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import BaseMap from '../GenericBaseMap';
+import GenericBaseMap from '../GenericBaseMap';
 
 
 export default class BCBaseMap extends PureComponent {
@@ -64,9 +64,9 @@ export default class BCBaseMap extends PureComponent {
   render() {
     const { children, ...rest } = this.props;
     return (
-      <BaseMap tileset={BCBaseMap.tileset} {...rest}>
+      <GenericBaseMap tileset={BCBaseMap.tileset} {...rest}>
         {children}
-      </BaseMap>
+      </GenericBaseMap>
     );
   }
 }
