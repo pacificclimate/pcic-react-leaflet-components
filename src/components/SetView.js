@@ -1,18 +1,17 @@
 import React  from 'react';
 import { useMap } from 'react-leaflet';
-import L from 'leaflet';
 
 
 const printableLatLng = latLng => ({lat: latLng.lat, lng: latLng.lng});
 
 
-const approxEqual = (a, b, tol=0.1, rel_tol=0.001) => {
+const approxEqual = (a, b, tol=0.1) => {
   return Math.abs(a - b) <= tol;
 }
 
 
 const SetView = ({
-  lat, lng, zoom, positionTol= 1, debug=false
+  view, positionTol= 1, debug=false
 }) => {
   const map = useMap();
   const tag = `SetView ${map._container.id}:`;
@@ -22,7 +21,7 @@ const SetView = ({
     console.log(
       tag,
       `from:`, { ...printableLatLng(currCenter), zoom: currZoom },
-      `to:`, { lat, lng, zoom },
+      `to:`, view,
     )
   }
   const tol = positionTol / 2**currZoom;
@@ -31,14 +30,12 @@ const SetView = ({
   }
 
   if (
-    !approxEqual(currCenter.lat, lat, tol) ||
-    !approxEqual(currCenter.lng, lng, tol) ||
-    currZoom !== zoom
+    !approxEqual(currCenter.lat, view.center.lat, tol) ||
+    !approxEqual(currCenter.lng, view.center.lng, tol) ||
+    currZoom !== view.zoom
   ) {
-    const center = L.latLng(lat, lng);
-    if (debug) console.log(tag, `setting to`, printableLatLng(center))
-    // TODO: Can omit zoom?
-    map.setView(center, zoom, { animate: false });
+    if (debug) console.log(tag, `setting to`, view)
+    map.setView(view.center, view.zoom, { animate: false });
     if (debug) {
       console.log(tag, `set to`, printableLatLng(map.getCenter()), map.getZoom())
     }

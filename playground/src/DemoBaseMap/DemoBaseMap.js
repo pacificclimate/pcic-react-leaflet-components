@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import { useImmer } from 'use-immer';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
@@ -22,14 +23,18 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
   const [zoom, setZoom] = useState(initialViewport.zoom);
   const [ctrLat, setCtrLat] = useState(initialViewport.center.lat);
   const [ctrLng, setCtrLng] = useState(initialViewport.center.lng);
+  const [view, setView] = useImmer(initialViewport);
 
   // TODO: UpdateView / updateView could be reformulated in a callback style.
   //  Worth it?
   const updateView = (id, map) => {
-    setZoom(map.getZoom());
+    // Holy cow, this is easy with immer. Immutable values FTW.
     const center = map.getCenter();
-    setCtrLat(center.lat);
-    setCtrLng(center.lng);
+    setView(draft => {
+      draft.zoom = map.getZoom();
+      draft.center.lat = center.lat;
+      draft.center.lng = center.lng;
+    });
   };
 
   const UpdateView = ({id}) => {
@@ -50,7 +55,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
       <Row>
         <Col xs={12}>
           <h2>{numMaps} synchronized basemaps</h2>
-          <p>zoom: {zoom}; lat: {ctrLat}; lng: {ctrLng}</p>
+          <p>{JSON.stringify(view)}</p>
           {/*<ol>*/}
           {/*  {views.map(view => (*/}
           {/*    <li>lat: {view.center.lat}, lng: {view.center.lng}, zoom: {view.zoom}</li>*/}
@@ -67,7 +72,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 zoom={initialViewport.zoom}
                 center={initialViewport.center}
               >
-                <SetView lat={ctrLat} lng={ctrLng} zoom={zoom} debug={true}/>
+                <SetView view={view} debug={true}/>
                 {/*<SetCenterLatLng lat={ctrLat} lng={ctrLng} debug={true}/>*/}
                 {/*<SetZoom zoom={zoom} debug={true}/>*/}
                 <UpdateView id={i}/>
