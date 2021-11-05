@@ -61,24 +61,24 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
               >
                 <SetView view={view} debug={true}/>
                 <UpdateViewState/>
-                {/*<LayerGroup>*/}
-                {/*  {*/}
-                {/*    markers.map(*/}
-                {/*      ({ lng, lat, comment }, i) => (*/}
-                {/*        <CircleMarker*/}
-                {/*          key={i}*/}
-                {/*          center={{ lng, lat }}*/}
-                {/*          radius={5}*/}
-                {/*          color={'#0000FF'}*/}
-                {/*        >*/}
-                {/*          <Popup>*/}
-                {/*            Lng: {lng}, Lat: {lat} <br/> {comment}*/}
-                {/*          </Popup>*/}
-                {/*        </CircleMarker>*/}
-                {/*      )*/}
-                {/*    )*/}
-                {/*  }*/}
-                {/*</LayerGroup>*/}
+                <LayerGroup>
+                  {
+                    markers.map(
+                      ({ lng, lat, comment }, i) => (
+                        <CircleMarker
+                          key={i}
+                          center={{ lng, lat }}
+                          radius={5}
+                          color={'#0000FF'}
+                        >
+                          <Popup>
+                            Lng: {lng}, Lat: {lat} <br/> {comment}
+                          </Popup>
+                        </CircleMarker>
+                      )
+                    )
+                  }
+                </LayerGroup>
               </BaseMap>
             </Col>
           ))(range(0, numMaps))
