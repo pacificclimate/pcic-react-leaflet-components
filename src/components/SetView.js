@@ -40,6 +40,7 @@ const SetView = ({
       console.log(tag, `set to`, printableLatLng(map.getCenter()), map.getZoom())
     }
   }
+
   return null;
 
 };

@@ -1,49 +1,41 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { useImmer } from 'use-immer';
 import { Container, Row, Col } from 'react-bootstrap';
 import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
 
-import { SetCenterLatLng, SetZoom, SetView } from 'pcic-react-leaflet-components';
+import { SetView } from 'pcic-react-leaflet-components';
 
 import './DemoBaseMap.css'
 
 
 function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
-  // useState setters cause a re-render when the new value shallowly differs
-  // from the previous value. A view(port) is a combination of zoom and center
-  // lat and lng. If we bundle these up as an object, we have to do some
-  // careful coding to create a different object when and only when the update
-  // differs on at least one value. We could (possibly) use immer.js (preferred)
-  // or immutable.js (not preferred) as a relatively low-effort solution.
-  // However we have an even simpler solution here, which is to manage the 3
-  // values as separate states.
-  // TODO: Wrap these 3 up in a custom hook or use immutable composite value.
-  const [zoom, setZoom] = useState(initialViewport.zoom);
-  const [ctrLat, setCtrLat] = useState(initialViewport.center.lat);
-  const [ctrLng, setCtrLng] = useState(initialViewport.center.lng);
+  // Manage view state as a single immutable composite value.
+  // Managing it as a set of 3 separate values (lat, lng, zoom) introduces
+  // problems due to 3 separate component updates when the view changes.
+  // We use immer (via use-immer) to manage immutable values.
   const [view, setView] = useImmer(initialViewport);
 
-  // TODO: UpdateView / updateView could be reformulated in a callback style.
-  //  Worth it?
-  const updateView = (id, map) => {
+  // TODO: UpdateViewState / updateViewState could be reformulated in a
+  //  callback style. Worth it?
+  const updateViewState = (map) => {
     // Holy cow, this is easy with immer. Immutable values FTW.
-    const center = map.getCenter();
     setView(draft => {
-      draft.zoom = map.getZoom();
+      const center = map.getCenter();
       draft.center.lat = center.lat;
       draft.center.lng = center.lng;
+      draft.zoom = map.getZoom();
     });
   };
 
-  const UpdateView = ({id}) => {
+  const UpdateViewState = () => {
     const map = useMapEvents({
       zoomend: () => {
-        updateView(id, map);
+        updateViewState(map);
       },
       moveend: () => {
-        updateView(id, map);
+        updateViewState(map);
       },
     });
     return null;
@@ -56,11 +48,6 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
         <Col xs={12}>
           <h2>{numMaps} synchronized basemaps</h2>
           <p>{JSON.stringify(view)}</p>
-          {/*<ol>*/}
-          {/*  {views.map(view => (*/}
-          {/*    <li>lat: {view.center.lat}, lng: {view.center.lng}, zoom: {view.zoom}</li>*/}
-          {/*  ))}*/}
-          {/*</ol>*/}
         </Col>
       </Row>
       <Row>
@@ -73,9 +60,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 center={initialViewport.center}
               >
                 <SetView view={view} debug={true}/>
-                {/*<SetCenterLatLng lat={ctrLat} lng={ctrLng} debug={true}/>*/}
-                {/*<SetZoom zoom={zoom} debug={true}/>*/}
-                <UpdateView id={i}/>
+                <UpdateViewState/>
                 {/*<LayerGroup>*/}
                 {/*  {*/}
                 {/*    markers.map(*/}
