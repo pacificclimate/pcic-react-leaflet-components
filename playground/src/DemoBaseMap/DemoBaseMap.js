@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
 import { range, map } from 'lodash/fp';
 
-import { SetCenterLatLng, SetZoom } from 'pcic-react-leaflet-components';
+import { SetCenterLatLng, SetZoom, SetView } from 'pcic-react-leaflet-components';
 
 import './DemoBaseMap.css'
 
@@ -67,8 +67,9 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 zoom={initialViewport.zoom}
                 center={initialViewport.center}
               >
-                <SetCenterLatLng lat={ctrLat} lng={ctrLng} debug={true}/>
-                <SetZoom zoom={zoom}/>
+                <SetView lat={ctrLat} lng={ctrLng} zoom={zoom} debug={true}/>
+                {/*<SetCenterLatLng lat={ctrLat} lng={ctrLng} debug={true}/>*/}
+                {/*<SetZoom zoom={zoom} debug={true}/>*/}
                 <UpdateView id={i}/>
                 {/*<LayerGroup>*/}
                 {/*  {*/}
