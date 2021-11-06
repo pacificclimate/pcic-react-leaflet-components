@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import { Container, Row, Col } from 'react-bootstrap';
-import { CircleMarker, LayerGroup, Popup, useMapEvents } from 'react-leaflet';
-import { range, map } from 'lodash/fp';
+import { Col, Container, Row } from 'react-bootstrap';
+import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
+import map from 'lodash/fp/map';
+import range from 'lodash/fp/range';
 
-import { SetView } from 'pcic-react-leaflet-components';
+import { callbackOnMapEvents, SetView } from 'pcic-react-leaflet-components';
 
-import './DemoBaseMap.css'
+import './DemoBaseMap.css';
 
 
 function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
@@ -17,29 +18,18 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
   // We use immer (via use-immer) to manage immutable values.
   const [view, setView] = useImmer(initialViewport);
 
-  // TODO: UpdateViewState / updateViewState could be reformulated in a
-  //  callback style. Worth it?
-  const updateViewState = (map) => {
-    // Holy cow, this is easy with immer. Immutable values FTW.
-    setView(draft => {
-      const center = map.getCenter();
-      draft.center.lat = center.lat;
-      draft.center.lng = center.lng;
-      draft.zoom = map.getZoom();
-    });
-  };
-
-  const UpdateViewState = () => {
-    const map = useMapEvents({
-      zoomend: () => {
-        updateViewState(map);
-      },
-      moveend: () => {
-        updateViewState(map);
-      },
-    });
-    return null;
-  };
+  const UpdateViewState = callbackOnMapEvents(
+    ["zoomend", "moveend"],
+    map => {
+      // Holy cow, this is easy with immer. Immutable values FTW.
+      setView(draft => {
+        const center = map.getCenter();
+        draft.center.lat = center.lat;
+        draft.center.lng = center.lng;
+        draft.zoom = map.getZoom();
+      });
+    }
+  );
 
   const colWidth = Math.floor(12 / numMaps);
   return (
