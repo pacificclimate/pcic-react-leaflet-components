@@ -4,3 +4,5 @@ export { default as YNWTBaseMap } from './components/YNWTBaseMap';
 export { default as SetView } from './components/SetView';
 
 export { default as callbackOnMapEvents } from './hocs/callbackOnMapEvents';
+
+export { projCRSOptions, resolutions } from './utils/crs';
