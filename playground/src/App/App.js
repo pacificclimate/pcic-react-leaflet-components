@@ -5,7 +5,7 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import DemoBaseMap from '../DemoBaseMap';
-import { BCBaseMap } from 'pcic-react-leaflet-components';
+import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
 import { positions as markers } from '../markers';
 
 const navSpec = [
@@ -21,17 +21,18 @@ const navSpec = [
       />
     ),
   },
-  // {
-  //   label: 'YNWTBaseMap',
-  //   path: 'YNWTBaseMap',
-  //   component: () => (
-  //     <DemoBaseMap
-  //       BaseMap={YNWTBaseMap}
-  //       initialViewport={YNWTBaseMap.initialViewport}
-  //       markers={markers}
-  //     />
-  //   ),
-  // },
+  {
+    label: 'YNWTBaseMap',
+    path: 'YNWTBaseMap',
+    component: () => (
+      <DemoBaseMap
+        BaseMap={YNWTBaseMap}
+        initialViewport={YNWTBaseMap.initialViewport}
+        numMaps={2}
+        markers={markers}
+      />
+    ),
+  },
 ];
 const defaultPath = 'BCBaseMap';
 
