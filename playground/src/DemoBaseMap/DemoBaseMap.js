@@ -36,8 +36,10 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
     <Container fluid>
       <Row>
         <Col xs={12}>
-          <h2>{numMaps} synchronized basemaps</h2>
-          <p>{JSON.stringify(view)}</p>
+          <p>
+            {numMaps} synchronized basemaps |
+            View: {JSON.stringify(view)}
+          </p>
         </Col>
       </Row>
       <Row>

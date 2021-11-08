@@ -41,8 +41,10 @@ export default class App extends React.Component {
     return (
       <Router basename={'/#'}>
         <div>
-          <h1>PCIC React Leaflet Components (in-repo demo)</h1>
-          <Navbar>
+          <Navbar bg="info" variant="light">
+            <Navbar.Brand>
+              PCIC React Leaflet Components
+            </Navbar.Brand>
             <Nav>
               {
                 navSpec.map(({label, path}) => (
