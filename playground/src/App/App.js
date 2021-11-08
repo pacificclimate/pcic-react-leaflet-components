@@ -2,13 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { Container, Navbar, Nav } from 'react-bootstrap';
-import { MapContainer } from 'react-leaflet';
 
 import DemoBaseMap from '../DemoBaseMap';
-import { BCBaseMap, YNWTBaseMap, StaticControl } from 'pcic-react-leaflet-components';
+import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
 import { positions as markers } from '../markers';
 
 import 'pcic-react-leaflet-components/src/leaflet-extensions/control-static.css';
+import DemoStaticControl from '../DemoStaticControl';
 
 const navSpec = [
   {
@@ -38,12 +38,7 @@ const navSpec = [
   {
     label: 'StaticControl',
     path: 'StaticControl',
-    component: () => (
-      <MapContainer>
-        <StaticControl position={"topright"}>topright</StaticControl>
-        <StaticControl position={"bottomleft"}>bottomleft</StaticControl>
-      </MapContainer>
-    ),
+    component: DemoStaticControl,
   }
 ];
 const defaultPath = 'BCBaseMap';
