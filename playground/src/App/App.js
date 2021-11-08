@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
 
 import DemoBaseMap from '../DemoBaseMap';
 import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
@@ -43,15 +42,13 @@ export default class App extends React.Component {
       <Router basename={'/#'}>
         <div>
           <h1>PCIC React Leaflet Components (in-repo demo)</h1>
-          <Navbar fluid>
+          <Navbar>
             <Nav>
               {
                 navSpec.map(({label, path}) => (
-                  <LinkContainer key={path} to={`/${path}`}>
-                    <NavItem eventKey={path}>
-                      {label}
-                    </NavItem>
-                  </LinkContainer>
+                  <Nav.Link eventKey={path} href={path}>
+                    {label}
+                  </Nav.Link>
                 ))
               }
             </Nav>
