@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Redirect, Switch } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import { MapContainer } from 'react-leaflet';
 
 import DemoBaseMap from '../DemoBaseMap';
@@ -53,22 +53,22 @@ export default class App extends React.Component {
   render() {
     return (
       <Router basename={'/#'}>
-        <div>
-          <Navbar bg="info" variant="light">
-            <Navbar.Brand>
-              PCIC React Leaflet Components
-            </Navbar.Brand>
-            <Nav>
-              {
-                navSpec.map(({label, path}) => (
-                  <Nav.Link eventKey={path} href={path}>
-                    {label}
-                  </Nav.Link>
-                ))
-              }
-            </Nav>
-          </Navbar>
+        <Navbar bg="info" variant="light">
+          <Navbar.Brand>
+            PCIC React Leaflet Components
+          </Navbar.Brand>
+          <Nav>
+            {
+              navSpec.map(({label, path}) => (
+                <Nav.Link eventKey={path} href={path}>
+                  {label}
+                </Nav.Link>
+              ))
+            }
+          </Nav>
+        </Navbar>
 
+        <Container fluid>
           <Switch>
             {
               navSpec.map(({path, component}) => (
@@ -77,7 +77,7 @@ export default class App extends React.Component {
             }
             <Redirect to={defaultPath}/>
           </Switch>
-        </div>
+        </Container>
       </Router>
     );
   }

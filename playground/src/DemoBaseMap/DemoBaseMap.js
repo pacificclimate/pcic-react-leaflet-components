@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useImmer } from 'use-immer';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
 import map from 'lodash/fp/map';
 import range from 'lodash/fp/range';
@@ -33,7 +33,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
 
   const colWidth = Math.floor(12 / numMaps);
   return (
-    <Container fluid>
+    <React.Fragment>
       <Row>
         <Col xs={12}>
           <p>
@@ -76,7 +76,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
           ))(range(0, numMaps))
         }
       </Row>
-    </Container>
+    </React.Fragment>
   );
 }
 
