@@ -1,45 +1,45 @@
-import React  from 'react';
+// Sets the view (center, zoom) of the `MapContainer` inside which it is
+// rendered.
+//
+// In an earlier version of this component, there was a difference between the
+// center specified and the center actually set and reported by the map. This
+// seems to have vanished now that we are using useEffect to set the center,
+// and all code allowing for approximate setting has been removed. Correct hook
+// usage FTW!
+
+import React, { useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 
 
-const printableLatLng = latLng => ({lat: latLng.lat, lng: latLng.lng});
+const printView = view => JSON.stringify({
+  lat: view.center.lat, lng: view.center.lng, zoom: view.zoom,
+});
 
 
-const approxEqual = (a, b, tol=0.1) => {
-  return Math.abs(a - b) <= tol;
-}
-
-
-const SetView = ({
-  view, positionTol= 1, debug=false
-}) => {
+const SetView = ({ view, debug=false }) => {
   const map = useMap();
-  const tag = `SetView ${map._container.id}:`;
   const currCenter = map.getCenter();
   const currZoom = map.getZoom();
+  const tag = `SetView ${map._container.id}:`;
   if (debug) {
     console.log(
       tag,
-      `from:`, { ...printableLatLng(currCenter), zoom: currZoom },
-      `to:`, view,
+      `from:`, printView({ center: currCenter, zoom: currZoom }),
+      `to:`, printView(view),
     )
   }
-  const tol = positionTol / 2**currZoom;
-  if (debug) {
-    console.log(tag, "tol", tol)
-  }
 
-  if (
-    !approxEqual(currCenter.lat, view.center.lat, tol) ||
-    !approxEqual(currCenter.lng, view.center.lng, tol) ||
-    currZoom !== view.zoom
-  ) {
-    if (debug) console.log(tag, `setting to`, view)
-    map.setView(view.center, view.zoom, { animate: false });
-    if (debug) {
-      console.log(tag, `set to`, printableLatLng(map.getCenter()), map.getZoom())
+  // It's important to wrap side-effect updates like this with useEffect!
+  useEffect(() => {
+    if (
+      currCenter.lat !== view.center.lat ||
+      currCenter.lng !== view.center.lng ||
+      currZoom !== view.zoom
+    ) {
+      if (debug) {console.log(tag, `!setting`)}
+      map.setView(view.center, view.zoom, { animate: false });
     }
-  }
+  });
 
   return null;
 
