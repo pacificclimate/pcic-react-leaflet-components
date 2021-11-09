@@ -5,7 +5,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
 
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 
 import 'proj4';
