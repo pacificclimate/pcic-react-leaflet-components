@@ -11,7 +11,7 @@ function Navigation({ spec }) {
       <Navbar.Brand>
         PCIC React Leaflet Components
       </Navbar.Brand>
-      <Nav variant={"pills"} activeKey={match.params.path}>
+      <Nav variant={"pills"} activeKey={match?.params.path}>
         {
           spec.map(({label, path}) => (
             <Nav.Item>
