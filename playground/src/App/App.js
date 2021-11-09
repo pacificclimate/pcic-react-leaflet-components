@@ -1,13 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { Route, Redirect, Switch } from 'react-router-dom';
-import { Container, Navbar, Nav } from 'react-bootstrap';
+import {
+  BrowserRouter as Router, Route, Redirect, Switch
+} from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 
 import DemoBaseMap from '../DemoBaseMap';
 import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
 import { positions as markers } from '../markers';
 
 import 'pcic-react-leaflet-components/src/leaflet-extensions/control-static.css';
+import Navigation from '../Navigation';
 import DemoStaticControl from '../DemoStaticControl';
 
 const navSpec = [
@@ -44,36 +46,20 @@ const navSpec = [
 const defaultPath = 'BCBaseMap';
 
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Router basename={'/#'}>
-        <Navbar bg="info" variant="light">
-          <Navbar.Brand>
-            PCIC React Leaflet Components
-          </Navbar.Brand>
-          <Nav>
-            {
-              navSpec.map(({label, path}) => (
-                <Nav.Link eventKey={path} href={path}>
-                  {label}
-                </Nav.Link>
-              ))
-            }
-          </Nav>
-        </Navbar>
-
-        <Container fluid>
-          <Switch>
-            {
-              navSpec.map(({path, component}) => (
-                <Route key={path} path={`/${path}`} component={component}/>
-              ))
-            }
-            <Redirect to={defaultPath}/>
-          </Switch>
-        </Container>
-      </Router>
-    );
-  }
+export default function App() {
+  return (
+    <Router basename={'/'}>
+      <Navigation spec={navSpec}/>
+      <Container fluid>
+        <Switch>
+          {
+            navSpec.map(({path, component}) => (
+              <Route key={path} path={`/${path}`} component={component}/>
+            ))
+          }
+          <Redirect to={defaultPath}/>
+        </Switch>
+      </Container>
+    </Router>
+  );
 }
