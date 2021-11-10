@@ -1,6 +1,6 @@
 {
   "name": "pcic-react-leaflet-components",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",

@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 2.0.1
+
+*2021-Nov-10*
+
+- Tighten React Leaflet dependencies
+
 ## 2.0.0
 
 *2021-Nov-09*
