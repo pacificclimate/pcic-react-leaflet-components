@@ -22,6 +22,7 @@
     "start-playground": "cd playground && npm run start",
     "i-pg": "cd playground && npm i",
     "i-all": "npm i && cd playground && npm i",
+    "rei-all": "(rm -rf node_modules ; npm i) && (cd playground && rm -rf node_modules ; npm i)",
     "dev": "npm-run-all --parallel build-watch start-playground",
     "start": "react-scripts start",
     "test": "react-scripts test",
@@ -62,7 +63,7 @@
     "leaflet": "^1.7.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "@react-leaflet/core": "^1.0.2",
-    "react-leaflet": "^3.1.0"
+    "@react-leaflet/core": "1.0.2",
+    "react-leaflet": "3.1.0"
   }
 }
