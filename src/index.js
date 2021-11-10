@@ -1,6 +1,9 @@
-import React from 'react';
-import { render } from "react-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import App from './demo/App'
+export { default as GenericBaseMap } from './components/GenericBaseMap';
+export { default as BCBaseMap } from './components/BCBaseMap';
+export { default as YNWTBaseMap } from './components/YNWTBaseMap';
+export { default as SetView } from './components/SetView';
+export { default as StaticControl } from './components/StaticControl';
 
-render(<App />, document.getElementById("root"));
+export { default as callbackOnMapEvents } from './hocs/callbackOnMapEvents';
+
+export { projCRSOptions, resolutions } from './utils/crs';

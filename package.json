@@ -1,49 +1,68 @@
 {
   "name": "pcic-react-leaflet-components",
-  "version": "1.2.2",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "start": "react-scripts start",
-    "build-examples": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "build": "rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"
-  },
+  "version": "2.0.0",
+  "private": true,
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "source": "src/index.js",
   "dependencies": {
-    "lodash": "^4.17.11",
-    "proj4": "^2.5.0",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "lodash": "^4.17.21",
+    "proj4": "^2.7.5",
     "proj4leaflet": "^1.0.2",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.7.2",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.1.2"
   },
-  "peerDependencies": {
-    "leaflet": "^1.4.0",
-    "react": "^16.7.0",
-    "react-leaflet": "^2.2.0"
+  "scripts": {
+    "build": "rollup -c",
+    "build-watch": "rollup -c -w",
+    "start-playground": "cd playground && npm run start",
+    "i-pg": "cd playground && npm i",
+    "i-all": "npm i && cd playground && npm i",
+    "dev": "npm-run-all --parallel build-watch start-playground",
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-class-properties": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
-    "bootstrap": "^3.3.7",
-    "leaflet": "^1.4.0",
-    "react": "^16.7.0",
-    "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.7.0",
-    "react-leaflet": "^2.2.0",
-    "react-router-bootstrap": "^0.24.4",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "^2.1.3",
-    "rimraf": "^2.6.3"
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-react": "^7.14.5",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.58.3",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "peerDependencies": {
+    "leaflet": "^1.7.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@react-leaflet/core": "^1.0.2",
+    "react-leaflet": "^3.1.0"
+  }
 }
