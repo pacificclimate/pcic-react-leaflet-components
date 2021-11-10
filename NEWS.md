@@ -1,5 +1,12 @@
 # News / Release Notes
 
+## 2.0.0
+
+*2021-Nov-09*
+
+- Upgrade to React Leaflet 3; upgrade CRA infrastructure; use Rollup
+
+
 ## 1.2.2
 
 *2021-Aug-27*
