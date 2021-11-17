@@ -1,9 +1,24 @@
-import React, { PureComponent, useEffect } from 'react';
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
+import React, { PureComponent, useEffect, useState } from 'react';
+import { MapContainer, TileLayer, useMap, useMapEvents, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ReactDom from 'react-dom';
 import { useLeafletContext } from '@react-leaflet/core';
+
+function _mergeNamespaces(n, m) {
+  m.forEach(function (e) {
+    e && typeof e !== 'string' && !Array.isArray(e) && Object.keys(e).forEach(function (k) {
+      if (k !== 'default' && !(k in n)) {
+        var d = Object.getOwnPropertyDescriptor(e, k);
+        Object.defineProperty(n, k, d.get ? d : {
+          enumerable: true,
+          get: function () { return e[k]; }
+        });
+      }
+    });
+  });
+  return Object.freeze(n);
+}
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
@@ -213,6 +228,65 @@ function _createSuper(Derived) {
 
     return _possibleConstructorReturn(this, result);
   };
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -9886,7 +9960,7 @@ function projCRSOptions(tileMatrixParams) {
   };
 }
 
-var _excluded$3 = ["tileset", "center", "zoom", "mapRef", "children"];
+var _excluded$4 = ["tileset", "center", "zoom", "mapRef", "children"];
 
 function GenericBaseMap(_ref) {
   var _ref$tileset = _ref.tileset,
@@ -9898,7 +9972,7 @@ function GenericBaseMap(_ref) {
       zoom = _ref.zoom;
       _ref.mapRef;
       var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, _excluded$3);
+      rest = _objectWithoutProperties(_ref, _excluded$4);
 
   // Create Leaflet CRS object. This is where the magic of this component
   // lies ... converting the tileMatrix specification to a correct CRS.
@@ -9941,7 +10015,7 @@ GenericBaseMap.propTypes = {
   }).isRequired
 };
 
-var _excluded$2 = ["children"];
+var _excluded$3 = ["children"];
 
 var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
   _inherits(BCBaseMap, _PureComponent);
@@ -9959,7 +10033,7 @@ var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
     value: function render() {
       var _this$props = this.props,
           children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$2);
+          rest = _objectWithoutProperties(_this$props, _excluded$3);
 
       return /*#__PURE__*/React.createElement(GenericBaseMap, _extends({
         tileset: BCBaseMap.tileset
@@ -10013,7 +10087,7 @@ _defineProperty$1(BCBaseMap, "initialViewport", {
   zoom: 6
 });
 
-var _excluded$1 = ["children"];
+var _excluded$2 = ["children"];
 
 var YNWTBaseMap = /*#__PURE__*/function (_PureComponent) {
   _inherits(YNWTBaseMap, _PureComponent);
@@ -10031,7 +10105,7 @@ var YNWTBaseMap = /*#__PURE__*/function (_PureComponent) {
     value: function render() {
       var _this$props = this.props,
           children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$1);
+          rest = _objectWithoutProperties(_this$props, _excluded$2);
 
       return /*#__PURE__*/React.createElement(GenericBaseMap, _extends({
         tileset: YNWTBaseMap.tileset
@@ -10138,11 +10212,11 @@ L.control.static = function (opts) {
   return new L.Control.Static(opts);
 };
 
-var _excluded = ["children"];
+var _excluded$1 = ["children"];
 
 function StaticControl(_ref) {
   var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, _excluded);
+      rest = _objectWithoutProperties(_ref, _excluded$1);
 
   var context = useLeafletContext();
   useEffect(function () {
@@ -10155,6 +10229,13 @@ function StaticControl(_ref) {
   });
   return null;
 }
+
+var dist=function(e){var t={};function a(r){if(t[r])return t[r].exports;var n=t[r]={i:r,l:!1,exports:{}};return e[r].call(n.exports,n,n.exports,a),n.l=!0,n.exports}return a.m=e,a.c=t,a.d=function(e,t,r){a.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r});},a.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0});},a.t=function(e,t){if(1&t&&(e=a(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(a.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)a.d(r,n,function(t){return e[t]}.bind(null,n));return r},a.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return a.d(t,"a",t),t},a.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},a.p="",a(a.s=4)}([function(e,t){e.exports=React;},function(e,t,a){e.exports=a(2)();},function(e,t,a){var r=a(3);function n(){}e.exports=function(){function e(e,t,a,n,i,c){if(c!==r){var l=new Error("Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types");throw l.name="Invariant Violation",l}}function t(){return e}e.isRequired=e;var a={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t};return a.checkPropTypes=n,a.PropTypes=a,a};},function(e,t,a){e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED";},function(e,t,a){a.r(t);var r=a(0),n=a.n(r),i=a(1),c=a.n(i);function l(){return (l=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function o(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}var s=function(e){var t=e.className,a=o(e,["className"]);return n.a.createElement("svg",l({width:55,height:80,fill:"#FFF",viewBox:"0 0 55 80",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{transform:"matrix(1 0 0 -1 0 80)"},n.a.createElement("rect",{width:10,height:20,rx:3},n.a.createElement("animate",{attributeName:"height",begin:"0s",dur:"4.3s",values:"20;45;57;80;64;32;66;45;64;23;66;13;64;56;34;34;2;23;76;79;20",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:15,width:10,height:80,rx:3},n.a.createElement("animate",{attributeName:"height",begin:"0s",dur:"2s",values:"80;55;33;5;75;23;73;33;12;14;60;80",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:30,width:10,height:50,rx:3},n.a.createElement("animate",{attributeName:"height",begin:"0s",dur:"1.4s",values:"50;34;78;23;56;23;34;76;80;54;21;50",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:45,width:10,height:30,rx:3},n.a.createElement("animate",{attributeName:"height",begin:"0s",dur:"2s",values:"30;45;13;80;56;72;45;76;34;23;67;30",calcMode:"linear",repeatCount:"indefinite"}))))};function u(){return (u=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function f(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}s.propTypes={className:c.a.string},s.defaultProps={className:void 0};var m=function(e){var t=e.className,a=f(e,["className"]);return n.a.createElement("svg",u({width:57,height:57,stroke:"#fff",viewBox:"0 0 57 57",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{transform:"translate(1 1)",strokeWidth:2,fill:"none",fillRule:"evenodd"},n.a.createElement("circle",{cx:5,cy:50,r:5},n.a.createElement("animate",{attributeName:"cy",begin:"0s",dur:"2.2s",values:"50;5;50;50",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"cx",begin:"0s",dur:"2.2s",values:"5;27;49;5",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:27,cy:5,r:5},n.a.createElement("animate",{attributeName:"cy",begin:"0s",dur:"2.2s",from:5,to:5,values:"5;50;50;5",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"cx",begin:"0s",dur:"2.2s",from:27,to:27,values:"27;49;5;27",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:49,cy:50,r:5},n.a.createElement("animate",{attributeName:"cy",begin:"0s",dur:"2.2s",values:"50;50;5;50",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"cx",from:49,to:49,begin:"0s",dur:"2.2s",values:"49;5;27;49",calcMode:"linear",repeatCount:"indefinite"}))))};function p(){return (p=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function d(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}m.propTypes={className:c.a.string},m.defaultProps={className:void 0};var y=function(e){var t=e.className,a=d(e,["className"]);return n.a.createElement("svg",p({width:135,height:140,fill:"#fff",viewBox:"0 0 135 140",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("rect",{y:10,width:15,height:120,rx:6},n.a.createElement("animate",{attributeName:"height",begin:"0.5s",dur:"1s",values:"120;110;100;90;80;70;60;50;40;140;120",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"y",begin:"0.5s",dur:"1s",values:"10;15;20;25;30;35;40;45;50;0;10",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:30,y:10,width:15,height:120,rx:6},n.a.createElement("animate",{attributeName:"height",begin:"0.25s",dur:"1s",values:"120;110;100;90;80;70;60;50;40;140;120",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"y",begin:"0.25s",dur:"1s",values:"10;15;20;25;30;35;40;45;50;0;10",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:60,width:15,height:140,rx:6},n.a.createElement("animate",{attributeName:"height",begin:"0s",dur:"1s",values:"120;110;100;90;80;70;60;50;40;140;120",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"y",begin:"0s",dur:"1s",values:"10;15;20;25;30;35;40;45;50;0;10",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:90,y:10,width:15,height:120,rx:6},n.a.createElement("animate",{attributeName:"height",begin:"0.25s",dur:"1s",values:"120;110;100;90;80;70;60;50;40;140;120",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"y",begin:"0.25s",dur:"1s",values:"10;15;20;25;30;35;40;45;50;0;10",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("rect",{x:120,y:10,width:15,height:120,rx:6},n.a.createElement("animate",{attributeName:"height",begin:"0.5s",dur:"1s",values:"120;110;100;90;80;70;60;50;40;140;120",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"y",begin:"0.5s",dur:"1s",values:"10;15;20;25;30;35;40;45;50;0;10",calcMode:"linear",repeatCount:"indefinite"})))};function b(){return (b=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function v(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}y.propTypes={className:c.a.string},y.defaultProps={className:void 0};var g=function(e){var t=e.className,a=v(e,["className"]);return n.a.createElement("svg",b({width:135,height:135,fill:"#fff",viewBox:"0 0 135 135",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("path",{d:"M67.447 58c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm9.448 9.447c0 5.523 4.477 10 10 10 5.522 0 10-4.477 10-10s-4.478-10-10-10c-5.523 0-10 4.477-10 10zm-9.448 9.448c-5.523 0-10 4.477-10 10 0 5.522 4.477 10 10 10s10-4.478 10-10c0-5.523-4.477-10-10-10zM58 67.447c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10z"},n.a.createElement("animateTransform",{attributeName:"transform",type:"rotate",from:"0 67 67",to:"-360 67 67",dur:"2.5s",repeatCount:"indefinite"})),n.a.createElement("path",{d:"M28.19 40.31c6.627 0 12-5.374 12-12 0-6.628-5.373-12-12-12-6.628 0-12 5.372-12 12 0 6.626 5.372 12 12 12zm30.72-19.825c4.686 4.687 12.284 4.687 16.97 0 4.686-4.686 4.686-12.284 0-16.97-4.686-4.687-12.284-4.687-16.97 0-4.687 4.686-4.687 12.284 0 16.97zm35.74 7.705c0 6.627 5.37 12 12 12 6.626 0 12-5.373 12-12 0-6.628-5.374-12-12-12-6.63 0-12 5.372-12 12zm19.822 30.72c-4.686 4.686-4.686 12.284 0 16.97 4.687 4.686 12.285 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97-4.685-4.687-12.283-4.687-16.97 0zm-7.704 35.74c-6.627 0-12 5.37-12 12 0 6.626 5.373 12 12 12s12-5.374 12-12c0-6.63-5.373-12-12-12zm-30.72 19.822c-4.686-4.686-12.284-4.686-16.97 0-4.686 4.687-4.686 12.285 0 16.97 4.686 4.687 12.284 4.687 16.97 0 4.687-4.685 4.687-12.283 0-16.97zm-35.74-7.704c0-6.627-5.372-12-12-12-6.626 0-12 5.373-12 12s5.374 12 12 12c6.628 0 12-5.373 12-12zm-19.823-30.72c4.687-4.686 4.687-12.284 0-16.97-4.686-4.686-12.284-4.686-16.97 0-4.687 4.686-4.687 12.284 0 16.97 4.686 4.687 12.284 4.687 16.97 0z"},n.a.createElement("animateTransform",{attributeName:"transform",type:"rotate",from:"0 67 67",to:"360 67 67",dur:"8s",repeatCount:"indefinite"})))};function h(){return (h=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function O(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}g.propTypes={className:c.a.string},g.defaultProps={className:void 0};var E=function(e){var t=e.className,a=O(e,["className"]);return n.a.createElement("svg",h({width:105,height:105,fill:"#fff",viewBox:"0 0 105 105",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("circle",{cx:12.5,cy:12.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:12.5,cy:52.5,r:12.5,fillOpacity:.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"100ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:52.5,cy:12.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"300ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:52.5,cy:52.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"600ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:92.5,cy:12.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"800ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:92.5,cy:52.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"400ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:12.5,cy:92.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"700ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:52.5,cy:92.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"500ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:92.5,cy:92.5,r:12.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"200ms",dur:"1s",values:"1;.2;1",calcMode:"linear",repeatCount:"indefinite"})))};function N(){return (N=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function x(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}E.propTypes={className:c.a.string},E.defaultProps={className:void 0};var j=function(e){var t=e.className,a=x(e,["className"]);return n.a.createElement("svg",N({width:140,height:64,fill:"#fff",viewBox:"0 0 140 64",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("path",{d:"M30.262 57.02L7.195 40.723c-5.84-3.976-7.56-12.06-3.842-18.063 3.715-6 11.467-7.65 17.306-3.68l4.52 3.76 2.6-5.274c3.717-6.002 11.47-7.65 17.305-3.68 5.84 3.97 7.56 12.054 3.842 18.062L34.49 56.118c-.897 1.512-2.793 1.915-4.228.9z",fillOpacity:.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.4s",values:"0.5;1;0.5",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("path",{d:"M105.512 56.12l-14.44-24.272c-3.716-6.008-1.996-14.093 3.843-18.062 5.835-3.97 13.588-2.322 17.306 3.68l2.6 5.274 4.52-3.76c5.84-3.97 13.592-2.32 17.307 3.68 3.718 6.003 1.998 14.088-3.842 18.064L109.74 57.02c-1.434 1.014-3.33.61-4.228-.9z",fillOpacity:.5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0.7s",dur:"1.4s",values:"0.5;1;0.5",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("path",{d:"M67.408 57.834l-23.01-24.98c-5.864-6.15-5.864-16.108 0-22.248 5.86-6.14 15.37-6.14 21.234 0L70 16.168l4.368-5.562c5.863-6.14 15.375-6.14 21.235 0 5.863 6.14 5.863 16.098 0 22.247l-23.007 24.98c-1.43 1.556-3.757 1.556-5.188 0z"}))};function w(){return (w=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function C(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}j.propTypes={className:c.a.string},j.defaultProps={className:void 0};var M=function(e){var t=e.className,a=C(e,["className"]);return n.a.createElement("svg",w({width:38,height:38,stroke:"#fff",viewBox:"0 0 38 38",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{transform:"translate(1 1)",strokeWidth:2,fill:"none",fillRule:"evenodd"},n.a.createElement("circle",{strokeOpacity:.5,cx:18,cy:18,r:18}),n.a.createElement("path",{d:"M36 18c0-9.94-8.06-18-18-18"},n.a.createElement("animateTransform",{attributeName:"transform",type:"rotate",from:"0 18 18",to:"360 18 18",dur:"1s",repeatCount:"indefinite"}))))};function P(){return (P=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function k(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}M.propTypes={className:c.a.string},M.defaultProps={className:void 0};var S=function(e){var t=e.className,a=k(e,["className"]);return n.a.createElement("svg",P({width:44,height:44,stroke:"#fff",viewBox:"0 0 44 44",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{fill:"none",fillRule:"evenodd",strokeWidth:2},n.a.createElement("circle",{cx:22,cy:22,r:1},n.a.createElement("animate",{attributeName:"r",begin:"0s",dur:"1.8s",values:"1; 20",calcMode:"spline",keyTimes:"0; 1",keySplines:"0.165, 0.84, 0.44, 1",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-opacity",begin:"0s",dur:"1.8s",values:"1; 0",calcMode:"spline",keyTimes:"0; 1",keySplines:"0.3, 0.61, 0.355, 1",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:22,cy:22,r:1},n.a.createElement("animate",{attributeName:"r",begin:"-0.9s",dur:"1.8s",values:"1; 20",calcMode:"spline",keyTimes:"0; 1",keySplines:"0.165, 0.84, 0.44, 1",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-opacity",begin:"-0.9s",dur:"1.8s",values:"1; 0",calcMode:"spline",keyTimes:"0; 1",keySplines:"0.3, 0.61, 0.355, 1",repeatCount:"indefinite"}))))};function T(){return (T=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function _(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}S.propTypes={className:c.a.string},S.defaultProps={className:void 0};var I=function(e){var t=e.className,a=_(e,["className"]);return n.a.createElement("svg",T({width:45,height:45,stroke:"#fff",viewBox:"0 0 45 45",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{fill:"none",fillRule:"evenodd",transform:"translate(1 1)",strokeWidth:2},n.a.createElement("circle",{cx:22,cy:22,r:6,strokeOpacity:0},n.a.createElement("animate",{attributeName:"r",begin:"1.5s",dur:"3s",values:"6;22",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-opacity",begin:"1.5s",dur:"3s",values:"1;0",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-width",begin:"1.5s",dur:"3s",values:"2;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:22,cy:22,r:6,strokeOpacity:0},n.a.createElement("animate",{attributeName:"r",begin:"3s",dur:"3s",values:"6;22",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-opacity",begin:"3s",dur:"3s",values:"1;0",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"stroke-width",begin:"3s",dur:"3s",values:"2;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:22,cy:22,r:8},n.a.createElement("animate",{attributeName:"r",begin:"0s",dur:"1.5s",values:"6;1;2;3;4;5;6",calcMode:"linear",repeatCount:"indefinite"}))))};function z(){return (z=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function B(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}I.propTypes={className:c.a.string},I.defaultProps={className:void 0};var R=function(e){var t=e.className,a=B(e,["className"]);return n.a.createElement("svg",z({width:58,height:58,viewBox:"0 0 58 58",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("g",{transform:"translate(2 1)",stroke:"#FFF",strokeWidth:1.5,fill:"#fff",fillRule:"evenodd"},n.a.createElement("circle",{cx:42.601,cy:11.462,r:5},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"1;0;0;0;0;0;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:49.063,cy:27.063,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;1;0;0;0;0;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:42.601,cy:42.663,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;1;0;0;0;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:27,cy:49.125,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;0;1;0;0;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:11.399,cy:42.663,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;0;0;1;0;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:4.938,cy:27.063,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;0;0;0;1;0;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:11.399,cy:11.462,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;0;0;0;0;1;0",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:27,cy:5,r:5,fillOpacity:0},n.a.createElement("animate",{attributeName:"fill-opacity",begin:"0s",dur:"1.3s",values:"0;0;0;0;0;0;0;1",calcMode:"linear",repeatCount:"indefinite"}))))};function F(){return (F=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function W(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}R.propTypes={className:c.a.string},R.defaultProps={className:void 0};var L=function(e){var t=e.className,a=W(e,["className"]);return n.a.createElement("svg",F({width:38,height:38,viewBox:"0 0 38 38",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("defs",null,n.a.createElement("linearGradient",{x1:"8.042%",y1:"0%",x2:"65.682%",y2:"23.865%",id:"prefix__a"},n.a.createElement("stop",{stopColor:"#fff",stopOpacity:0,offset:"0%"}),n.a.createElement("stop",{stopColor:"#fff",stopOpacity:.631,offset:"63.146%"}),n.a.createElement("stop",{stopColor:"#fff",offset:"100%"}))),n.a.createElement("g",{transform:"translate(1 1)",fill:"none",fillRule:"evenodd"},n.a.createElement("path",{d:"M36 18c0-9.94-8.06-18-18-18",stroke:"url(#prefix__a)",strokeWidth:2},n.a.createElement("animateTransform",{attributeName:"transform",type:"rotate",from:"0 18 18",to:"360 18 18",dur:"0.9s",repeatCount:"indefinite"})),n.a.createElement("circle",{fill:"#fff",cx:36,cy:18,r:1},n.a.createElement("animateTransform",{attributeName:"transform",type:"rotate",from:"0 18 18",to:"360 18 18",dur:"0.9s",repeatCount:"indefinite"}))))};function D(){return (D=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r]);}return e}).apply(this,arguments)}function q(e,t){if(null==e)return {};var a,r,n=function(e,t){if(null==e)return {};var a,r,n={},i=Object.keys(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||(n[a]=e[a]);return n}(e,t);if(Object.getOwnPropertySymbols){var i=Object.getOwnPropertySymbols(e);for(r=0;r<i.length;r++)a=i[r],t.indexOf(a)>=0||Object.prototype.propertyIsEnumerable.call(e,a)&&(n[a]=e[a]);}return n}L.propTypes={className:c.a.string},L.defaultProps={className:void 0};var A=function(e){var t=e.className,a=q(e,["className"]);return n.a.createElement("svg",D({width:120,height:30,fill:"#fff",viewBox:"0 0 120 30",className:"svg-loaders-svg".concat(t?" ".concat(t):"")},a),n.a.createElement("circle",{cx:15,cy:15,r:15},n.a.createElement("animate",{attributeName:"r",from:15,to:15,begin:"0s",dur:"0.8s",values:"15;9;15",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"fill-opacity",from:1,to:1,begin:"0s",dur:"0.8s",values:"1;.5;1",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:60,cy:15,r:9,fillOpacity:.3},n.a.createElement("animate",{attributeName:"r",from:9,to:9,begin:"0s",dur:"0.8s",values:"9;15;9",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"fill-opacity",from:.5,to:.5,begin:"0s",dur:"0.8s",values:".5;1;.5",calcMode:"linear",repeatCount:"indefinite"})),n.a.createElement("circle",{cx:105,cy:15,r:15},n.a.createElement("animate",{attributeName:"r",from:15,to:15,begin:"0s",dur:"0.8s",values:"15;9;15",calcMode:"linear",repeatCount:"indefinite"}),n.a.createElement("animate",{attributeName:"fill-opacity",from:1,to:1,begin:"0s",dur:"0.8s",values:"1;.5;1",calcMode:"linear",repeatCount:"indefinite"})))};A.propTypes={className:c.a.string},A.defaultProps={className:void 0},a.d(t,"Audio",function(){return s}),a.d(t,"BallTriangle",function(){return m}),a.d(t,"Bars",function(){return y}),a.d(t,"Circles",function(){return g}),a.d(t,"Grid",function(){return E}),a.d(t,"Hearts",function(){return j}),a.d(t,"Oval",function(){return M}),a.d(t,"Puff",function(){return S}),a.d(t,"Rings",function(){return I}),a.d(t,"SpinningCircles",function(){return R}),a.d(t,"TailSpin",function(){return L}),a.d(t,"ThreeDots",function(){return A});}]);
+
+var SVGLoaders = /*#__PURE__*/Object.freeze(/*#__PURE__*/_mergeNamespaces({
+  __proto__: null,
+  'default': dist
+}, [dist]));
 
 /**
  * This method returns the first argument it receives.
@@ -13001,14 +13082,14 @@ var arrayLikeKeys$1 = _arrayLikeKeys,
  * _.keys('hi');
  * // => ['0', '1']
  */
-function keys$5(object) {
+function keys$6(object) {
   return isArrayLike$3(object) ? arrayLikeKeys$1(object) : baseKeys(object);
 }
 
-var keys_1 = keys$5;
+var keys_1 = keys$6;
 
 var copyObject$3 = _copyObject,
-    keys$4 = keys_1;
+    keys$5 = keys_1;
 
 /**
  * The base implementation of `_.assign` without support for multiple sources
@@ -13020,7 +13101,7 @@ var copyObject$3 = _copyObject,
  * @returns {Object} Returns `object`.
  */
 function baseAssign$1(object, source) {
-  return object && copyObject$3(source, keys$4(source), object);
+  return object && copyObject$3(source, keys$5(source), object);
 }
 
 var _baseAssign = baseAssign$1;
@@ -13997,7 +14078,7 @@ var _baseGetAllKeys = baseGetAllKeys$2;
 
 var baseGetAllKeys$1 = _baseGetAllKeys,
     getSymbols = _getSymbols,
-    keys$3 = keys_1;
+    keys$4 = keys_1;
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -14007,7 +14088,7 @@ var baseGetAllKeys$1 = _baseGetAllKeys,
  * @returns {Array} Returns the array of property names and symbols.
  */
 function getAllKeys$2(object) {
-  return baseGetAllKeys$1(object, keys$3, getSymbols);
+  return baseGetAllKeys$1(object, keys$4, getSymbols);
 }
 
 var _getAllKeys = getAllKeys$2;
@@ -14448,7 +14529,7 @@ var Stack$2 = _Stack,
     isMap = isMap_1,
     isObject$1 = isObject_1,
     isSet = isSet_1,
-    keys$2 = keys_1,
+    keys$3 = keys_1,
     keysIn = keysIn_1;
 
 /** Used to compose bitmasks for cloning. */
@@ -14579,7 +14660,7 @@ function baseClone$2(value, bitmask, customizer, key, object, stack) {
 
   var keysFunc = isFull
     ? (isFlat ? getAllKeysIn : getAllKeys$1)
-    : (isFlat ? keysIn : keys$2);
+    : (isFlat ? keysIn : keys$3);
 
   var props = isArr ? undefined : keysFunc(value);
   arrayEach(props || value, function(subValue, key) {
@@ -15446,7 +15527,7 @@ function isStrictComparable$2(value) {
 var _isStrictComparable = isStrictComparable$2;
 
 var isStrictComparable$1 = _isStrictComparable,
-    keys$1 = keys_1;
+    keys$2 = keys_1;
 
 /**
  * Gets the property names, values, and compare flags of `object`.
@@ -15456,7 +15537,7 @@ var isStrictComparable$1 = _isStrictComparable,
  * @returns {Array} Returns the match data of `object`.
  */
 function getMatchData$1(object) {
-  var result = keys$1(object),
+  var result = keys$2(object),
       length = result.length;
 
   while (length--) {
@@ -16378,11 +16459,74 @@ var baseConvert = _baseConvert,
  * @param {Object} [options] The options object. See `baseConvert` for more details.
  * @returns {Function|Object} Returns the converted function or object.
  */
-function convert$3(name, func, options) {
+function convert$4(name, func, options) {
   return baseConvert(util, name, func, options);
 }
 
-var convert_1 = convert$3;
+var convert_1 = convert$4;
+
+var _falseOptions = {
+  'cap': false,
+  'curry': false,
+  'fixed': false,
+  'immutable': false,
+  'rearg': false
+};
+
+var convert$3 = convert_1,
+    func$3 = convert$3('keys', keys_1, _falseOptions);
+
+func$3.placeholder = placeholder;
+var keys$1 = func$3;
+
+var _excluded = ["spinner", "x", "y", "stroke"];
+
+function MapSpinner(_ref) {
+  var _ref$spinner = _ref.spinner,
+      spinner = _ref$spinner === void 0 ? "Bars" : _ref$spinner,
+      _ref$x = _ref.x,
+      x = _ref$x === void 0 ? "40%" : _ref$x,
+      _ref$y = _ref.y,
+      y = _ref$y === void 0 ? "40%" : _ref$y,
+      _ref$stroke = _ref.stroke,
+      stroke = _ref$stroke === void 0 ? "#98ff98" : _ref$stroke,
+      rest = _objectWithoutProperties(_ref, _excluded);
+
+  var _useState = useState(useMap().getBounds()),
+      _useState2 = _slicedToArray(_useState, 2),
+      bounds = _useState2[0],
+      setBounds = _useState2[1]; // This could be replaced by a call to callbackOnMapEvents, but it's a bit
+  // less clear and not much shorter.
+
+
+  var onEvent = function onEvent(map) {
+    return setBounds(map.getBounds());
+  };
+
+  var map = useMapEvents({
+    zoomend: function zoomend() {
+      return onEvent(map);
+    },
+    moveend: function moveend() {
+      return onEvent(map);
+    }
+  });
+  var Spinner = SVGLoaders[spinner];
+  return /*#__PURE__*/React.createElement(SVGOverlay, {
+    bounds: bounds
+  }, /*#__PURE__*/React.createElement(Spinner, _extends({
+    x: x,
+    y: y,
+    stroke: stroke
+  }, rest)));
+}
+
+MapSpinner.propTypes = {
+  spinner: PropTypes.oneOf(keys$1(SVGLoaders)).isRequired,
+  x: PropTypes.string,
+  y: PropTypes.string,
+  stroke: PropTypes.string
+};
 
 var LodashWrapper = _LodashWrapper,
     flatRest = _flatRest,
@@ -16738,4 +16882,4 @@ var callbackOnMapEvents = function callbackOnMapEvents(eventNames, callback) {
   };
 };
 
-export { BCBaseMap, GenericBaseMap, SetView, StaticControl, YNWTBaseMap, callbackOnMapEvents, projCRSOptions, resolutions };
+export { BCBaseMap, GenericBaseMap, MapSpinner, SetView, StaticControl, YNWTBaseMap, callbackOnMapEvents, projCRSOptions, resolutions };
