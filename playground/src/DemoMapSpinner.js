@@ -11,9 +11,18 @@ function DemoMapSpinner() {
   const [x, setX] = useState("40%");
   const [y, setY] = useState("40%");
   const [stroke, setStroke] = useState("#98ff98");
+  const [extras, setExtras] = useState("{}");
 
   const handleChange = set => e => set(e.target.value);
 
+  let parsedExtras, extrasValid;
+  try {
+    parsedExtras = JSON.parse(extras);
+    extrasValid = true;
+  } catch (e) {
+    parsedExtras = {};
+    extrasValid = false;
+  }
   return (
     <React.Fragment>
       <Row>
@@ -31,7 +40,7 @@ function DemoMapSpinner() {
             </Form.Group>
           </Form>
         </Col>
-        <Col xs={2}>
+        <Col xs={1}>
           <Form>
             <Form.Group>
               <Form.Label>x</Form.Label>
@@ -39,7 +48,7 @@ function DemoMapSpinner() {
             </Form.Group>
           </Form>
         </Col>
-        <Col xs={2}>
+        <Col xs={1}>
           <Form>
             <Form.Group>
               <Form.Label>y</Form.Label>
@@ -55,6 +64,19 @@ function DemoMapSpinner() {
             </Form.Group>
           </Form>
         </Col>
+        <Col xs={6}>
+          <Form>
+            <Form.Group>
+              <Form.Label>extras (JSON)</Form.Label>
+              <Form.Control
+                value={extras}
+                onChange={handleChange(setExtras)}
+                isValid={extrasValid}
+                isInvalid={!extrasValid}
+              />
+            </Form.Group>
+          </Form>
+        </Col>
       </Row>
       <Row className={"mt-3"}>
         <Col>
@@ -62,7 +84,9 @@ function DemoMapSpinner() {
             center={BCBaseMap.initialViewport.center}
             zoom={BCBaseMap.initialViewport.zoom}
           >
-            <MapSpinner spinner={spinner} x={x} y={y} stroke={stroke}/>
+            <MapSpinner
+              spinner={spinner} x={x} y={y} stroke={stroke} {...parsedExtras}
+            />
           </BCBaseMap>
         </Col>
       </Row>
