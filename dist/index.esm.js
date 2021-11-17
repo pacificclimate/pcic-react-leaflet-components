@@ -1,5 +1,5 @@
-import React, { PureComponent, useEffect } from 'react';
-import { MapContainer, TileLayer, useMap, SVGOverlay, useMapEvents } from 'react-leaflet';
+import React, { PureComponent, useEffect, useState } from 'react';
+import { MapContainer, TileLayer, useMap, useMapEvents, SVGOverlay } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import ReactDom from 'react-dom';
@@ -228,6 +228,65 @@ function _createSuper(Derived) {
 
     return _possibleConstructorReturn(this, result);
   };
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+
+  var _s, _e;
+
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+
+  return _arr;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+  return arr2;
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -16433,10 +16492,28 @@ function MapSpinner(_ref) {
       stroke = _ref$stroke === void 0 ? "#98ff98" : _ref$stroke,
       rest = _objectWithoutProperties(_ref, _excluded);
 
+  var _useState = useState(useMap().getBounds()),
+      _useState2 = _slicedToArray(_useState, 2),
+      bounds = _useState2[0],
+      setBounds = _useState2[1]; // This could be replaced by a call to callbackOnMapEvents, but it's a bit
+  // less clear and not much shorter.
+
+
+  var onEvent = function onEvent(map) {
+    return setBounds(map.getBounds());
+  };
+
+  var map = useMapEvents({
+    zoomend: function zoomend() {
+      return onEvent(map);
+    },
+    moveend: function moveend() {
+      return onEvent(map);
+    }
+  });
   var Spinner = SVGLoaders[spinner];
-  var map = useMap();
   return /*#__PURE__*/React.createElement(SVGOverlay, {
-    bounds: map.getBounds()
+    bounds: bounds
   }, /*#__PURE__*/React.createElement(Spinner, _extends({
     x: x,
     y: y,

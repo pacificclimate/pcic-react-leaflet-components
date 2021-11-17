@@ -2,12 +2,13 @@
 // https://www.npmjs.com/package/svg-loaders-react spinners, selected by
 // name from the package by `spinner` prop, e.g.,
 // <MapSpinner spinner="Oval" ... />. Remaining props are passed into the
-// SVGLoaders element.
+// rendered SVGLoaders element.
 // The spinner stays centered in the map viewport as defined by
 // `map.getBounds()`. It tracks zoom and pan events; but see note below.
 // Note: Even with zoom/pan tracking, the spinner doesn't always render as
-// expected; specifically its "window" seems to become significantly smaller
-// than the actual visible bounds of the map and the spinner is partly clipped.
+// expected; specifically, on small pans, its "window" seems to become
+// significantly smaller than the actual visible bounds of the map and the
+// spinner is clipped..
 // How to fix this is not known at the moment, and this functions well enough
 // for most purposes to make it not worth the time to find out.
 

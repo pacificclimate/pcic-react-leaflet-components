@@ -99,6 +99,26 @@ classes `leaflet-control-static`, `leaflet-control`.
 
 ## Other components
 
+### Component `MapSpinner`
+
+Overlays a spinner on the map. Super simple. Spinner proper is one of the
+[svg-loaders-react](https://www.npmjs.com/package/svg-loaders-react) 
+loaders (spinners), selected by name from the package by the `spinner` prop. 
+Example
+
+`<MapSpinner spinner="Oval" ... />`. 
+
+Any other props are passed into the rendered `svg-loaders-react` element.
+
+The spinner stays centered in the map viewport.
+It tracks zoom and pan events, but see note below.
+
+Note: Even with zoom/pan tracking, the spinner doesn't always render as
+expected; specifically, on small pans, its "window" seems to become 
+significantly smaller than the actual visible bounds of the map and the 
+spinner is clipped.
+
+
 ### Component `SetView`
 
 Sets the view (center, zoom) of the `MapContainer` inside which it is
