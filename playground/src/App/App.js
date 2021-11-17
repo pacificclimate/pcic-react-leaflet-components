@@ -11,6 +11,7 @@ import { positions as markers } from '../markers';
 import 'pcic-react-leaflet-components/src/leaflet-extensions/control-static.css';
 import Navigation from '../Navigation';
 import DemoStaticControl from '../DemoStaticControl';
+import DemoMapSpinner from '../DemoMapSpinner';
 
 const navSpec = [
   {
@@ -41,7 +42,12 @@ const navSpec = [
     label: 'StaticControl',
     path: 'StaticControl',
     component: DemoStaticControl,
-  }
+  },
+  {
+    label: 'MapSpinner',
+    path: 'MapSpinner',
+    component: DemoMapSpinner,
+  },
 ];
 const defaultPath = 'BCBaseMap';
 
