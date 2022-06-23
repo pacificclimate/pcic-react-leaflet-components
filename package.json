@@ -20,7 +20,7 @@
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
-    "start-playground": "cd playground && npm run start",
+    "start-pg": "cd playground && npm run start",
     "i-pg": "cd playground && npm i",
     "i-all": "npm i && cd playground && npm i",
     "rei-all": "(rm -rf node_modules ; npm i) && (cd playground && rm -rf node_modules ; npm i)",
