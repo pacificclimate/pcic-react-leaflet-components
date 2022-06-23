@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 3.0.0
+
+*2022-Jun-23*
+
+- Upgrade to React 18, React Leaflet 4, etc. It was astoundingly easy.
+
 ## 2.0.1
 
 *2021-Nov-10*
