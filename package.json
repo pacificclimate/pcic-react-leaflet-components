@@ -6,21 +6,21 @@
   "module": "dist/index.esm.js",
   "source": "src/index.js",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^14.2.1",
     "lodash": "^4.17.21",
-    "proj4": "^2.7.5",
+    "proj4": "^2.8.0",
     "proj4leaflet": "^1.0.2",
-    "prop-types": "^15.7.2",
-    "react-scripts": "4.0.3",
+    "prop-types": "^15.8.1",
+    "react-scripts": "5.0.1",
     "svg-loaders-react": "^2.2.1",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
-    "start-playground": "cd playground && npm run start",
+    "start-pg": "cd playground && npm run start",
     "i-pg": "cd playground && npm i",
     "i-all": "npm i && cd playground && npm i",
     "rei-all": "(rm -rf node_modules ; npm i) && (cd playground && rm -rf node_modules ; npm i)",
@@ -48,23 +48,23 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.7",
-    "@babel/core": "^7.15.8",
-    "@babel/preset-env": "^7.15.8",
-    "@babel/preset-react": "^7.14.5",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^21.0.1",
-    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "npm-run-all": "^4.1.5",
-    "rollup": "^2.58.3",
+    "rollup": "^2.75.7",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4"
   },
   "peerDependencies": {
-    "@react-leaflet/core": "1.0.2",
-    "leaflet": "^1.7.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-leaflet": "3.1.0"
+    "@react-leaflet/core": "2.0.0",
+    "leaflet": "^1.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "4.0.0"
   }
 }
