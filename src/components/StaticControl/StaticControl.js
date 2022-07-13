@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import ReactDom from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import { useLeafletContext } from '@react-leaflet/core';
 import L from 'leaflet';
@@ -12,7 +12,8 @@ function StaticControl({ children, ...rest }) {
   useEffect(() => {
     const control = L.control.static(rest);
     control.addTo(context.map);
-    ReactDom.render(children, control.getContainer());
+    const root = createRoot(control.getContainer());
+    root.render(children);
 
     return () => {
       control.remove();
