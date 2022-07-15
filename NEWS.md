@@ -1,5 +1,13 @@
 # News / Release Notes
 
+## 3.0.1
+
+*2022-Jul-15*
+
+- Upgrade StaticControl to React 18, which does not complete the update;
+see [issue 13](https://github.com/pacificclimate/pcic-react-leaflet-components/issues/13).
+The optimism of release 3.0.0 was a little premature.
+
 ## 3.0.0
 
 *2022-Jun-23*
