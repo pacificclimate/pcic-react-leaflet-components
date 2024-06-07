@@ -1,7 +1,8 @@
-import React, { PureComponent, useEffect, useState } from 'react';
+import React, { useRef, useEffect, PureComponent, useState } from 'react';
 import { MapContainer, TileLayer, useMap, useMapEvents, SVGOverlay } from 'react-leaflet';
-import L from 'leaflet';
+import L$1 from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import axios from 'axios';
 import { createRoot } from 'react-dom/client';
 import { useLeafletContext } from '@react-leaflet/core';
 
@@ -4568,9 +4569,9 @@ function getMinNorthing(zoneLetter) {
 
 }
 
-function Point(x, y, z) {
-  if (!(this instanceof Point)) {
-    return new Point(x, y, z);
+function Point$2(x, y, z) {
+  if (!(this instanceof Point$2)) {
+    return new Point$2(x, y, z);
   }
   if (Array.isArray(x)) {
     this.x = x[0];
@@ -4593,10 +4594,10 @@ function Point(x, y, z) {
   console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
 }
 
-Point.fromMGRS = function(mgrsStr) {
-  return new Point(toPoint(mgrsStr));
+Point$2.fromMGRS = function(mgrsStr) {
+  return new Point$2(toPoint(mgrsStr));
 };
-Point.prototype.toMGRS = function(accuracy) {
+Point$2.prototype.toMGRS = function(accuracy) {
   return forward$t([this.x, this.y], accuracy);
 };
 
@@ -8789,7 +8790,7 @@ function includedProjections(proj4){
 proj4.defaultDatum = 'WGS84'; //default datum
 proj4.Proj = Projection;
 proj4.WGS84 = new proj4.Proj('WGS84');
-proj4.Point = Point;
+proj4.Point = Point$2;
 proj4.toPoint = common;
 proj4.defs = defs;
 proj4.nadgrid = nadgrid;
@@ -8809,12 +8810,12 @@ var require$$1 = /*@__PURE__*/getAugmentedNamespace(lib);
 
 (function (module) {
 	(function (factory) {
-		var L$1, proj4;
+		var L, proj4;
 		{
 			// Node/CommonJS
-			L$1 = L;
+			L = L$1;
 			proj4 = require$$1;
-			module.exports = factory(L$1, proj4);
+			module.exports = factory(L, proj4);
 		}
 	}(function (L, proj4) {
 		if (proj4.__esModule && proj4.default) {
@@ -10221,13 +10222,13 @@ function projCRSOptions(tileMatrixParams) {
       tileMatrixMaxX = tileMatrixParams.tileMatrixMaxX,
       tileMatrixMaxY = tileMatrixParams.tileMatrixMaxY;
   return {
-    bounds: L.bounds(L.point(tileMatrixMinX, tileMatrixMinY), L.point(tileMatrixMaxX, tileMatrixMaxY)),
+    bounds: L$1.bounds(L$1.point(tileMatrixMinX, tileMatrixMinY), L$1.point(tileMatrixMaxX, tileMatrixMaxY)),
     origin: [tileMatrixMinX, tileMatrixMaxY],
     resolutions: resolutions(tileMatrixParams)
   };
 }
 
-var _excluded$4 = ["tileset", "center", "zoom", "mapRef", "children"];
+var _excluded$6 = ["tileset", "center", "zoom", "mapRef", "children"];
 
 function GenericBaseMap(_ref) {
   var _ref$tileset = _ref.tileset,
@@ -10239,12 +10240,12 @@ function GenericBaseMap(_ref) {
       zoom = _ref.zoom;
       _ref.mapRef;
       var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, _excluded$4);
+      rest = _objectWithoutProperties(_ref, _excluded$6);
 
   // Create Leaflet CRS object. This is where the magic of this component
   // lies ... converting the tileMatrix specification to a correct CRS.
   // TODO: Memoize?
-  var crs = new L.Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
+  var crs = new L$1.Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
   return /*#__PURE__*/React.createElement(MapContainer, _extends({
     crs: crs,
     minZoom: 0,
@@ -10282,7 +10283,90 @@ GenericBaseMap.propTypes = {
   }).isRequired
 };
 
-var _excluded$3 = ["children"];
+function __$strToBlobUri(t,e,r){try{return window.URL.createObjectURL(new Blob([Uint8Array.from(t.split("").map(function(t){return t.charCodeAt(0)}))],{type:e}))}catch(i){return "data:"+e+(r?";base64,":",")+t}}function Pbf(t){this.buf=ArrayBuffer.isView&&ArrayBuffer.isView(t)?t:new Uint8Array(t||0),this.pos=0,this.type=0,this.length=this.buf.length;}function readVarintRemainder(t,e,r){var i,n,o=r.buf;if(n=o[r.pos++],i=(112&n)>>4,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<3,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<10,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<17,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<24,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(1&n)<<31,n<128)return toNum(t,i,e);throw new Error("Expected varint not more than 10 bytes")}function readPackedEnd(t){return t.type===Pbf.Bytes?t.readVarint()+t.pos:t.pos+1}function toNum(t,e,r){return r?4294967296*e+(t>>>0):4294967296*(e>>>0)+(t>>>0)}function writeBigVarint(t,e){var r,i;if(t>=0?(r=t%4294967296|0,i=t/4294967296|0):(r=~(-t%4294967296),i=~(-t/4294967296),4294967295^r?r=r+1|0:(r=0,i=i+1|0)),t>=0x10000000000000000||t<-0x10000000000000000)throw new Error("Given varint doesn't fit into 10 bytes");e.realloc(10),writeBigVarintLow(r,i,e),writeBigVarintHigh(i,e);}function writeBigVarintLow(t,e,r){r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos]=127&t;}function writeBigVarintHigh(t,e){var r=(7&t)<<4;e.buf[e.pos++]|=r|((t>>>=3)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t)))));}function makeRoomForExtraLength(t,e,r){var i=e<=16383?1:e<=2097151?2:e<=268435455?3:Math.ceil(Math.log(e)/(7*Math.LN2));r.realloc(i);for(var n=r.pos-1;n>=t;n--)r.buf[n+i]=r.buf[n];}function writePackedVarint(t,e){for(var r=0;r<t.length;r++)e.writeVarint(t[r]);}function writePackedSVarint(t,e){for(var r=0;r<t.length;r++)e.writeSVarint(t[r]);}function writePackedFloat(t,e){for(var r=0;r<t.length;r++)e.writeFloat(t[r]);}function writePackedDouble(t,e){for(var r=0;r<t.length;r++)e.writeDouble(t[r]);}function writePackedBoolean(t,e){for(var r=0;r<t.length;r++)e.writeBoolean(t[r]);}function writePackedFixed32(t,e){for(var r=0;r<t.length;r++)e.writeFixed32(t[r]);}function writePackedSFixed32(t,e){for(var r=0;r<t.length;r++)e.writeSFixed32(t[r]);}function writePackedFixed64(t,e){for(var r=0;r<t.length;r++)e.writeFixed64(t[r]);}function writePackedSFixed64(t,e){for(var r=0;r<t.length;r++)e.writeSFixed64(t[r]);}function readUInt32(t,e){return (t[e]|t[e+1]<<8|t[e+2]<<16)+16777216*t[e+3]}function writeInt32(t,e,r){t[r]=e,t[r+1]=e>>>8,t[r+2]=e>>>16,t[r+3]=e>>>24;}function readInt32(t,e){return (t[e]|t[e+1]<<8|t[e+2]<<16)+(t[e+3]<<24)}function readUtf8(t,e,r){for(var i="",n=e;n<r;){var o=t[n],s=null,a=o>239?4:o>223?3:o>191?2:1;if(n+a>r)break;var u,h,l;1===a?o<128&&(s=o):2===a?128==(192&(u=t[n+1]))&&(s=(31&o)<<6|63&u)<=127&&(s=null):3===a?(u=t[n+1],h=t[n+2],128==(192&u)&&128==(192&h)&&((s=(15&o)<<12|(63&u)<<6|63&h)<=2047||s>=55296&&s<=57343)&&(s=null)):4===a&&(u=t[n+1],h=t[n+2],l=t[n+3],128==(192&u)&&128==(192&h)&&128==(192&l)&&((s=(15&o)<<18|(63&u)<<12|(63&h)<<6|63&l)<=65535||s>=1114112)&&(s=null)),null===s?(s=65533,a=1):s>65535&&(s-=65536,i+=String.fromCharCode(s>>>10&1023|55296),s=56320|1023&s),i+=String.fromCharCode(s),n+=a;}return i}function writeUtf8(t,e,r){for(var i,n,o=0;o<e.length;o++){if((i=e.charCodeAt(o))>55295&&i<57344){if(!n){i>56319||o+1===e.length?(t[r++]=239,t[r++]=191,t[r++]=189):n=i;continue}if(i<56320){t[r++]=239,t[r++]=191,t[r++]=189,n=i;continue}i=n-55296<<10|i-56320|65536,n=null;}else n&&(t[r++]=239,t[r++]=191,t[r++]=189,n=null);i<128?t[r++]=i:(i<2048?t[r++]=i>>6|192:(i<65536?t[r++]=i>>12|224:(t[r++]=i>>18|240,t[r++]=i>>12&63|128),t[r++]=i>>6&63|128),t[r++]=63&i|128);}return r}function Point$1(t,e){this.x=t,this.y=e;}function VectorTileFeature$2(t,e,r,i,n){this.properties={},this.extent=r,this.type=0,this._pbf=t,this._geometry=-1,this._keys=i,this._values=n,t.readFields(readFeature,this,e);}function readFeature(t,e,r){1==t?e.id=r.readVarint():2==t?readTag(r,e):3==t?e.type=r.readVarint():4==t&&(e._geometry=r.pos);}function readTag(t,e){for(var r=t.readVarint()+t.pos;t.pos<r;){var i=e._keys[t.readVarint()],n=e._values[t.readVarint()];e.properties[i]=n;}}function classifyRings(t){var e=t.length;if(e<=1)return [t];for(var r,i,n=[],o=0;o<e;o++){var s=signedArea(t[o]);0!==s&&(void 0===i&&(i=s<0),i===s<0?(r&&n.push(r),r=[t[o]]):r.push(t[o]));}return r&&n.push(r),n}function signedArea(t){for(var e,r,i=0,n=0,o=t.length,s=o-1;n<o;s=n++)e=t[n],r=t[s],i+=(r.x-e.x)*(e.y+r.y);return i}function VectorTileLayer$2(t,e){this.version=1,this.name=null,this.extent=4096,this.length=0,this._pbf=t,this._keys=[],this._values=[],this._features=[],t.readFields(readLayer,this,e),this.length=this._features.length;}function readLayer(t,e,r){15===t?e.version=r.readVarint():1===t?e.name=r.readString():5===t?e.extent=r.readVarint():2===t?e._features.push(r.pos):3===t?e._keys.push(r.readString()):4===t&&e._values.push(readValueMessage(r));}function readValueMessage(t){for(var e=null,r=t.readVarint()+t.pos;t.pos<r;){var i=t.readVarint()>>3;e=1===i?t.readString():2===i?t.readFloat():3===i?t.readDouble():4===i?t.readVarint64():5===i?t.readVarint():6===i?t.readSVarint():7===i?t.readBoolean():null;}return e}function VectorTile$1(t,e){this.layers=t.readFields(readTile,{},e);}function readTile(t,e,r){if(3===t){var i=new VectorTileLayer$1(r,r.readVarint()+r.pos);i.length&&(e[i.name]=i);}}!function(t){function e(t){if("string"!=typeof t&&(t=String(t)),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(t))throw new TypeError("Invalid character in header field name");return t.toLowerCase()}function r(t){return "string"!=typeof t&&(t=String(t)),t}function i(t){var e={next:function(){var e=t.shift();return {done:void 0===e,value:e}}};return v.iterable&&(e[Symbol.iterator]=function(){return e}),e}function n(t){this.map={},t instanceof n?t.forEach(function(t,e){this.append(e,t);},this):Array.isArray(t)?t.forEach(function(t){this.append(t[0],t[1]);},this):t&&Object.getOwnPropertyNames(t).forEach(function(e){this.append(e,t[e]);},this);}function o(t){if(t.bodyUsed)return Promise.reject(new TypeError("Already read"));t.bodyUsed=!0;}function s(t){return new Promise(function(e,r){t.onload=function(){e(t.result);},t.onerror=function(){r(t.error);};})}function a(t){var e=new FileReader,r=s(e);return e.readAsArrayBuffer(t),r}function u(t){var e=new FileReader,r=s(e);return e.readAsText(t),r}function h(t){for(var e=new Uint8Array(t),r=new Array(e.length),i=0;i<e.length;i++)r[i]=String.fromCharCode(e[i]);return r.join("")}function l(t){if(t.slice)return t.slice(0);var e=new Uint8Array(t.byteLength);return e.set(new Uint8Array(t)),e.buffer}function c(){return this.bodyUsed=!1,this._initBody=function(t){if(this._bodyInit=t,t)if("string"==typeof t)this._bodyText=t;else if(v.blob&&Blob.prototype.isPrototypeOf(t))this._bodyBlob=t;else if(v.formData&&FormData.prototype.isPrototypeOf(t))this._bodyFormData=t;else if(v.searchParams&&URLSearchParams.prototype.isPrototypeOf(t))this._bodyText=t.toString();else if(v.arrayBuffer&&v.blob&&b(t))this._bodyArrayBuffer=l(t.buffer),this._bodyInit=new Blob([this._bodyArrayBuffer]);else {if(!v.arrayBuffer||!ArrayBuffer.prototype.isPrototypeOf(t)&&!w(t))throw new Error("unsupported BodyInit type");this._bodyArrayBuffer=l(t);}else this._bodyText="";this.headers.get("content-type")||("string"==typeof t?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):v.searchParams&&URLSearchParams.prototype.isPrototypeOf(t)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"));},v.blob&&(this.blob=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(new Blob([this._bodyArrayBuffer]));if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this._bodyArrayBuffer?o(this)||Promise.resolve(this._bodyArrayBuffer):this.blob().then(a)}),this.text=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return u(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(h(this._bodyArrayBuffer));if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)},v.formData&&(this.formData=function(){return this.text().then(d)}),this.json=function(){return this.text().then(JSON.parse)},this}function f(t){var e=t.toUpperCase();return _.indexOf(e)>-1?e:t}function p(t,e){e=e||{};var r=e.body;if(t instanceof p){if(t.bodyUsed)throw new TypeError("Already read");this.url=t.url,this.credentials=t.credentials,e.headers||(this.headers=new n(t.headers)),this.method=t.method,this.mode=t.mode,r||null==t._bodyInit||(r=t._bodyInit,t.bodyUsed=!0);}else this.url=String(t);if(this.credentials=e.credentials||this.credentials||"omit",!e.headers&&this.headers||(this.headers=new n(e.headers)),this.method=f(e.method||this.method||"GET"),this.mode=e.mode||this.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&r)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(r);}function d(t){var e=new FormData;return t.trim().split("&").forEach(function(t){if(t){var r=t.split("="),i=r.shift().replace(/\+/g," "),n=r.join("=").replace(/\+/g," ");e.append(decodeURIComponent(i),decodeURIComponent(n));}}),e}function y(t){var e=new n;return t.split(/\r?\n/).forEach(function(t){var r=t.split(":"),i=r.shift().trim();if(i){var n=r.join(":").trim();e.append(i,n);}}),e}function m(t,e){e||(e={}),this.type="default",this.status="status"in e?e.status:200,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in e?e.statusText:"OK",this.headers=new n(e.headers),this.url=e.url||"",this._initBody(t);}if(!t.fetch){var v={searchParams:"URLSearchParams"in t,iterable:"Symbol"in t&&"iterator"in Symbol,blob:"FileReader"in t&&"Blob"in t&&function(){try{return new Blob,!0}catch(t){return !1}}(),formData:"FormData"in t,arrayBuffer:"ArrayBuffer"in t};if(v.arrayBuffer)var g=["[object Int8Array]","[object Uint8Array]","[object Uint8ClampedArray]","[object Int16Array]","[object Uint16Array]","[object Int32Array]","[object Uint32Array]","[object Float32Array]","[object Float64Array]"],b=function(t){return t&&DataView.prototype.isPrototypeOf(t)},w=ArrayBuffer.isView||function(t){return t&&g.indexOf(Object.prototype.toString.call(t))>-1};n.prototype.append=function(t,i){t=e(t),i=r(i);var n=this.map[t];this.map[t]=n?n+","+i:i;},n.prototype.delete=function(t){delete this.map[e(t)];},n.prototype.get=function(t){return t=e(t),this.has(t)?this.map[t]:null},n.prototype.has=function(t){return this.map.hasOwnProperty(e(t))},n.prototype.set=function(t,i){this.map[e(t)]=r(i);},n.prototype.forEach=function(t,e){var r=this;for(var i in this.map)r.map.hasOwnProperty(i)&&t.call(e,r.map[i],i,r);},n.prototype.keys=function(){var t=[];return this.forEach(function(e,r){t.push(r);}),i(t)},n.prototype.values=function(){var t=[];return this.forEach(function(e){t.push(e);}),i(t)},n.prototype.entries=function(){var t=[];return this.forEach(function(e,r){t.push([r,e]);}),i(t)},v.iterable&&(n.prototype[Symbol.iterator]=n.prototype.entries);var _=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];p.prototype.clone=function(){return new p(this,{body:this._bodyInit})},c.call(p.prototype),c.call(m.prototype),m.prototype.clone=function(){return new m(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new n(this.headers),url:this.url})},m.error=function(){var t=new m(null,{status:0,statusText:""});return t.type="error",t};var x=[301,302,303,307,308];m.redirect=function(t,e){if(-1===x.indexOf(e))throw new RangeError("Invalid status code");return new m(null,{status:e,headers:{location:t}})},t.Headers=n,t.Request=p,t.Response=m,t.fetch=function(t,e){return new Promise(function(r,i){var n=new p(t,e),o=new XMLHttpRequest;o.onload=function(){var t={status:o.status,statusText:o.statusText,headers:y(o.getAllResponseHeaders()||"")};t.url="responseURL"in o?o.responseURL:t.headers.get("X-Request-URL");var e="response"in o?o.response:o.responseText;r(new m(e,t));},o.onerror=function(){i(new TypeError("Network request failed"));},o.ontimeout=function(){i(new TypeError("Network request failed"));},o.open(n.method,n.url,!0),"include"===n.credentials&&(o.withCredentials=!0),"responseType"in o&&v.blob&&(o.responseType="blob"),n.headers.forEach(function(t,e){o.setRequestHeader(e,t);}),o.send(void 0===n._bodyInit?null:n._bodyInit);})},t.fetch.polyfill=!0;}}("undefined"!=typeof self?self:void 0);var read=function(t,e,r,i,n){var o,s,a=8*n-i-1,u=(1<<a)-1,h=u>>1,l=-7,c=r?n-1:0,f=r?-1:1,p=t[e+c];for(c+=f,o=p&(1<<-l)-1,p>>=-l,l+=a;l>0;o=256*o+t[e+c],c+=f,l-=8);for(s=o&(1<<-l)-1,o>>=-l,l+=i;l>0;s=256*s+t[e+c],c+=f,l-=8);if(0===o)o=1-h;else {if(o===u)return s?NaN:1/0*(p?-1:1);s+=Math.pow(2,i),o-=h;}return (p?-1:1)*s*Math.pow(2,o-i)},write=function(t,e,r,i,n,o){var s,a,u,h=8*o-n-1,l=(1<<h)-1,c=l>>1,f=23===n?Math.pow(2,-24)-Math.pow(2,-77):0,p=i?0:o-1,d=i?1:-1,y=e<0||0===e&&1/e<0?1:0;for(e=Math.abs(e),isNaN(e)||e===1/0?(a=isNaN(e)?1:0,s=l):(s=Math.floor(Math.log(e)/Math.LN2),e*(u=Math.pow(2,-s))<1&&(s--,u*=2),e+=s+c>=1?f/u:f*Math.pow(2,1-c),e*u>=2&&(s++,u/=2),s+c>=l?(a=0,s=l):s+c>=1?(a=(e*u-1)*Math.pow(2,n),s+=c):(a=e*Math.pow(2,c-1)*Math.pow(2,n),s=0));n>=8;t[r+p]=255&a,p+=d,a/=256,n-=8);for(s=s<<n|a,h+=n;h>0;t[r+p]=255&s,p+=d,s/=256,h-=8);t[r+p-d]|=128*y;},index$1={read:read,write:write},index=Pbf,ieee754=index$1;Pbf.Varint=0,Pbf.Fixed64=1,Pbf.Bytes=2,Pbf.Fixed32=5;var SHIFT_LEFT_32=4294967296,SHIFT_RIGHT_32=1/SHIFT_LEFT_32;Pbf.prototype={destroy:function(){this.buf=null;},readFields:function(t,e,r){var i=this;for(r=r||this.length;this.pos<r;){var n=i.readVarint(),o=n>>3,s=i.pos;i.type=7&n,t(o,e,i),i.pos===s&&i.skip(n);}return e},readMessage:function(t,e){return this.readFields(t,e,this.readVarint()+this.pos)},readFixed32:function(){var t=readUInt32(this.buf,this.pos);return this.pos+=4,t},readSFixed32:function(){var t=readInt32(this.buf,this.pos);return this.pos+=4,t},readFixed64:function(){var t=readUInt32(this.buf,this.pos)+readUInt32(this.buf,this.pos+4)*SHIFT_LEFT_32;return this.pos+=8,t},readSFixed64:function(){var t=readUInt32(this.buf,this.pos)+readInt32(this.buf,this.pos+4)*SHIFT_LEFT_32;return this.pos+=8,t},readFloat:function(){var t=ieee754.read(this.buf,this.pos,!0,23,4);return this.pos+=4,t},readDouble:function(){var t=ieee754.read(this.buf,this.pos,!0,52,8);return this.pos+=8,t},readVarint:function(t){var e,r,i=this.buf;return r=i[this.pos++],e=127&r,r<128?e:(r=i[this.pos++],e|=(127&r)<<7,r<128?e:(r=i[this.pos++],e|=(127&r)<<14,r<128?e:(r=i[this.pos++],e|=(127&r)<<21,r<128?e:(r=i[this.pos],e|=(15&r)<<28,readVarintRemainder(e,t,this)))))},readVarint64:function(){return this.readVarint(!0)},readSVarint:function(){var t=this.readVarint();return t%2==1?(t+1)/-2:t/2},readBoolean:function(){return Boolean(this.readVarint())},readString:function(){var t=this.readVarint()+this.pos,e=readUtf8(this.buf,this.pos,t);return this.pos=t,e},readBytes:function(){var t=this.readVarint()+this.pos,e=this.buf.subarray(this.pos,t);return this.pos=t,e},readPackedVarint:function(t,e){var r=this,i=readPackedEnd(this);for(t=t||[];this.pos<i;)t.push(r.readVarint(e));return t},readPackedSVarint:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSVarint());return t},readPackedBoolean:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readBoolean());return t},readPackedFloat:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFloat());return t},readPackedDouble:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readDouble());return t},readPackedFixed32:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFixed32());return t},readPackedSFixed32:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSFixed32());return t},readPackedFixed64:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFixed64());return t},readPackedSFixed64:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSFixed64());return t},skip:function(t){var e=7&t;if(e===Pbf.Varint)for(;this.buf[this.pos++]>127;);else if(e===Pbf.Bytes)this.pos=this.readVarint()+this.pos;else if(e===Pbf.Fixed32)this.pos+=4;else {if(e!==Pbf.Fixed64)throw new Error("Unimplemented type: "+e);this.pos+=8;}},writeTag:function(t,e){this.writeVarint(t<<3|e);},realloc:function(t){for(var e=this.length||16;e<this.pos+t;)e*=2;if(e!==this.length){var r=new Uint8Array(e);r.set(this.buf),this.buf=r,this.length=e;}},finish:function(){return this.length=this.pos,this.pos=0,this.buf.subarray(0,this.length)},writeFixed32:function(t){this.realloc(4),writeInt32(this.buf,t,this.pos),this.pos+=4;},writeSFixed32:function(t){this.realloc(4),writeInt32(this.buf,t,this.pos),this.pos+=4;},writeFixed64:function(t){this.realloc(8),writeInt32(this.buf,-1&t,this.pos),writeInt32(this.buf,Math.floor(t*SHIFT_RIGHT_32),this.pos+4),this.pos+=8;},writeSFixed64:function(t){this.realloc(8),writeInt32(this.buf,-1&t,this.pos),writeInt32(this.buf,Math.floor(t*SHIFT_RIGHT_32),this.pos+4),this.pos+=8;},writeVarint:function(t){if((t=+t||0)>268435455||t<0)return void writeBigVarint(t,this);this.realloc(4),this.buf[this.pos++]=127&t|(t>127?128:0),t<=127||(this.buf[this.pos++]=127&(t>>>=7)|(t>127?128:0),t<=127||(this.buf[this.pos++]=127&(t>>>=7)|(t>127?128:0),t<=127||(this.buf[this.pos++]=t>>>7&127)));},writeSVarint:function(t){this.writeVarint(t<0?2*-t-1:2*t);},writeBoolean:function(t){this.writeVarint(Boolean(t));},writeString:function(t){t=String(t),this.realloc(4*t.length),this.pos++;var e=this.pos;this.pos=writeUtf8(this.buf,t,this.pos);var r=this.pos-e;r>=128&&makeRoomForExtraLength(e,r,this),this.pos=e-1,this.writeVarint(r),this.pos+=r;},writeFloat:function(t){this.realloc(4),ieee754.write(this.buf,t,this.pos,!0,23,4),this.pos+=4;},writeDouble:function(t){this.realloc(8),ieee754.write(this.buf,t,this.pos,!0,52,8),this.pos+=8;},writeBytes:function(t){var e=this,r=t.length;this.writeVarint(r),this.realloc(r);for(var i=0;i<r;i++)e.buf[e.pos++]=t[i];},writeRawMessage:function(t,e){this.pos++;var r=this.pos;t(e,this);var i=this.pos-r;i>=128&&makeRoomForExtraLength(r,i,this),this.pos=r-1,this.writeVarint(i),this.pos+=i;},writeMessage:function(t,e,r){this.writeTag(t,Pbf.Bytes),this.writeRawMessage(e,r);},writePackedVarint:function(t,e){this.writeMessage(t,writePackedVarint,e);},writePackedSVarint:function(t,e){this.writeMessage(t,writePackedSVarint,e);},writePackedBoolean:function(t,e){this.writeMessage(t,writePackedBoolean,e);},writePackedFloat:function(t,e){this.writeMessage(t,writePackedFloat,e);},writePackedDouble:function(t,e){this.writeMessage(t,writePackedDouble,e);},writePackedFixed32:function(t,e){this.writeMessage(t,writePackedFixed32,e);},writePackedSFixed32:function(t,e){this.writeMessage(t,writePackedSFixed32,e);},writePackedFixed64:function(t,e){this.writeMessage(t,writePackedFixed64,e);},writePackedSFixed64:function(t,e){this.writeMessage(t,writePackedSFixed64,e);},writeBytesField:function(t,e){this.writeTag(t,Pbf.Bytes),this.writeBytes(e);},writeFixed32Field:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeFixed32(e);},writeSFixed32Field:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeSFixed32(e);},writeFixed64Field:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeFixed64(e);},writeSFixed64Field:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeSFixed64(e);},writeVarintField:function(t,e){this.writeTag(t,Pbf.Varint),this.writeVarint(e);},writeSVarintField:function(t,e){this.writeTag(t,Pbf.Varint),this.writeSVarint(e);},writeStringField:function(t,e){this.writeTag(t,Pbf.Bytes),this.writeString(e);},writeFloatField:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeFloat(e);},writeDoubleField:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeDouble(e);},writeBooleanField:function(t,e){this.writeVarintField(t,Boolean(e));}};var index$5=Point$1;Point$1.prototype={clone:function(){return new Point$1(this.x,this.y)},add:function(t){return this.clone()._add(t)},sub:function(t){return this.clone()._sub(t)},mult:function(t){return this.clone()._mult(t)},div:function(t){return this.clone()._div(t)},rotate:function(t){return this.clone()._rotate(t)},matMult:function(t){return this.clone()._matMult(t)},unit:function(){return this.clone()._unit()},perp:function(){return this.clone()._perp()},round:function(){return this.clone()._round()},mag:function(){return Math.sqrt(this.x*this.x+this.y*this.y)},equals:function(t){return this.x===t.x&&this.y===t.y},dist:function(t){return Math.sqrt(this.distSqr(t))},distSqr:function(t){var e=t.x-this.x,r=t.y-this.y;return e*e+r*r},angle:function(){return Math.atan2(this.y,this.x)},angleTo:function(t){return Math.atan2(this.y-t.y,this.x-t.x)},angleWith:function(t){return this.angleWithSep(t.x,t.y)},angleWithSep:function(t,e){return Math.atan2(this.x*e-this.y*t,this.x*t+this.y*e)},_matMult:function(t){var e=t[0]*this.x+t[1]*this.y,r=t[2]*this.x+t[3]*this.y;return this.x=e,this.y=r,this},_add:function(t){return this.x+=t.x,this.y+=t.y,this},_sub:function(t){return this.x-=t.x,this.y-=t.y,this},_mult:function(t){return this.x*=t,this.y*=t,this},_div:function(t){return this.x/=t,this.y/=t,this},_unit:function(){return this._div(this.mag()),this},_perp:function(){var t=this.y;return this.y=this.x,this.x=-t,this},_rotate:function(t){var e=Math.cos(t),r=Math.sin(t),i=e*this.x-r*this.y,n=r*this.x+e*this.y;return this.x=i,this.y=n,this},_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this}},Point$1.convert=function(t){return t instanceof Point$1?t:Array.isArray(t)?new Point$1(t[0],t[1]):t};var Point=index$5,vectortilefeature=VectorTileFeature$2;VectorTileFeature$2.types=["Unknown","Point","LineString","Polygon"],VectorTileFeature$2.prototype.loadGeometry=function(){var t=this._pbf;t.pos=this._geometry;for(var e,r=t.readVarint()+t.pos,i=1,n=0,o=0,s=0,a=[];t.pos<r;){if(!n){var u=t.readVarint();i=7&u,n=u>>3;}if(n--,1===i||2===i)o+=t.readSVarint(),s+=t.readSVarint(),1===i&&(e&&a.push(e),e=[]),e.push(new Point(o,s));else {if(7!==i)throw new Error("unknown command "+i);e&&e.push(e[0].clone());}}return e&&a.push(e),a},VectorTileFeature$2.prototype.bbox=function(){var t=this._pbf;t.pos=this._geometry;for(var e=t.readVarint()+t.pos,r=1,i=0,n=0,o=0,s=1/0,a=-1/0,u=1/0,h=-1/0;t.pos<e;){if(!i){var l=t.readVarint();r=7&l,i=l>>3;}if(i--,1===r||2===r)n+=t.readSVarint(),o+=t.readSVarint(),n<s&&(s=n),n>a&&(a=n),o<u&&(u=o),o>h&&(h=o);else if(7!==r)throw new Error("unknown command "+r)}return [s,u,a,h]},VectorTileFeature$2.prototype.toGeoJSON=function(t,e,r){function i(t){for(var e=0;e<t.length;e++){var r=t[e],i=180-360*(r.y+u)/s;t[e]=[360*(r.x+a)/s-180,360/Math.PI*Math.atan(Math.exp(i*Math.PI/180))-90];}}var n,o,s=this.extent*Math.pow(2,r),a=this.extent*t,u=this.extent*e,h=this.loadGeometry(),l=VectorTileFeature$2.types[this.type];switch(this.type){case 1:var c=[];for(n=0;n<h.length;n++)c[n]=h[n][0];h=c,i(h);break;case 2:for(n=0;n<h.length;n++)i(h[n]);break;case 3:for(h=classifyRings(h),n=0;n<h.length;n++)for(o=0;o<h[n].length;o++)i(h[n][o]);}1===h.length?h=h[0]:l="Multi"+l;var f={type:"Feature",geometry:{type:l,coordinates:h},properties:this.properties};return "id"in this&&(f.id=this.id),f};var VectorTileFeature$1=vectortilefeature,vectortilelayer=VectorTileLayer$2;VectorTileLayer$2.prototype.feature=function(t){if(t<0||t>=this._features.length)throw new Error("feature index out of bounds");this._pbf.pos=this._features[t];var e=this._pbf.readVarint()+this._pbf.pos;return new VectorTileFeature$1(this._pbf,e,this.extent,this._keys,this._values)};var VectorTileLayer$1=vectortilelayer,vectortile=VectorTile$1,VectorTile=vectortile;L.SVG.Tile=L.SVG.extend({initialize:function(t,e,r){L.SVG.prototype.initialize.call(this,r),this._tileCoord=t,this._size=e,this._initContainer(),this._container.setAttribute("width",this._size.x),this._container.setAttribute("height",this._size.y),this._container.setAttribute("viewBox",[0,0,this._size.x,this._size.y].join(" ")),this._layers={};},getCoord:function(){return this._tileCoord},getContainer:function(){return this._container},onAdd:L.Util.falseFn,addTo:function(t){if(this._map=t,this.options.interactive)for(var e in this._layers){var r=this._layers[e];r._path.style.pointerEvents="auto",this._map._targets[L.stamp(r._path)]=r;}},removeFrom:function(t){if(this.options.interactive)for(var e in this._layers){var r=this._layers[e];delete this._map._targets[L.stamp(r._path)];}delete this._map;},_initContainer:function(){L.SVG.prototype._initContainer.call(this);L.SVG.create("rect");},_addPath:function(t){this._rootGroup.appendChild(t._path),this._layers[L.stamp(t)]=t;},_updateIcon:function(t){var e=t._path=L.SVG.create("image"),r=t.options.icon,i=r.options,n=L.point(i.iconSize),o=i.iconAnchor||n&&n.divideBy(2,!0),s=t._point.subtract(o);e.setAttribute("x",s.x),e.setAttribute("y",s.y),e.setAttribute("width",n.x+"px"),e.setAttribute("height",n.y+"px"),e.setAttribute("href",i.iconUrl);}}),L.svg.tile=function(t,e,r){return new L.SVG.Tile(t,e,r)};var Symbolizer=L.Class.extend({render:function(t,e){this._renderer=t,this.options=e,t._initPath(this),t._updateStyle(this);},updateStyle:function(t,e){this.options=e,t._updateStyle(this);},_getPixelBounds:function(){for(var t=this._parts,e=L.bounds([]),r=0;r<t.length;r++)for(var i=t[r],n=0;n<i.length;n++)e.extend(i[n]);var o=this._clickTolerance(),s=new L.Point(o,o);return e.min._subtract(s),e.max._add(s),e},_clickTolerance:L.Path.prototype._clickTolerance}),PolyBase={_makeFeatureParts:function(t,e){var r,i=t.geometry;this._parts=[];for(var n=0;n<i.length;n++){for(var o=i[n],s=[],a=0;a<o.length;a++)r=o[a],s.push(L.point(r).scaleBy(e));this._parts.push(s);}},makeInteractive:function(){this._pxBounds=this._getPixelBounds();}},PointSymbolizer=L.CircleMarker.extend({includes:Symbolizer.prototype,statics:{iconCache:{}},initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){Symbolizer.prototype.render.call(this,t,e),this._radius=e.radius||L.CircleMarker.prototype.options.radius,this._updatePath();},_makeFeatureParts:function(t,e){var r=t.geometry[0];"object"==typeof r[0]&&"x"in r[0]?(this._point=L.point(r[0]).scaleBy(e),this._empty=L.Util.falseFn):(this._point=L.point(r).scaleBy(e),this._empty=L.Util.falseFn);},makeInteractive:function(){this._updateBounds();},updateStyle:function(t,e){return this._radius=e.radius||this._radius,this._updateBounds(),Symbolizer.prototype.updateStyle.call(this,t,e)},_updateBounds:function(){var t=this.options.icon;if(t){var e=L.point(t.options.iconSize),r=t.options.iconAnchor||e&&e.divideBy(2,!0),i=this._point.subtract(r);this._pxBounds=new L.Bounds(i,i.add(t.options.iconSize));}else L.CircleMarker.prototype._updateBounds.call(this);},_updatePath:function(){this.options.icon?this._renderer._updateIcon(this):L.CircleMarker.prototype._updatePath.call(this);},_getImage:function(){if(this.options.icon){var t=this.options.icon.options.iconUrl,e=PointSymbolizer.iconCache[t];if(!e){var r=this.options.icon;e=PointSymbolizer.iconCache[t]=r.createIcon();}return e}return null},_containsPoint:function(t){return this.options.icon?this._pxBounds.contains(t):L.CircleMarker.prototype._containsPoint.call(this,t)}}),LineSymbolizer=L.Polyline.extend({includes:[Symbolizer.prototype,PolyBase],initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){e.fill=!1,Symbolizer.prototype.render.call(this,t,e),this._updatePath();},updateStyle:function(t,e){e.fill=!1,Symbolizer.prototype.updateStyle.call(this,t,e);}}),FillSymbolizer=L.Polygon.extend({includes:[Symbolizer.prototype,PolyBase],initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){Symbolizer.prototype.render.call(this,t,e),this._updatePath();}});L.VectorGrid=L.GridLayer.extend({options:{rendererFactory:L.svg.tile,vectorTileLayerStyles:{},interactive:!1},initialize:function(t){L.setOptions(this,t),L.GridLayer.prototype.initialize.apply(this,arguments),this.options.getFeatureId&&(this._vectorTiles={},this._overriddenStyles={},this.on("tileunload",function(t){var e=this._tileCoordsToKey(t.coords),r=this._vectorTiles[e];r&&this._map&&r.removeFrom(this._map),delete this._vectorTiles[e];},this)),this._dataLayerNames={};},createTile:function(t,e){var r=this.options.getFeatureId,i=this.getTileSize(),n=this.options.rendererFactory(t,i,this.options),o=this._getVectorTilePromise(t);return r&&(this._vectorTiles[this._tileCoordsToKey(t)]=n,n._features={}),o.then(function(i){for(var o in i.layers){this._dataLayerNames[o]=!0;for(var s=i.layers[o],a=this.getTileSize().divideBy(s.extent),u=this.options.vectorTileLayerStyles[o]||L.Path.prototype.options,h=0;h<s.features.length;h++){var l,c=s.features[h],f=u;if(r){l=this.options.getFeatureId(c);var p=this._overriddenStyles[l];p&&(f=p[o]?p[o]:p);}if(f instanceof Function&&(f=f(c.properties,t.z)),f instanceof Array||(f=[f]),f.length){for(var d=this._createLayer(c,a),y=0;y<f.length;y++){var m=L.extend({},L.Path.prototype.options,f[y]);d.render(n,m),n._addPath(d);}this.options.interactive&&d.makeInteractive(),r&&(n._features[l]={layerName:o,feature:d});}}}null!=this._map&&n.addTo(this._map),L.Util.requestAnimFrame(e.bind(t,null,null));}.bind(this)),n.getContainer()},setFeatureStyle:function(t,e){this._overriddenStyles[t]=e;for(var r in this._vectorTiles){var i=this._vectorTiles[r],n=i._features,o=n[t];if(o){var s=o.feature,a=e;e[o.layerName]&&(a=e[o.layerName]),this._updateStyles(s,i,a);}}return this},resetFeatureStyle:function(t){delete this._overriddenStyles[t];for(var e in this._vectorTiles){var r=this._vectorTiles[e],i=r._features,n=i[t];if(n){var o=n.feature,s=this.options.vectorTileLayerStyles[n.layerName]||L.Path.prototype.options;this._updateStyles(o,r,s);}}return this},getDataLayerNames:function(){return Object.keys(this._dataLayerNames)},_updateStyles:function(t,e,r){(r=r instanceof Function?r(t.properties,e.getCoord().z):r)instanceof Array||(r=[r]);for(var i=0;i<r.length;i++){var n=L.extend({},L.Path.prototype.options,r[i]);t.updateStyle(e,n);}},_createLayer:function(t,e,r){var i;switch(t.type){case 1:i=new PointSymbolizer(t,e);break;case 2:i=new LineSymbolizer(t,e);break;case 3:i=new FillSymbolizer(t,e);}return this.options.interactive&&i.addEventParent(this),i}}),L.vectorGrid=function(t){return new L.VectorGrid(t)},L.VectorGrid.Protobuf=L.VectorGrid.extend({options:{subdomains:"abc",fetchOptions:{}},initialize:function(t,e){this._url=t,L.VectorGrid.prototype.initialize.call(this,e);},setUrl:function(t,e){return this._url=t,e||this.redraw(),this},_getSubdomain:L.TileLayer.prototype._getSubdomain,_getVectorTilePromise:function(t){var e={s:this._getSubdomain(t),x:t.x,y:t.y,z:t.z};if(this._map&&!this._map.options.crs.infinite){var r=this._globalTileRange.max.y-t.y;this.options.tms&&(e.y=r),e["-y"]=r;}var i=L.Util.template(this._url,L.extend(e,this.options));return fetch(i,this.options.fetchOptions).then(function(t){return t.ok?t.blob().then(function(t){var e=new FileReader;return new Promise(function(r){e.addEventListener("loadend",function(){var t=new index(e.result);return r(new VectorTile(t))}),e.readAsArrayBuffer(t);})}):{layers:[]}}).then(function(t){for(var e in t.layers){for(var r=[],i=0;i<t.layers[e].length;i++){var n=t.layers[e].feature(i);n.geometry=n.loadGeometry(),r.push(n);}t.layers[e].features=r;}return t})}}),L.vectorGrid.protobuf=function(t,e){return new L.VectorGrid.Protobuf(t,e)}
+;var workerCode=__$strToBlobUri('"use strict";function simplify$1(e,t){var r,n,o,i,a=t*t,s=e.length,l=0,u=s-1,c=[];for(e[l][2]=1,e[u][2]=1;u;){for(n=0,r=l+1;r<u;r++)(o=getSqSegDist(e[r],e[l],e[u]))>n&&(i=r,n=o);n>a?(e[i][2]=n,c.push(l),c.push(i),l=i):(u=c.pop(),l=c.pop())}}function getSqSegDist(e,t,r){var n=t[0],o=t[1],i=r[0],a=r[1],s=e[0],l=e[1],u=i-n,c=a-o;if(0!==u||0!==c){var f=((s-n)*u+(l-o)*c)/(u*u+c*c);f>1?(n=i,o=a):f>0&&(n+=u*f,o+=c*f)}return u=s-n,c=l-o,u*u+c*c}function convert$1(e,t){var r=[];if("FeatureCollection"===e.type)for(var n=0;n<e.features.length;n++)convertFeature(r,e.features[n],t);else"Feature"===e.type?convertFeature(r,e,t):convertFeature(r,{geometry:e},t);return r}function convertFeature(e,t,r){if(null!==t.geometry){var n,o,i,a,s=t.geometry,l=s.type,u=s.coordinates,c=t.properties;if("Point"===l)e.push(create(c,1,[projectPoint(u)]));else if("MultiPoint"===l)e.push(create(c,1,project(u)));else if("LineString"===l)e.push(create(c,2,[project(u,r)]));else if("MultiLineString"===l||"Polygon"===l){for(i=[],n=0;n<u.length;n++)a=project(u[n],r),"Polygon"===l&&(a.outer=0===n),i.push(a);e.push(create(c,"Polygon"===l?3:2,i))}else if("MultiPolygon"===l){for(i=[],n=0;n<u.length;n++)for(o=0;o<u[n].length;o++)a=project(u[n][o],r),a.outer=0===o,i.push(a);e.push(create(c,3,i))}else{if("GeometryCollection"!==l)throw new Error("Input data is not a valid GeoJSON object.");for(n=0;n<s.geometries.length;n++)convertFeature(e,{geometry:s.geometries[n],properties:c},r)}}}function create(e,t,r){var n={geometry:r,type:t,tags:e||null,min:[2,1],max:[-1,0]};return calcBBox(n),n}function project(e,t){for(var r=[],n=0;n<e.length;n++)r.push(projectPoint(e[n]));return t&&(simplify(r,t),calcSize(r)),r}function projectPoint(e){var t=Math.sin(e[1]*Math.PI/180),r=e[0]/360+.5,n=.5-.25*Math.log((1+t)/(1-t))/Math.PI;return n=n<0?0:n>1?1:n,[r,n,0]}function calcSize(e){for(var t,r,n=0,o=0,i=0;i<e.length-1;i++)t=r||e[i],r=e[i+1],n+=t[0]*r[1]-r[0]*t[1],o+=Math.abs(r[0]-t[0])+Math.abs(r[1]-t[1]);e.area=Math.abs(n/2),e.dist=o}function calcBBox(e){var t=e.geometry,r=e.min,n=e.max;if(1===e.type)calcRingBBox(r,n,t);else for(var o=0;o<t.length;o++)calcRingBBox(r,n,t[o]);return e}function calcRingBBox(e,t,r){for(var n,o=0;o<r.length;o++)n=r[o],e[0]=Math.min(n[0],e[0]),t[0]=Math.max(n[0],t[0]),e[1]=Math.min(n[1],e[1]),t[1]=Math.max(n[1],t[1])}function transformTile(e,t){if(e.transformed)return e;var r,n,o,i=e.z2,a=e.x,s=e.y;for(r=0;r<e.features.length;r++){var l=e.features[r],u=l.geometry;if(1===l.type)for(n=0;n<u.length;n++)u[n]=transformPoint(u[n],t,i,a,s);else for(n=0;n<u.length;n++){var c=u[n];for(o=0;o<c.length;o++)c[o]=transformPoint(c[o],t,i,a,s)}}return e.transformed=!0,e}function transformPoint(e,t,r,n,o){return[Math.round(t*(e[0]*r-n)),Math.round(t*(e[1]*r-o))]}function clip$1(e,t,r,n,o,i,a,s){if(r/=t,n/=t,a>=r&&s<=n)return e;if(a>n||s<r)return null;for(var l=[],u=0;u<e.length;u++){var c,f,p=e[u],h=p.geometry,m=p.type;if(c=p.min[o],f=p.max[o],c>=r&&f<=n)l.push(p);else if(!(c>n||f<r)){var g=1===m?clipPoints(h,r,n,o):clipGeometry(h,r,n,o,i,3===m);g.length&&l.push({geometry:g,type:m,tags:e[u].tags||null,min:p.min,max:p.max})}}return l.length?l:null}function clipPoints(e,t,r,n){for(var o=[],i=0;i<e.length;i++){var a=e[i],s=a[n];s>=t&&s<=r&&o.push(a)}return o}function clipGeometry(e,t,r,n,o,i){for(var a=[],s=0;s<e.length;s++){var l,u,c,f=0,p=0,h=null,m=e[s],g=m.area,d=m.dist,v=m.outer,y=m.length,x=[];for(u=0;u<y-1;u++)l=h||m[u],h=m[u+1],f=p||l[n],p=h[n],f<t?p>r?(x.push(o(l,h,t),o(l,h,r)),i||(x=newSlice(a,x,g,d,v))):p>=t&&x.push(o(l,h,t)):f>r?p<t?(x.push(o(l,h,r),o(l,h,t)),i||(x=newSlice(a,x,g,d,v))):p<=r&&x.push(o(l,h,r)):(x.push(l),p<t?(x.push(o(l,h,t)),i||(x=newSlice(a,x,g,d,v))):p>r&&(x.push(o(l,h,r)),i||(x=newSlice(a,x,g,d,v))));l=m[y-1],f=l[n],f>=t&&f<=r&&x.push(l),c=x[x.length-1],i&&c&&(x[0][0]!==c[0]||x[0][1]!==c[1])&&x.push(x[0]),newSlice(a,x,g,d,v)}return a}function newSlice(e,t,r,n,o){return t.length&&(t.area=r,t.dist=n,void 0!==o&&(t.outer=o),e.push(t)),[]}function wrap$1(e,t,r){var n=e,o=clip$2(e,1,-1-t,t,0,r,-1,2),i=clip$2(e,1,1-t,2+t,0,r,-1,2);return(o||i)&&(n=clip$2(e,1,-t,1+t,0,r,-1,2),o&&(n=shiftFeatureCoords(o,1).concat(n)),i&&(n=n.concat(shiftFeatureCoords(i,-1)))),n}function shiftFeatureCoords(e,t){for(var r=[],n=0;n<e.length;n++){var o,i=e[n],a=i.type;if(1===a)o=shiftCoords(i.geometry,t);else{o=[];for(var s=0;s<i.geometry.length;s++)o.push(shiftCoords(i.geometry[s],t))}r.push({geometry:o,type:a,tags:i.tags,min:[i.min[0]+t,i.min[1]],max:[i.max[0]+t,i.max[1]]})}return r}function shiftCoords(e,t){var r=[];r.area=e.area,r.dist=e.dist;for(var n=0;n<e.length;n++)r.push([e[n][0]+t,e[n][1],e[n][2]]);return r}function createTile$1(e,t,r,n,o,i){for(var a={features:[],numPoints:0,numSimplified:0,numFeatures:0,source:null,x:r,y:n,z2:t,transformed:!1,min:[2,1],max:[-1,0]},s=0;s<e.length;s++){a.numFeatures++,addFeature(a,e[s],o,i);var l=e[s].min,u=e[s].max;l[0]<a.min[0]&&(a.min[0]=l[0]),l[1]<a.min[1]&&(a.min[1]=l[1]),u[0]>a.max[0]&&(a.max[0]=u[0]),u[1]>a.max[1]&&(a.max[1]=u[1])}return a}function addFeature(e,t,r,n){var o,i,a,s,l=t.geometry,u=t.type,c=[],f=r*r;if(1===u)for(o=0;o<l.length;o++)c.push(l[o]),e.numPoints++,e.numSimplified++;else for(o=0;o<l.length;o++)if(a=l[o],n||!(2===u&&a.dist<r||3===u&&a.area<f)){var p=[];for(i=0;i<a.length;i++)s=a[i],(n||s[2]>f)&&(p.push(s),e.numSimplified++),e.numPoints++;3===u&&rewind(p,a.outer),c.push(p)}else e.numPoints+=a.length;c.length&&e.features.push({geometry:c,type:u,tags:t.tags||null})}function rewind(e,t){signedArea(e)<0===t&&e.reverse()}function signedArea(e){for(var t,r,n=0,o=0,i=e.length,a=i-1;o<i;a=o++)t=e[o],r=e[a],n+=(r[0]-t[0])*(t[1]+r[1]);return n}function geojsonvt(e,t){return new GeoJSONVT(e,t)}function GeoJSONVT(e,t){t=this.options=extend(Object.create(this.options),t);var r=t.debug;r&&console.time("preprocess data");var n=1<<t.maxZoom,o=convert(e,t.tolerance/(n*t.extent));this.tiles={},this.tileCoords=[],r&&(console.timeEnd("preprocess data"),console.log("index: maxZoom: %d, maxPoints: %d",t.indexMaxZoom,t.indexMaxPoints),console.time("generate tiles"),this.stats={},this.total=0),o=wrap(o,t.buffer/t.extent,intersectX),o.length&&this.splitTile(o,0,0,0),r&&(o.length&&console.log("features: %d, points: %d",this.tiles[0].numFeatures,this.tiles[0].numPoints),console.timeEnd("generate tiles"),console.log("tiles generated:",this.total,JSON.stringify(this.stats)))}function toID(e,t,r){return 32*((1<<e)*r+t)+e}function intersectX(e,t,r){return[r,(r-e[0])*(t[1]-e[1])/(t[0]-e[0])+e[1],1]}function intersectY(e,t,r){return[(r-e[1])*(t[0]-e[0])/(t[1]-e[1])+e[0],r,1]}function extend(e,t){for(var r in t)e[r]=t[r];return e}function isClippedSquare(e,t,r){var n=e.source;if(1!==n.length)return!1;var o=n[0];if(3!==o.type||o.geometry.length>1)return!1;var i=o.geometry[0].length;if(5!==i)return!1;for(var a=0;a<i;a++){var s=transform.point(o.geometry[0][a],t,e.z2,e.x,e.y);if(s[0]!==-r&&s[0]!==t+r||s[1]!==-r&&s[1]!==t+r)return!1}return!0}function feature$1(e,t){var r=t.id,n=t.bbox,o=null==t.properties?{}:t.properties,i=object(e,t);return null==r&&null==n?{type:"Feature",properties:o,geometry:i}:null==n?{type:"Feature",id:r,properties:o,geometry:i}:{type:"Feature",id:r,bbox:n,properties:o,geometry:i}}function object(e,t){function r(e,t){t.length&&t.pop();for(var r=u[e<0?~e:e],n=0,o=r.length;n<o;++n)t.push(l(r[n].slice(),n));e<0&&reverse(t,o)}function n(e){return l(e.slice())}function o(e){for(var t=[],n=0,o=e.length;n<o;++n)r(e[n],t);return t.length<2&&t.push(t[0].slice()),t}function i(e){for(var t=o(e);t.length<4;)t.push(t[0].slice());return t}function a(e){return e.map(i)}function s(e){var t,r=e.type;switch(r){case"GeometryCollection":return{type:r,geometries:e.geometries.map(s)};case"Point":t=n(e.coordinates);break;case"MultiPoint":t=e.coordinates.map(n);break;case"LineString":t=o(e.arcs);break;case"MultiLineString":t=e.arcs.map(o);break;case"Polygon":t=a(e.arcs);break;case"MultiPolygon":t=e.arcs.map(a);break;default:return null}return{type:r,coordinates:t}}var l=transform$3(e),u=e.arcs;return s(t)}function extractArcs(e,t,r){function n(e){var t=e<0?~e:e;(c[t]||(c[t]=[])).push({i:e,g:l})}function o(e){e.forEach(n)}function i(e){e.forEach(o)}function a(e){e.forEach(i)}function s(e){switch(l=e,e.type){case"GeometryCollection":e.geometries.forEach(s);break;case"LineString":o(e.arcs);break;case"MultiLineString":case"Polygon":i(e.arcs);break;case"MultiPolygon":a(e.arcs)}}var l,u=[],c=[];return s(t),c.forEach(null==r?function(e){u.push(e[0].i)}:function(e){r(e[0].g,e[e.length-1].g)&&u.push(e[0].i)}),u}function planarRingArea(e){for(var t,r=-1,n=e.length,o=e[n-1],i=0;++r<n;)t=o,o=e[r],i+=t[0]*o[1]-t[1]*o[0];return Math.abs(i)}var simplify_1=simplify$1,convert_1=convert$1,simplify=simplify_1,tile=transformTile,point=transformPoint,transform$1={tile:tile,point:point},clip_1=clip$1,clip$2=clip_1,wrap_1=wrap$1,tile$1=createTile$1,index=geojsonvt,convert=convert_1,transform=transform$1,clip=clip_1,wrap=wrap_1,createTile=tile$1;GeoJSONVT.prototype.options={maxZoom:14,indexMaxZoom:5,indexMaxPoints:1e5,solidChildren:!1,tolerance:3,extent:4096,buffer:64,debug:0},GeoJSONVT.prototype.splitTile=function(e,t,r,n,o,i,a){for(var s=this,l=[e,t,r,n],u=this.options,c=u.debug,f=null;l.length;){n=l.pop(),r=l.pop(),t=l.pop(),e=l.pop();var p=1<<t,h=toID(t,r,n),m=s.tiles[h],g=t===u.maxZoom?0:u.tolerance/(p*u.extent);if(!m&&(c>1&&console.time("creation"),m=s.tiles[h]=createTile(e,p,r,n,g,t===u.maxZoom),s.tileCoords.push({z:t,x:r,y:n}),c)){c>1&&(console.log("tile z%d-%d-%d (features: %d, points: %d, simplified: %d)",t,r,n,m.numFeatures,m.numPoints,m.numSimplified),console.timeEnd("creation"));var d="z"+t;s.stats[d]=(s.stats[d]||0)+1,s.total++}if(m.source=e,o){if(t===u.maxZoom||t===o)continue;var v=1<<o-t;if(r!==Math.floor(i/v)||n!==Math.floor(a/v))continue}else if(t===u.indexMaxZoom||m.numPoints<=u.indexMaxPoints)continue;if(u.solidChildren||!isClippedSquare(m,u.extent,u.buffer)){m.source=null,c>1&&console.time("clipping");var y,x,b,M,P,S,w=.5*u.buffer/u.extent,$=.5-w,C=.5+w,F=1+w;y=x=b=M=null,P=clip(e,p,r-w,r+C,0,intersectX,m.min[0],m.max[0]),S=clip(e,p,r+$,r+F,0,intersectX,m.min[0],m.max[0]),P&&(y=clip(P,p,n-w,n+C,1,intersectY,m.min[1],m.max[1]),x=clip(P,p,n+$,n+F,1,intersectY,m.min[1],m.max[1])),S&&(b=clip(S,p,n-w,n+C,1,intersectY,m.min[1],m.max[1]),M=clip(S,p,n+$,n+F,1,intersectY,m.min[1],m.max[1])),c>1&&console.timeEnd("clipping"),y&&l.push(y,t+1,2*r,2*n),x&&l.push(x,t+1,2*r,2*n+1),b&&l.push(b,t+1,2*r+1,2*n),M&&l.push(M,t+1,2*r+1,2*n+1)}else o&&(f=t)}return f},GeoJSONVT.prototype.getTile=function(e,t,r){var n=this,o=this.options,i=o.extent,a=o.debug,s=1<<e;t=(t%s+s)%s;var l=toID(e,t,r);if(this.tiles[l])return transform.tile(this.tiles[l],i);a>1&&console.log("drilling down to z%d-%d-%d",e,t,r);for(var u,c=e,f=t,p=r;!u&&c>0;)c--,f=Math.floor(f/2),p=Math.floor(p/2),u=n.tiles[toID(c,f,p)];if(!u||!u.source)return null;if(a>1&&console.log("found parent tile z%d-%d-%d",c,f,p),isClippedSquare(u,i,o.buffer))return transform.tile(u,i);a>1&&console.time("drilling down");var h=this.splitTile(u.source,c,f,p,e,t,r);if(a>1&&console.timeEnd("drilling down"),null!==h){var m=1<<e-h;l=toID(h,Math.floor(t/m),Math.floor(r/m))}return this.tiles[l]?transform.tile(this.tiles[l],i):null};var identity=function(e){return e},transform$3=function(e){if(null==(t=e.transform))return identity;var t,r,n,o=t.scale[0],i=t.scale[1],a=t.translate[0],s=t.translate[1];return function(e,t){return t||(r=n=0),e[0]=(r+=e[0])*o+a,e[1]=(n+=e[1])*i+s,e}},bbox=function(e){function t(e){s[0]=e[0],s[1]=e[1],a(s),s[0]<l&&(l=s[0]),s[0]>c&&(c=s[0]),s[1]<u&&(u=s[1]),s[1]>f&&(f=s[1])}function r(e){switch(e.type){case"GeometryCollection":e.geometries.forEach(r);break;case"Point":t(e.coordinates);break;case"MultiPoint":e.coordinates.forEach(t)}}var n=e.bbox;if(!n){var o,i,a=transform$3(e),s=new Array(2),l=1/0,u=l,c=-l,f=-l;e.arcs.forEach(function(e){for(var t=-1,r=e.length;++t<r;)o=e[t],s[0]=o[0],s[1]=o[1],a(s,t),s[0]<l&&(l=s[0]),s[0]>c&&(c=s[0]),s[1]<u&&(u=s[1]),s[1]>f&&(f=s[1])});for(i in e.objects)r(e.objects[i]);n=e.bbox=[l,u,c,f]}return n},reverse=function(e,t){for(var r,n=e.length,o=n-t;o<--n;)r=e[o],e[o++]=e[n],e[n]=r},feature=function(e,t){return"GeometryCollection"===t.type?{type:"FeatureCollection",features:t.geometries.map(function(t){return feature$1(e,t)})}:feature$1(e,t)},stitch=function(e,t){function r(t){var r,n=e.arcs[t<0?~t:t],o=n[0];return e.transform?(r=[0,0],n.forEach(function(e){r[0]+=e[0],r[1]+=e[1]})):r=n[n.length-1],t<0?[r,o]:[o,r]}function n(e,t){for(var r in e){var n=e[r];delete t[n.start],delete n.start,delete n.end,n.forEach(function(e){o[e<0?~e:e]=1}),s.push(n)}}var o={},i={},a={},s=[],l=-1;return t.forEach(function(r,n){var o,i=e.arcs[r<0?~r:r];i.length<3&&!i[1][0]&&!i[1][1]&&(o=t[++l],t[l]=r,t[n]=o)}),t.forEach(function(e){var t,n,o=r(e),s=o[0],l=o[1];if(t=a[s])if(delete a[t.end],t.push(e),t.end=l,n=i[l]){delete i[n.start];var u=n===t?t:t.concat(n);i[u.start=t.start]=a[u.end=n.end]=u}else i[t.start]=a[t.end]=t;else if(t=i[l])if(delete i[t.start],t.unshift(e),t.start=s,n=a[s]){delete a[n.end];var c=n===t?t:n.concat(t);i[c.start=n.start]=a[c.end=t.end]=c}else i[t.start]=a[t.end]=t;else t=[e],i[t.start=s]=a[t.end=l]=t}),n(a,i),n(i,a),t.forEach(function(e){o[e<0?~e:e]||s.push([e])}),s},bisect=function(e,t){for(var r=0,n=e.length;r<n;){var o=r+n>>>1;e[o]<t?r=o+1:n=o}return r},slicers={},options;onmessage=function(e){if("slice"===e.data[0]){var t=e.data[1];if(options=e.data[2],t.type&&"Topology"===t.type)for(var r in t.objects)slicers[r]=index(feature(t,t.objects[r]),options);else slicers[options.vectorTileLayerName]=index(t,options)}else if("get"===e.data[0]){var n=e.data[1],o={};for(var r in slicers){var i=slicers[r].getTile(n.z,n.x,n.y);if(i){var a={features:[],extent:options.extent,name:options.vectorTileLayerName,length:i.features.length};for(var s in i.features){var l={geometry:i.features[s].geometry,properties:i.features[s].tags,type:i.features[s].type};a.features.push(l)}o[r]=a}}postMessage({layers:o,coords:n})}};\n',"text/plain; charset=us-ascii",!1);L.VectorGrid.Slicer=L.VectorGrid.extend({options:{vectorTileLayerName:"sliced",extent:4096,maxZoom:14},initialize:function(t,e){L.VectorGrid.prototype.initialize.call(this,e);var e={};for(var r in this.options)"rendererFactory"!==r&&"vectorTileLayerStyles"!==r&&"function"!=typeof this.options[r]&&(e[r]=this.options[r]);this._worker=new Worker(workerCode),this._worker.postMessage(["slice",t,e]);},_getVectorTilePromise:function(t){var e=this,r=new Promise(function(r){e._worker.addEventListener("message",function i(n){n.data.coords&&n.data.coords.x===t.x&&n.data.coords.y===t.y&&n.data.coords.z===t.z&&(r(n.data),e._worker.removeEventListener("message",i));});});return this._worker.postMessage(["get",t]),r}}),L.vectorGrid.slicer=function(t,e){return new L.VectorGrid.Slicer(t,e)},L.Canvas.Tile=L.Canvas.extend({initialize:function(t,e,r){L.Canvas.prototype.initialize.call(this,r),this._tileCoord=t,this._size=e,this._initContainer(),this._container.setAttribute("width",this._size.x),this._container.setAttribute("height",this._size.y),this._layers={},this._drawnLayers={},this._drawing=!0,r.interactive&&(this._container.style.pointerEvents="auto");},getCoord:function(){return this._tileCoord},getContainer:function(){return this._container},getOffset:function(){return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin())},onAdd:L.Util.falseFn,addTo:function(t){this._map=t;},removeFrom:function(t){delete this._map;},_onClick:function(t){var e,r,i=this._map.mouseEventToLayerPoint(t).subtract(this.getOffset());for(var n in this._layers)e=this._layers[n],e.options.interactive&&e._containsPoint(i)&&!this._map._draggableMoved(e)&&(r=e);r&&(L.DomEvent.fakeStop(t),this._fireEvent([r],t));},_onMouseMove:function(t){if(this._map&&!this._map.dragging.moving()&&!this._map._animatingZoom){var e=this._map.mouseEventToLayerPoint(t).subtract(this.getOffset());this._handleMouseHover(t,e);}},_updateIcon:function(t){if(this._drawing){var e=t.options.icon,r=e.options,i=L.point(r.iconSize),n=r.iconAnchor||i&&i.divideBy(2,!0),o=t._point.subtract(n),s=this._ctx,a=t._getImage();a.complete?s.drawImage(a,o.x,o.y,i.x,i.y):L.DomEvent.on(a,"load",function(){s.drawImage(a,o.x,o.y,i.x,i.y);}),this._drawnLayers[t._leaflet_id]=t;}}}),L.canvas.tile=function(t,e,r){return new L.Canvas.Tile(t,e,r)};
+
+var _PropTypes$shape;
+
+var _excluded$5 = ["url", "styleUrl", "center", "zoom", "projection", "tileMatrix", "attribution", "children"];
+
+function VectorTileLayer(_ref) {
+  var url = _ref.url,
+      styleUrl = _ref.styleUrl,
+      attribution = _ref.attribution;
+  var map = useMap();
+  useEffect(function () {
+    axios.get(styleUrl).then(function (response) {
+      var style = response.data;
+      var vectorGridLayer = L$1.vectorGrid.protobuf(url, {
+        attribution: attribution,
+        interactive: true,
+        vectorTileLayerStyles: style.layers.reduce(function (acc, layer) {
+          acc[layer.id] = layer.paint;
+          return acc;
+        }, {})
+      }).addTo(map);
+      return function () {
+        map.removeLayer(vectorGridLayer);
+      };
+    }).catch(function (error) {
+      return console.error('Error fetching style:', error);
+    });
+  }, [map, url, styleUrl, attribution]);
+  return null;
+}
+
+function GenericVectorBaseMap(_ref2) {
+  var url = _ref2.url,
+      styleUrl = _ref2.styleUrl,
+      center = _ref2.center,
+      zoom = _ref2.zoom,
+      projection = _ref2.projection,
+      tileMatrix = _ref2.tileMatrix,
+      attribution = _ref2.attribution,
+      children = _ref2.children,
+      rest = _objectWithoutProperties(_ref2, _excluded$5);
+
+  var mapRef = useRef();
+  var crs = new L$1.Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
+  return /*#__PURE__*/React.createElement(MapContainer, _extends({
+    crs: crs,
+    center: center,
+    zoom: zoom,
+    ref: mapRef
+  }, rest), /*#__PURE__*/React.createElement(VectorTileLayer, {
+    url: url,
+    styleUrl: styleUrl,
+    attribution: attribution
+  }), children);
+}
+
+GenericVectorBaseMap.propTypes = {
+  url: propTypes.exports.string.isRequired,
+  styleUrl: propTypes.exports.string.isRequired,
+  center: propTypes.exports.shape({
+    lat: propTypes.exports.number.isRequired,
+    lng: propTypes.exports.number.isRequired
+  }).isRequired,
+  zoom: propTypes.exports.number.isRequired,
+  projection: propTypes.exports.shape({
+    code: propTypes.exports.string.isRequired,
+    proj4def: propTypes.exports.string.isRequired,
+    options: propTypes.exports.object
+  }).isRequired,
+  tileMatrix: propTypes.exports.shape((_PropTypes$shape = {
+    metersPerUnit: propTypes.exports.number.isRequired,
+    tileMatrixMinX: propTypes.exports.number.isRequired,
+    tileMatrixMaxX: propTypes.exports.number.isRequired,
+    tileWidth: propTypes.exports.number.isRequired,
+    tileMatrixMinY: propTypes.exports.number.isRequired,
+    tileMatrixMaxY: propTypes.exports.number.isRequired
+  }, _defineProperty$1(_PropTypes$shape, "tileMatrixMaxY", propTypes.exports.number.isRequired), _defineProperty$1(_PropTypes$shape, "numResolutions", propTypes.exports.number.isRequired), _PropTypes$shape)).isRequired,
+  attribution: propTypes.exports.string,
+  children: propTypes.exports.node
+};
+
+var _excluded$4 = ["children"];
 
 var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
   _inherits(BCBaseMap, _PureComponent);
@@ -10300,7 +10384,7 @@ var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
     value: function render() {
       var _this$props = this.props,
           children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$3);
+          rest = _objectWithoutProperties(_this$props, _excluded$4);
 
       return /*#__PURE__*/React.createElement(GenericBaseMap, _extends({
         tileset: BCBaseMap.tileset
@@ -10347,6 +10431,85 @@ _defineProperty$1(BCBaseMap, "tileset", {
 });
 
 _defineProperty$1(BCBaseMap, "initialViewport", {
+  center: {
+    lat: 55.0,
+    lng: -125
+  },
+  zoom: 6
+});
+
+var _excluded$3 = ["children"];
+
+var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
+  _inherits(BCVectorBaseMap, _PureComponent);
+
+  var _super = _createSuper(BCVectorBaseMap);
+
+  function BCVectorBaseMap() {
+    _classCallCheck(this, BCVectorBaseMap);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(BCVectorBaseMap, [{
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          children = _this$props.children,
+          rest = _objectWithoutProperties(_this$props, _excluded$3);
+
+      return /*#__PURE__*/React.createElement(GenericVectorBaseMap, _extends({
+        url: BCVectorBaseMap.tileset.url,
+        styleUrl: BCVectorBaseMap.tileset.styleUrl,
+        center: BCVectorBaseMap.initialViewport.center,
+        zoom: BCVectorBaseMap.initialViewport.zoom,
+        projection: BCVectorBaseMap.tileset.projection,
+        tileMatrix: BCVectorBaseMap.tileset.tileMatrix,
+        attribution: BCVectorBaseMap.tileset.attribution
+      }, rest), children);
+    }
+  }]);
+
+  return BCVectorBaseMap;
+}(PureComponent);
+
+_defineProperty$1(BCVectorBaseMap, "propTypes", {
+  // Only props added by this component are defined here.
+  // All other valid props for Map component are passed through to it.
+  mapRef: propTypes.exports.func // Callback to which a ref to the Map component is passed.
+  // Allows parent components to diddle with the map established here.
+
+});
+
+_defineProperty$1(BCVectorBaseMap, "defaultProps", {
+  mapRef: function mapRef() {
+    return null;
+  }
+});
+
+_defineProperty$1(BCVectorBaseMap, "tileset", {
+  url: process.env.REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
+  styleUrl: process.env.REACT_APP_BC_VECTOR_BASE_MAP_STYLE_URL,
+  projection: {
+    code: 'EPSG:3005',
+    proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
+  },
+  tileMatrix: {
+    // From the definition of the projection (SRS)
+    metersPerUnit: 1,
+    // Proj.4: +units=m
+    // From tile generation
+    tileMatrixMinX: -20037508,
+    tileMatrixMaxX: 20037508,
+    tileWidth: 256,
+    tileMatrixMinY: -20037508,
+    tileMatrixMaxY: 20037508,
+    numResolutions: 14
+  },
+  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+
+_defineProperty$1(BCVectorBaseMap, "initialViewport", {
   center: {
     lat: 55.0,
     lng: -125
@@ -10467,16 +10630,16 @@ var SetView = function SetView(_ref) {
   return null;
 };
 
-L.Control.Static = L.Control.extend({
+L$1.Control.Static = L$1.Control.extend({
   onAdd: function onAdd(map) {
-    var container = L.DomUtil.create('div', 'leaflet-control-static leaflet-control');
+    var container = L$1.DomUtil.create('div', 'leaflet-control-static leaflet-control');
     return container;
   },
   onRemove: function onRemove(map) {}
 });
 
-L.control.static = function (opts) {
-  return new L.Control.Static(opts);
+L$1.control.static = function (opts) {
+  return new L$1.Control.Static(opts);
 };
 
 var _excluded$1 = ["children"];
@@ -10487,7 +10650,7 @@ function StaticControl(_ref) {
 
   var context = useLeafletContext();
   useEffect(function () {
-    var control = L.control.static(rest);
+    var control = L$1.control.static(rest);
     control.addTo(context.map);
     var root = createRoot(control.getContainer());
     root.render(children);
@@ -10568,27 +10731,27 @@ function require_root () {
 	return _root;
 }
 
-var root$9 = require_root();
+var root$a = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$9.Symbol;
+var Symbol$5 = root$a.Symbol;
 
 var _Symbol = Symbol$5;
 
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$8 = Object.prototype;
+var objectProto$9 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$8.toString;
+var nativeObjectToString$1 = objectProto$9.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -10601,7 +10764,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$7.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -10624,14 +10787,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$7 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$7.toString;
+var nativeObjectToString = objectProto$8.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -10701,15 +10864,15 @@ var _baseGetTag = baseGetTag$5;
  * // => false
  */
 
-function isObject$5(value) {
+function isObject$6(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$5;
+var isObject_1 = isObject$6;
 
 var baseGetTag$4 = _baseGetTag,
-    isObject$4 = isObject_1;
+    isObject$5 = isObject_1;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -10734,8 +10897,8 @@ var asyncTag = '[object AsyncFunction]',
  * _.isFunction(/abc/);
  * // => false
  */
-function isFunction(value) {
-  if (!isObject$4(value)) {
+function isFunction$1(value) {
+  if (!isObject$5(value)) {
     return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -10744,58 +10907,42 @@ function isFunction(value) {
   return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
-var isFunction_1 = isFunction;
+var isFunction_1 = isFunction$1;
 
-var _coreJsData;
-var hasRequired_coreJsData;
+var root$9 = require_root();
 
-function require_coreJsData () {
-	if (hasRequired_coreJsData) return _coreJsData;
-	hasRequired_coreJsData = 1;
-	var root = require_root();
+/** Used to detect overreaching core-js shims. */
+var coreJsData$1 = root$9['__core-js_shared__'];
 
-	/** Used to detect overreaching core-js shims. */
-	var coreJsData = root['__core-js_shared__'];
+var _coreJsData = coreJsData$1;
 
-	_coreJsData = coreJsData;
-	return _coreJsData;
+var coreJsData = _coreJsData;
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked$1(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
 }
 
-var _isMasked;
-var hasRequired_isMasked;
-
-function require_isMasked () {
-	if (hasRequired_isMasked) return _isMasked;
-	hasRequired_isMasked = 1;
-	var coreJsData = require_coreJsData();
-
-	/** Used to detect methods masquerading as native. */
-	var maskSrcKey = (function() {
-	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-	  return uid ? ('Symbol(src)_1.' + uid) : '';
-	}());
-
-	/**
-	 * Checks if `func` has its source masked.
-	 *
-	 * @private
-	 * @param {Function} func The function to check.
-	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
-	 */
-	function isMasked(func) {
-	  return !!maskSrcKey && (maskSrcKey in func);
-	}
-
-	_isMasked = isMasked;
-	return _isMasked;
-}
+var _isMasked = isMasked$1;
 
 /** Used for built-in method references. */
 
-var funcProto$1 = Function.prototype;
+var funcProto$2 = Function.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
+var funcToString$2 = funcProto$2.toString;
 
 /**
  * Converts `func` to its source code.
@@ -10804,10 +10951,10 @@ var funcToString$1 = funcProto$1.toString;
  * @param {Function} func The function to convert.
  * @returns {string} Returns the source code.
  */
-function toSource$1(func) {
+function toSource$2(func) {
   if (func != null) {
     try {
-      return funcToString$1.call(func);
+      return funcToString$2.call(func);
     } catch (e) {}
     try {
       return (func + '');
@@ -10816,63 +10963,55 @@ function toSource$1(func) {
   return '';
 }
 
-var _toSource = toSource$1;
+var _toSource = toSource$2;
 
-var _baseIsNative;
-var hasRequired_baseIsNative;
+var isFunction = isFunction_1,
+    isMasked = _isMasked,
+    isObject$4 = isObject_1,
+    toSource$1 = _toSource;
 
-function require_baseIsNative () {
-	if (hasRequired_baseIsNative) return _baseIsNative;
-	hasRequired_baseIsNative = 1;
-	var isFunction = isFunction_1,
-	    isMasked = require_isMasked(),
-	    isObject = isObject_1,
-	    toSource = _toSource;
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-	/**
-	 * Used to match `RegExp`
-	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
-	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-	/** Used to detect host constructors (Safari). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+/** Used for built-in method references. */
+var funcProto$1 = Function.prototype,
+    objectProto$7 = Object.prototype;
 
-	/** Used for built-in method references. */
-	var funcProto = Function.prototype,
-	    objectProto = Object.prototype;
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
 
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = funcProto.toString;
+/** Used to check objects for own properties. */
+var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString$1.call(hasOwnProperty$6).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
 
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-
-	/**
-	 * The base implementation of `_.isNative` without bad shim checks.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function,
-	 *  else `false`.
-	 */
-	function baseIsNative(value) {
-	  if (!isObject(value) || isMasked(value)) {
-	    return false;
-	  }
-	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-	  return pattern.test(toSource(value));
-	}
-
-	_baseIsNative = baseIsNative;
-	return _baseIsNative;
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative$1(value) {
+  if (!isObject$4(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource$1(value));
 }
+
+var _baseIsNative = baseIsNative$1;
 
 /**
  * Gets the value at `key` of `object`.
@@ -10883,61 +11022,37 @@ function require_baseIsNative () {
  * @returns {*} Returns the property value.
  */
 
-var _getValue;
-var hasRequired_getValue;
-
-function require_getValue () {
-	if (hasRequired_getValue) return _getValue;
-	hasRequired_getValue = 1;
-	function getValue(object, key) {
-	  return object == null ? undefined : object[key];
-	}
-
-	_getValue = getValue;
-	return _getValue;
+function getValue$1(object, key) {
+  return object == null ? undefined : object[key];
 }
 
-var _getNative;
-var hasRequired_getNative;
+var _getValue = getValue$1;
 
-function require_getNative () {
-	if (hasRequired_getNative) return _getNative;
-	hasRequired_getNative = 1;
-	var baseIsNative = require_baseIsNative(),
-	    getValue = require_getValue();
+var baseIsNative = _baseIsNative,
+    getValue = _getValue;
 
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = getValue(object, key);
-	  return baseIsNative(value) ? value : undefined;
-	}
-
-	_getNative = getNative;
-	return _getNative;
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative$6(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
 }
 
-var _WeakMap;
-var hasRequired_WeakMap;
+var _getNative = getNative$6;
 
-function require_WeakMap () {
-	if (hasRequired_WeakMap) return _WeakMap;
-	hasRequired_WeakMap = 1;
-	var getNative = require_getNative(),
-	    root = require_root();
+var getNative$5 = _getNative,
+    root$8 = require_root();
 
-	/* Built-in method references that are verified to be native. */
-	var WeakMap = getNative(root, 'WeakMap');
+/* Built-in method references that are verified to be native. */
+var WeakMap$1 = getNative$5(root$8, 'WeakMap');
 
-	_WeakMap = WeakMap;
-	return _WeakMap;
-}
+var _WeakMap = WeakMap$1;
 
 var _metaMap;
 var hasRequired_metaMap;
@@ -10945,7 +11060,7 @@ var hasRequired_metaMap;
 function require_metaMap () {
 	if (hasRequired_metaMap) return _metaMap;
 	hasRequired_metaMap = 1;
-	var WeakMap = require_WeakMap();
+	var WeakMap = _WeakMap;
 
 	/** Used to store function metadata. */
 	var metaMap = WeakMap && new WeakMap;
@@ -11050,7 +11165,7 @@ function createCtor$4(Ctor) {
 var _createCtor = createCtor$4;
 
 var createCtor$3 = _createCtor,
-    root$8 = require_root();
+    root$7 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$6 = 1;
@@ -11070,7 +11185,7 @@ function createBind$1(func, bitmask, thisArg) {
       Ctor = createCtor$3(func);
 
   function wrapper() {
-    var fn = (this && this !== root$8 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$7 && this instanceof wrapper) ? Ctor : func;
     return fn.apply(isBind ? thisArg : this, arguments);
   }
   return wrapper;
@@ -11877,7 +11992,7 @@ var hasRequired_defineProperty;
 function require_defineProperty () {
 	if (hasRequired_defineProperty) return _defineProperty;
 	hasRequired_defineProperty = 1;
-	var getNative = require_getNative();
+	var getNative = _getNative;
 
 	var defineProperty = (function() {
 	  try {
@@ -12318,7 +12433,7 @@ var composeArgs$1 = _composeArgs,
     getHolder$1 = _getHolder,
     reorder = _reorder,
     replaceHolders$2 = _replaceHolders,
-    root$7 = require_root();
+    root$6 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$3 = 1,
@@ -12393,7 +12508,7 @@ function createHybrid$2(func, bitmask, thisArg, partials, holders, partialsRight
     if (isAry && ary < length) {
       args.length = ary;
     }
-    if (this && this !== root$7 && this instanceof wrapper) {
+    if (this && this !== root$6 && this instanceof wrapper) {
       fn = Ctor || createCtor$2(fn);
     }
     return fn.apply(thisBinding, args);
@@ -12409,7 +12524,7 @@ var apply$1 = require_apply(),
     createRecurry = _createRecurry,
     getHolder = _getHolder,
     replaceHolders$1 = _replaceHolders,
-    root$6 = require_root();
+    root$5 = require_root();
 
 /**
  * Creates a function that wraps `func` to enable currying.
@@ -12442,7 +12557,7 @@ function createCurry$1(func, bitmask, arity) {
         func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
         args, holders, undefined, undefined, arity - length);
     }
-    var fn = (this && this !== root$6 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
     return apply$1(fn, this, args);
   }
   return wrapper;
@@ -12452,7 +12567,7 @@ var _createCurry = createCurry$1;
 
 var apply = require_apply(),
     createCtor = _createCtor,
-    root$5 = require_root();
+    root$4 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$2 = 1;
@@ -12479,7 +12594,7 @@ function createPartial$1(func, bitmask, thisArg, partials) {
         leftIndex = -1,
         leftLength = partials.length,
         args = Array(leftLength + argsLength),
-        fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
+        fn = (this && this !== root$4 && this instanceof wrapper) ? Ctor : func;
 
     while (++leftIndex < leftLength) {
       args[leftIndex] = partials[leftIndex];
@@ -13978,15 +14093,15 @@ function stackHas$1(key) {
 
 var _stackHas = stackHas$1;
 
-var getNative$4 = require_getNative(),
-    root$4 = require_root();
+var getNative$4 = _getNative,
+    root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$3 = getNative$4(root$4, 'Map');
+var Map$3 = getNative$4(root$3, 'Map');
 
 var _Map = Map$3;
 
-var getNative$3 = require_getNative();
+var getNative$3 = _getNative;
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate$4 = getNative$3(Object, 'create');
@@ -14753,27 +14868,27 @@ function getAllKeysIn$1(object) {
 
 var _getAllKeysIn = getAllKeysIn$1;
 
-var getNative$2 = require_getNative(),
-    root$3 = require_root();
-
-/* Built-in method references that are verified to be native. */
-var DataView$2 = getNative$2(root$3, 'DataView');
-
-var _DataView = DataView$2;
-
-var getNative$1 = require_getNative(),
+var getNative$2 = _getNative,
     root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$1(root$2, 'Promise');
+var DataView$2 = getNative$2(root$2, 'DataView');
 
-var _Promise = Promise$2;
+var _DataView = DataView$2;
 
-var getNative = require_getNative(),
+var getNative$1 = _getNative,
     root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative(root$1, 'Set');
+var Promise$2 = getNative$1(root$1, 'Promise');
+
+var _Promise = Promise$2;
+
+var getNative = _getNative,
+    root = require_root();
+
+/* Built-in method references that are verified to be native. */
+var Set$1 = getNative(root, 'Set');
 
 var _Set = Set$1;
 
@@ -14781,7 +14896,7 @@ var DataView$1 = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = require_WeakMap(),
+    WeakMap = _WeakMap,
     baseGetTag$2 = _baseGetTag,
     toSource = _toSource;
 
@@ -14864,14 +14979,22 @@ function initCloneArray$1(array) {
 
 var _initCloneArray = initCloneArray$1;
 
-var root = require_root();
+var _Uint8Array;
+var hasRequired_Uint8Array;
 
-/** Built-in value references. */
-var Uint8Array$2 = root.Uint8Array;
+function require_Uint8Array () {
+	if (hasRequired_Uint8Array) return _Uint8Array;
+	hasRequired_Uint8Array = 1;
+	var root = require_root();
 
-var _Uint8Array = Uint8Array$2;
+	/** Built-in value references. */
+	var Uint8Array = root.Uint8Array;
 
-var Uint8Array$1 = _Uint8Array;
+	_Uint8Array = Uint8Array;
+	return _Uint8Array;
+}
+
+var Uint8Array$1 = require_Uint8Array();
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -15843,7 +15966,7 @@ function require_equalByTag () {
 	if (hasRequired_equalByTag) return _equalByTag;
 	hasRequired_equalByTag = 1;
 	var Symbol = _Symbol,
-	    Uint8Array = _Uint8Array,
+	    Uint8Array = require_Uint8Array(),
 	    eq = eq_1,
 	    equalArrays = require_equalArrays(),
 	    mapToArray = require_mapToArray(),
@@ -17892,4 +18015,4 @@ var callbackOnMapEvents = function callbackOnMapEvents(eventNames, callback) {
   };
 };
 
-export { BCBaseMap, GenericBaseMap, MapSpinner, SetView, StaticControl, YNWTBaseMap, callbackOnMapEvents, projCRSOptions, resolutions };
+export { BCBaseMap, BCVectorBaseMap, GenericBaseMap, GenericVectorBaseMap, MapSpinner, SetView, StaticControl, YNWTBaseMap, callbackOnMapEvents, projCRSOptions, resolutions };
