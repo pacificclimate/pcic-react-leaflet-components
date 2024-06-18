@@ -24,7 +24,7 @@
     "i-pg": "cd playground && npm i",
     "i-all": "npm i && cd playground && npm i",
     "rei-all": "(rm -rf node_modules ; npm i) && (cd playground && rm -rf node_modules ; npm i)",
-    "dev": "npm-run-all --parallel build-watch start-playground",
+    "dev": "npm-run-all --parallel build-watch start-pg",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -65,6 +65,6 @@
     "leaflet": "^1.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-leaflet": "4.0.0"
+    "react-leaflet": "^4.2.1"
   }
 }
