@@ -8,11 +8,14 @@ Client applications will need to install these as dependencies (or, possibly,
 peer dependencies).
 
 ```json
-"leaflet": "^1.7.1",
-"react": "^17.0.2",
-"react-dom": "^17.0.2",
-"@react-leaflet/core": "1.0.2",
-"react-leaflet": "3.1.0"
+"peerDependencies": {
+    "@react-leaflet/core": "2.0.0",
+    "leaflet": "^1.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1"
+}
+
 ```
 
 IMPORTANT: Note the exact (and out of date) version specifications for

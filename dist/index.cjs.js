@@ -29,265 +29,36 @@ function _mergeNamespaces(n, m) {
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var L__default = /*#__PURE__*/_interopDefaultLegacy(L);
 
-function ownKeys(object, enumerableOnly) {
-  var keys = Object.keys(object);
-
-  if (Object.getOwnPropertySymbols) {
-    var symbols = Object.getOwnPropertySymbols(object);
-    enumerableOnly && (symbols = symbols.filter(function (sym) {
-      return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-    })), keys.push.apply(keys, symbols);
-  }
-
-  return keys;
+function _defineProperty$1(e, r, t) {
+  return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
+    value: t,
+    enumerable: !0,
+    configurable: !0,
+    writable: !0
+  }) : e[r] = t, e;
 }
-
-function _objectSpread2(target) {
-  for (var i = 1; i < arguments.length; i++) {
-    var source = null != arguments[i] ? arguments[i] : {};
-    i % 2 ? ownKeys(Object(source), !0).forEach(function (key) {
-      _defineProperty$1(target, key, source[key]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) {
-      Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-    });
-  }
-
-  return target;
-}
-
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];
-    descriptor.enumerable = descriptor.enumerable || false;
-    descriptor.configurable = true;
-    if ("value" in descriptor) descriptor.writable = true;
-    Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-  if (staticProps) _defineProperties(Constructor, staticProps);
-  Object.defineProperty(Constructor, "prototype", {
-    writable: false
-  });
-  return Constructor;
-}
-
-function _defineProperty$1(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
 function _extends() {
-  _extends = Object.assign ? Object.assign.bind() : function (target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
+  return _extends = Object.assign ? Object.assign.bind() : function (n) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t = arguments[e];
+      for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]);
     }
-
-    return target;
-  };
-  return _extends.apply(this, arguments);
+    return n;
+  }, _extends.apply(null, arguments);
 }
-
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function");
+function _toPrimitive(t, r) {
+  if ("object" != typeof t || !t) return t;
+  var e = t[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t, r || "default");
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
   }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      writable: true,
-      configurable: true
-    }
-  });
-  Object.defineProperty(subClass, "prototype", {
-    writable: false
-  });
-  if (superClass) _setPrototypeOf(subClass, superClass);
+  return ("string" === r ? String : Number)(t);
 }
-
-function _getPrototypeOf(o) {
-  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) {
-    return o.__proto__ || Object.getPrototypeOf(o);
-  };
-  return _getPrototypeOf(o);
-}
-
-function _setPrototypeOf(o, p) {
-  _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-    o.__proto__ = p;
-    return o;
-  };
-  return _setPrototypeOf(o, p);
-}
-
-function _isNativeReflectConstruct() {
-  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-  if (Reflect.construct.sham) return false;
-  if (typeof Proxy === "function") return true;
-
-  try {
-    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-    return true;
-  } catch (e) {
-    return false;
-  }
-}
-
-function _objectWithoutPropertiesLoose(source, excluded) {
-  if (source == null) return {};
-  var target = {};
-  var sourceKeys = Object.keys(source);
-  var key, i;
-
-  for (i = 0; i < sourceKeys.length; i++) {
-    key = sourceKeys[i];
-    if (excluded.indexOf(key) >= 0) continue;
-    target[key] = source[key];
-  }
-
-  return target;
-}
-
-function _objectWithoutProperties(source, excluded) {
-  if (source == null) return {};
-
-  var target = _objectWithoutPropertiesLoose(source, excluded);
-
-  var key, i;
-
-  if (Object.getOwnPropertySymbols) {
-    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
-
-    for (i = 0; i < sourceSymbolKeys.length; i++) {
-      key = sourceSymbolKeys[i];
-      if (excluded.indexOf(key) >= 0) continue;
-      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
-      target[key] = source[key];
-    }
-  }
-
-  return target;
-}
-
-function _assertThisInitialized(self) {
-  if (self === void 0) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return self;
-}
-
-function _possibleConstructorReturn(self, call) {
-  if (call && (typeof call === "object" || typeof call === "function")) {
-    return call;
-  } else if (call !== void 0) {
-    throw new TypeError("Derived constructors may only return object or undefined");
-  }
-
-  return _assertThisInitialized(self);
-}
-
-function _createSuper(Derived) {
-  var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
-  return function _createSuperInternal() {
-    var Super = _getPrototypeOf(Derived),
-        result;
-
-    if (hasNativeReflectConstruct) {
-      var NewTarget = _getPrototypeOf(this).constructor;
-
-      result = Reflect.construct(Super, arguments, NewTarget);
-    } else {
-      result = Super.apply(this, arguments);
-    }
-
-    return _possibleConstructorReturn(this, result);
-  };
-}
-
-function _slicedToArray(arr, i) {
-  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
-
-function _iterableToArrayLimit(arr, i) {
-  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-
-  if (_i == null) return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-
-  var _s, _e;
-
-  try {
-    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
-      _arr.push(_s.value);
-
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-
-  return _arr;
-}
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-  return arr2;
-}
-
-function _nonIterableRest() {
-  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+function _toPropertyKey(t) {
+  var i = _toPrimitive(t, "string");
+  return "symbol" == typeof i ? i : i + "";
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -10182,7 +9953,10 @@ var _baseConvert = baseConvert$1;
 var _ = lodash_min.exports.runInContext();
 var fp = _baseConvert(_, _);
 
-var pixelWidth = 0.00028; // Compute resolutions from CRS info and tile matrix parameters.
+// From OGC Standard
+const pixelWidth = 0.00028;
+
+// Compute resolutions from CRS info and tile matrix parameters.
 //
 // The user must supply one of `scaleDenominator` or
 // `metersPerUnit`, `tileMatrixMinX`, `tileMatrixMaxX`, and `tileWidth` or
@@ -10194,41 +9968,41 @@ var pixelWidth = 0.00028; // Compute resolutions from CRS info and tile matrix p
 // value can be derived, in our particular case from fundamental information
 // about the tileset, namely its extents or bounds. (For details, see
 // https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818194664)
-
 function resolutions(_ref) {
-  var metersPerUnit = _ref.metersPerUnit,
-      scaleDenominator = _ref.scaleDenominator,
-      tileMatrixMinX = _ref.tileMatrixMinX,
-      tileMatrixMaxX = _ref.tileMatrixMaxX,
-      tileWidth = _ref.tileWidth,
-      tileMatrixMinY = _ref.tileMatrixMinY,
-      tileMatrixMaxY = _ref.tileMatrixMaxY,
-      tileHeight = _ref.tileHeight,
-      numResolutions = _ref.numResolutions;
-  var maxResolution;
-
+  let {
+    metersPerUnit,
+    scaleDenominator,
+    tileMatrixMinX,
+    tileMatrixMaxX,
+    tileWidth,
+    tileMatrixMinY,
+    tileMatrixMaxY,
+    tileHeight,
+    numResolutions
+  } = _ref;
+  let maxResolution;
   if (!fp.isUndefined(scaleDenominator)) {
     maxResolution = scaleDenominator * pixelWidth;
   } else {
-    var pixelSpan = !fp.isUndefined(tileMatrixMinX) ? (tileMatrixMaxX - tileMatrixMinX) / tileWidth : (tileMatrixMaxY - tileMatrixMinY) / tileHeight;
+    const pixelSpan = !fp.isUndefined(tileMatrixMinX) ? (tileMatrixMaxX - tileMatrixMinX) / tileWidth : (tileMatrixMaxY - tileMatrixMinY) / tileHeight;
     maxResolution = pixelSpan * metersPerUnit;
   }
+  return fp.map(i => maxResolution / Math.pow(2, i))(fp.range(0, numResolutions));
+}
 
-  return fp.map(function (i) {
-    return maxResolution / Math.pow(2, i);
-  })(fp.range(0, numResolutions));
-} // Compute options for `L.Proj.CRS` from CRS info and tile matrix parameters.
+// Compute options for `L.Proj.CRS` from CRS info and tile matrix parameters.
 //
 // See comments to `resolutions` re. resolution computations.
 //
 // The values for `origin` and `bounds` are also derived from the extents. (See
 // https://github.com/pacificclimate/pcic-react-leaflet-components/issues/1#issuecomment-818231259)
-
 function projCRSOptions(tileMatrixParams) {
-  var tileMatrixMinX = tileMatrixParams.tileMatrixMinX,
-      tileMatrixMinY = tileMatrixParams.tileMatrixMinY,
-      tileMatrixMaxX = tileMatrixParams.tileMatrixMaxX,
-      tileMatrixMaxY = tileMatrixParams.tileMatrixMaxY;
+  const {
+    tileMatrixMinX,
+    tileMatrixMinY,
+    tileMatrixMaxX,
+    tileMatrixMaxY
+  } = tileMatrixParams;
   return {
     bounds: L__default["default"].bounds(L__default["default"].point(tileMatrixMinX, tileMatrixMinY), L__default["default"].point(tileMatrixMaxX, tileMatrixMaxY)),
     origin: [tileMatrixMinX, tileMatrixMaxY],
@@ -10236,24 +10010,27 @@ function projCRSOptions(tileMatrixParams) {
   };
 }
 
-var _excluded$4 = ["tileset", "center", "zoom", "mapRef", "children"];
-
 function GenericBaseMap(_ref) {
-  var _ref$tileset = _ref.tileset,
-      url = _ref$tileset.url,
-      projection = _ref$tileset.projection,
-      tileMatrix = _ref$tileset.tileMatrix,
-      attribution = _ref$tileset.attribution,
-      center = _ref.center,
-      zoom = _ref.zoom;
-      _ref.mapRef;
-      var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, _excluded$4);
-
+  let {
+    tileset: {
+      url,
+      projection,
+      tileMatrix,
+      attribution
+    },
+    center,
+    zoom,
+    mapRef,
+    children,
+    ...rest
+  } = _ref;
   // Create Leaflet CRS object. This is where the magic of this component
   // lies ... converting the tileMatrix specification to a correct CRS.
   // TODO: Memoize?
-  var crs = new L__default["default"].Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
+  const crs = new L__default["default"].Proj.CRS(projection.code, projection.proj4def, {
+    ...projCRSOptions(tileMatrix),
+    ...projection.options
+  });
   return /*#__PURE__*/React__default["default"].createElement(reactLeaflet.MapContainer, _extends({
     crs: crs,
     minZoom: 0,
@@ -10267,10 +10044,10 @@ function GenericBaseMap(_ref) {
     maxZoom: tileMatrix.numResolutions
   }), children);
 }
-
 GenericBaseMap.propTypes = {
   // Only props added by this component are defined here.
   // All other valid props for MapContainer are passed through to it.
+
   // Describes the tileset.
   tileset: propTypes.exports.shape({
     // Full URL of tileset, including `x`, `y`, `z` params.
@@ -10291,49 +10068,28 @@ GenericBaseMap.propTypes = {
   }).isRequired
 };
 
-var _excluded$3 = ["children"];
-
-var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
-  _inherits(BCBaseMap, _PureComponent);
-
-  var _super = _createSuper(BCBaseMap);
-
-  function BCBaseMap() {
-    _classCallCheck(this, BCBaseMap);
-
-    return _super.apply(this, arguments);
+class BCBaseMap extends React.PureComponent {
+  render() {
+    const {
+      children,
+      ...rest
+    } = this.props;
+    return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
+      tileset: BCBaseMap.tileset
+    }, rest), children);
   }
-
-  _createClass(BCBaseMap, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$3);
-
-      return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
-        tileset: BCBaseMap.tileset
-      }, rest), children);
-    }
-  }]);
-
-  return BCBaseMap;
-}(React.PureComponent);
-
+}
 _defineProperty$1(BCBaseMap, "propTypes", {
   // Only props added by this component are defined here.
   // All other valid props for Map component are passed through to it.
-  mapRef: propTypes.exports.func // Callback to which a ref to the Map component is passed.
+
+  mapRef: propTypes.exports.func
+  // Callback to which a ref to the Map component is passed.
   // Allows parent components to diddle with the map established here.
-
 });
-
 _defineProperty$1(BCBaseMap, "defaultProps", {
-  mapRef: function mapRef() {
-    return null;
-  }
+  mapRef: () => null
 });
-
 _defineProperty$1(BCBaseMap, "tileset", {
   url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
   projection: {
@@ -10344,6 +10100,7 @@ _defineProperty$1(BCBaseMap, "tileset", {
     // From the definition of the projection (SRS)
     metersPerUnit: 1,
     // Proj.4: +units=m
+
     // From tile generation
     tileMatrixMinX: -20037508,
     tileMatrixMaxX: 20037508,
@@ -10354,7 +10111,6 @@ _defineProperty$1(BCBaseMap, "tileset", {
   },
   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 });
-
 _defineProperty$1(BCBaseMap, "initialViewport", {
   center: {
     lat: 55.0,
@@ -10363,49 +10119,28 @@ _defineProperty$1(BCBaseMap, "initialViewport", {
   zoom: 6
 });
 
-var _excluded$2 = ["children"];
-
-var YNWTBaseMap = /*#__PURE__*/function (_PureComponent) {
-  _inherits(YNWTBaseMap, _PureComponent);
-
-  var _super = _createSuper(YNWTBaseMap);
-
-  function YNWTBaseMap() {
-    _classCallCheck(this, YNWTBaseMap);
-
-    return _super.apply(this, arguments);
+class YNWTBaseMap extends React.PureComponent {
+  render() {
+    const {
+      children,
+      ...rest
+    } = this.props;
+    return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
+      tileset: YNWTBaseMap.tileset
+    }, rest), children);
   }
-
-  _createClass(YNWTBaseMap, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$2);
-
-      return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
-        tileset: YNWTBaseMap.tileset
-      }, rest), children);
-    }
-  }]);
-
-  return YNWTBaseMap;
-}(React.PureComponent);
-
+}
 _defineProperty$1(YNWTBaseMap, "propTypes", {
   // Only props added by this component are defined here.
   // All other valid props for Map component are passed through to it.
-  mapRef: propTypes.exports.func // Callback to which a ref to the Map component is passed.
+
+  mapRef: propTypes.exports.func
+  // Callback to which a ref to the Map component is passed.
   // Allows parent components to diddle with the map established here.
-
 });
-
 _defineProperty$1(YNWTBaseMap, "defaultProps", {
-  mapRef: function mapRef() {
-    return null;
-  }
+  mapRef: () => null
 });
-
 _defineProperty$1(YNWTBaseMap, "tileset", {
   url: process.env.REACT_APP_YNWT_BASE_MAP_TILES_URL,
   projection: {
@@ -10416,6 +10151,7 @@ _defineProperty$1(YNWTBaseMap, "tileset", {
     // From the definition of the projection (SRS)
     metersPerUnit: 1,
     // Proj.4: +units=m
+
     // From tile generation
     tileMatrixMinX: -20037508,
     tileMatrixMaxX: 20037508,
@@ -10426,7 +10162,6 @@ _defineProperty$1(YNWTBaseMap, "tileset", {
   },
   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 });
-
 _defineProperty$1(YNWTBaseMap, "initialViewport", {
   center: {
     lat: 65.0,
@@ -10436,38 +10171,33 @@ _defineProperty$1(YNWTBaseMap, "initialViewport", {
 });
 
 // Sets the view (center, zoom) of the `MapContainer` inside which it is
-
-var printView = function printView(view) {
-  return JSON.stringify({
-    lat: view.center.lat,
-    lng: view.center.lng,
-    zoom: view.zoom
-  });
-};
-
-var SetView = function SetView(_ref) {
-  var view = _ref.view,
-      _ref$debug = _ref.debug,
-      debug = _ref$debug === void 0 ? false : _ref$debug;
-  var map = reactLeaflet.useMap();
-  var currCenter = map.getCenter();
-  var currZoom = map.getZoom();
-  var tag = "SetView ".concat(map._container.id, ":");
-
+const printView = view => JSON.stringify({
+  lat: view.center.lat,
+  lng: view.center.lng,
+  zoom: view.zoom
+});
+const SetView = _ref => {
+  let {
+    view,
+    debug = false
+  } = _ref;
+  const map = reactLeaflet.useMap();
+  const currCenter = map.getCenter();
+  const currZoom = map.getZoom();
+  const tag = "SetView ".concat(map._container.id, ":");
   if (debug) {
     console.log(tag, "from:", printView({
       center: currCenter,
       zoom: currZoom
     }), "to:", printView(view));
-  } // It's important to wrap side-effect updates like this with useEffect!
+  }
 
-
-  React.useEffect(function () {
+  // It's important to wrap side-effect updates like this with useEffect!
+  React.useEffect(() => {
     if (currCenter.lat !== view.center.lat || currCenter.lng !== view.center.lng || currZoom !== view.zoom) {
       if (debug) {
         console.log(tag, "!setting");
       }
-
       map.setView(view.center, view.zoom, {
         animate: false
       });
@@ -10477,30 +10207,26 @@ var SetView = function SetView(_ref) {
 };
 
 L__default["default"].Control.Static = L__default["default"].Control.extend({
-  onAdd: function onAdd(map) {
-    var container = L__default["default"].DomUtil.create('div', 'leaflet-control-static leaflet-control');
+  onAdd: map => {
+    const container = L__default["default"].DomUtil.create('div', 'leaflet-control-static leaflet-control');
     return container;
   },
-  onRemove: function onRemove(map) {}
+  onRemove: map => {}
 });
-
-L__default["default"].control.static = function (opts) {
-  return new L__default["default"].Control.Static(opts);
-};
-
-var _excluded$1 = ["children"];
+L__default["default"].control.static = opts => new L__default["default"].Control.Static(opts);
 
 function StaticControl(_ref) {
-  var children = _ref.children,
-      rest = _objectWithoutProperties(_ref, _excluded$1);
-
-  var context = core.useLeafletContext();
-  React.useEffect(function () {
-    var control = L__default["default"].control.static(rest);
+  let {
+    children,
+    ...rest
+  } = _ref;
+  const context = core.useLeafletContext();
+  React.useEffect(() => {
+    const control = L__default["default"].control.static(rest);
     control.addTo(context.map);
-    var root = client.createRoot(control.getContainer());
+    const root = client.createRoot(control.getContainer());
     root.render(children);
-    return function () {
+    return () => {
       control.remove();
     };
   });
@@ -10577,10 +10303,10 @@ function require_root () {
 	return _root;
 }
 
-var root$9 = require_root();
+var root$8 = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$9.Symbol;
+var Symbol$5 = root$8.Symbol;
 
 var _Symbol = Symbol$5;
 
@@ -11059,7 +10785,7 @@ function createCtor$4(Ctor) {
 var _createCtor = createCtor$4;
 
 var createCtor$3 = _createCtor,
-    root$8 = require_root();
+    root$7 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$6 = 1;
@@ -11079,7 +10805,7 @@ function createBind$1(func, bitmask, thisArg) {
       Ctor = createCtor$3(func);
 
   function wrapper() {
-    var fn = (this && this !== root$8 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$7 && this instanceof wrapper) ? Ctor : func;
     return fn.apply(isBind ? thisArg : this, arguments);
   }
   return wrapper;
@@ -12327,7 +12053,7 @@ var composeArgs$1 = _composeArgs,
     getHolder$1 = _getHolder,
     reorder = _reorder,
     replaceHolders$2 = _replaceHolders,
-    root$7 = require_root();
+    root$6 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$3 = 1,
@@ -12402,7 +12128,7 @@ function createHybrid$2(func, bitmask, thisArg, partials, holders, partialsRight
     if (isAry && ary < length) {
       args.length = ary;
     }
-    if (this && this !== root$7 && this instanceof wrapper) {
+    if (this && this !== root$6 && this instanceof wrapper) {
       fn = Ctor || createCtor$2(fn);
     }
     return fn.apply(thisBinding, args);
@@ -12418,7 +12144,7 @@ var apply$1 = require_apply(),
     createRecurry = _createRecurry,
     getHolder = _getHolder,
     replaceHolders$1 = _replaceHolders,
-    root$6 = require_root();
+    root$5 = require_root();
 
 /**
  * Creates a function that wraps `func` to enable currying.
@@ -12451,7 +12177,7 @@ function createCurry$1(func, bitmask, arity) {
         func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
         args, holders, undefined, undefined, arity - length);
     }
-    var fn = (this && this !== root$6 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
     return apply$1(fn, this, args);
   }
   return wrapper;
@@ -12461,7 +12187,7 @@ var _createCurry = createCurry$1;
 
 var apply = require_apply(),
     createCtor = _createCtor,
-    root$5 = require_root();
+    root$4 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$2 = 1;
@@ -12488,7 +12214,7 @@ function createPartial$1(func, bitmask, thisArg, partials) {
         leftIndex = -1,
         leftLength = partials.length,
         args = Array(leftLength + argsLength),
-        fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
+        fn = (this && this !== root$4 && this instanceof wrapper) ? Ctor : func;
 
     while (++leftIndex < leftLength) {
       args[leftIndex] = partials[leftIndex];
@@ -13988,10 +13714,10 @@ function stackHas$1(key) {
 var _stackHas = stackHas$1;
 
 var getNative$4 = require_getNative(),
-    root$4 = require_root();
+    root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$3 = getNative$4(root$4, 'Map');
+var Map$3 = getNative$4(root$3, 'Map');
 
 var _Map = Map$3;
 
@@ -14763,26 +14489,26 @@ function getAllKeysIn$1(object) {
 var _getAllKeysIn = getAllKeysIn$1;
 
 var getNative$2 = require_getNative(),
-    root$3 = require_root();
+    root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var DataView$2 = getNative$2(root$3, 'DataView');
+var DataView$2 = getNative$2(root$2, 'DataView');
 
 var _DataView = DataView$2;
 
 var getNative$1 = require_getNative(),
-    root$2 = require_root();
+    root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$1(root$2, 'Promise');
+var Promise$2 = getNative$1(root$1, 'Promise');
 
 var _Promise = Promise$2;
 
 var getNative = require_getNative(),
-    root$1 = require_root();
+    root = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative(root$1, 'Set');
+var Set$1 = getNative(root, 'Set');
 
 var _Set = Set$1;
 
@@ -14873,14 +14599,22 @@ function initCloneArray$1(array) {
 
 var _initCloneArray = initCloneArray$1;
 
-var root = require_root();
+var _Uint8Array;
+var hasRequired_Uint8Array;
 
-/** Built-in value references. */
-var Uint8Array$2 = root.Uint8Array;
+function require_Uint8Array () {
+	if (hasRequired_Uint8Array) return _Uint8Array;
+	hasRequired_Uint8Array = 1;
+	var root = require_root();
 
-var _Uint8Array = Uint8Array$2;
+	/** Built-in value references. */
+	var Uint8Array = root.Uint8Array;
 
-var Uint8Array$1 = _Uint8Array;
+	_Uint8Array = Uint8Array;
+	return _Uint8Array;
+}
+
+var Uint8Array$1 = require_Uint8Array();
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -15852,7 +15586,7 @@ function require_equalByTag () {
 	if (hasRequired_equalByTag) return _equalByTag;
 	hasRequired_equalByTag = 1;
 	var Symbol = _Symbol,
-	    Uint8Array = _Uint8Array,
+	    Uint8Array = require_Uint8Array(),
 	    eq = eq_1,
 	    equalArrays = require_equalArrays(),
 	    mapToArray = require_mapToArray(),
@@ -17418,39 +17152,23 @@ var convert$3 = convert_1,
 func$3.placeholder = requirePlaceholder();
 var keys = func$3;
 
-var _excluded = ["spinner", "x", "y", "stroke"];
-
 function MapSpinner(_ref) {
-  var _ref$spinner = _ref.spinner,
-      spinner = _ref$spinner === void 0 ? "Bars" : _ref$spinner,
-      _ref$x = _ref.x,
-      x = _ref$x === void 0 ? "40%" : _ref$x,
-      _ref$y = _ref.y,
-      y = _ref$y === void 0 ? "40%" : _ref$y,
-      _ref$stroke = _ref.stroke,
-      stroke = _ref$stroke === void 0 ? "#98ff98" : _ref$stroke,
-      rest = _objectWithoutProperties(_ref, _excluded);
-
-  var _useState = React.useState(reactLeaflet.useMap().getBounds()),
-      _useState2 = _slicedToArray(_useState, 2),
-      bounds = _useState2[0],
-      setBounds = _useState2[1]; // This could be replaced by a call to callbackOnMapEvents, but it's a bit
+  let {
+    spinner = "Bars",
+    x = "40%",
+    y = "40%",
+    stroke = "#98ff98",
+    ...rest
+  } = _ref;
+  const [bounds, setBounds] = React.useState(reactLeaflet.useMap().getBounds());
+  // This could be replaced by a call to callbackOnMapEvents, but it's a bit
   // less clear and not much shorter.
-
-
-  var onEvent = function onEvent(map) {
-    return setBounds(map.getBounds());
-  };
-
-  var map = reactLeaflet.useMapEvents({
-    zoomend: function zoomend() {
-      return onEvent(map);
-    },
-    moveend: function moveend() {
-      return onEvent(map);
-    }
+  const onEvent = map => setBounds(map.getBounds());
+  const map = reactLeaflet.useMapEvents({
+    zoomend: () => onEvent(map),
+    moveend: () => onEvent(map)
   });
-  var Spinner = SVGLoaders[spinner];
+  const Spinner = SVGLoaders[spinner];
   return /*#__PURE__*/React__default["default"].createElement(reactLeaflet.SVGOverlay, {
     bounds: bounds
   }, /*#__PURE__*/React__default["default"].createElement(Spinner, _extends({
@@ -17459,7 +17177,6 @@ function MapSpinner(_ref) {
     stroke: stroke
   }, rest)));
 }
-
 MapSpinner.propTypes = {
   spinner: propTypes.exports.oneOf(keys(SVGLoaders)).isRequired,
   x: propTypes.exports.string,
@@ -17890,13 +17607,13 @@ var fromPairs = func;
 
 // Factory (higher order component) returning a functional component that
 
-var callbackOnMapEvents = function callbackOnMapEvents(eventNames, callback) {
-  return function () {
-    var leafletMap = reactLeaflet.useMapEvents(flow(map(function (name) {
-      return [name, function () {
-        callback(leafletMap);
-      }];
-    }), fromPairs)(eventNames));
+// TODO: Memoize.
+
+const callbackOnMapEvents = (eventNames, callback) => {
+  return () => {
+    const leafletMap = reactLeaflet.useMapEvents(flow(map(name => [name, () => {
+      callback(leafletMap);
+    }]), fromPairs)(eventNames));
     return null;
   };
 };
