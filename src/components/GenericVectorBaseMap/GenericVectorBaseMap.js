@@ -1,98 +1,124 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { MapContainer, useMap } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.vectorgrid';
 import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
-import 'leaflet/dist/leaflet.css';
-import 'leaflet.vectorgrid';
-import { MapContainer, useMap } from 'react-leaflet';
-import axios from 'axios';
 import { projCRSOptions } from '../../utils/crs';
+import vectorTileStyling from '../../styles/3005';
 
-function VectorTileLayer({ url, styleUrl, attribution }) {
+const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
     const map = useMap();
 
     useEffect(() => {
-        axios.get(styleUrl)
-            .then(response => {
-                const style = response.data;
-                const vectorGridLayer = L.vectorGrid.protobuf(url, {
-                    attribution,
-                    interactive: true,
-                    vectorTileLayerStyles: style.layers.reduce((acc, layer) => {
-                        acc[layer.id] = layer.paint;
-                        return acc;
-                    }, {}),
-                }).addTo(map);
 
-                return () => {
-                    map.removeLayer(vectorGridLayer);
-                };
-            })
-            .catch(error => console.error('Error fetching style:', error));
-    }, [map, url, styleUrl, attribution]);
+        console.log('Setting up vector grid with URL:', tilesUrl);
+        const vectorTileOptions = {
+            rendererFactory: L.svg.tile,
+            interactive: true,
+            getFeatureId: (feature) => feature.properties.id,
+            vectorTileLayerStyles: {
+                omt_boundary: [], //vectorTileStyling.boundary,
+                omt_landcover: [], //vectorTileStyling.landcover,
+                omt_landuse: [], //vectorTileStyling.landuse,
+                omt_mountain_peak: [], //vectorTileStyling.mountain_peak,
+                omt_park: [], //vectorTileStyling.park,
+                omt_place: [], //vectorTileStyling.place,
+                omt_transportation: [], //vectorTileStyling.transportation,
+                omt_transportation_name: [], //vectorTileStyling.transportation_name,
+                omt_water: vectorTileStyling.water,
+                omt_water_name: [], //vectorTileStyling.water_name,
+                omt_waterway: [], //vectorTileStyling.waterway,
+                omt_aeroway: [], //vectorTileStyling.aeroway,
+                omt_aerodrome_label: [], //vectorTileStyling.aerodrome_label,
+                omt_building: [], //vectorTileStyling.building,
+                omt_poi: [], //vectorTileStyling.poi,
+                omt_roads: [], //vectorTileStyling.roads,
+                omt_housenumber: [], //vectorTileStyling.housenumber,
+            }
+        };
+
+        try {
+            const vectorGrid = L.vectorGrid.protobuf(tilesUrl, vectorTileOptions)
+                .on('click', function (e) {
+                    console.log('Clicked feature properties:', e.layer);
+                    L.DomEvent.stopPropagation(e);
+                    L.DomEvent.preventDefault(e);
+                })
+                .addTo(map);
+
+            console.log('Vector grid added to map.');
+
+            return () => {
+                console.log('Removing vector grid from map.');
+                map.removeLayer(vectorGrid);
+            };
+        } catch (error) {
+            console.error('Error setting up vector grid:', error);
+        }
+    }, [tilesUrl, map]);
 
     return null;
 };
 
-function GenericVectorBaseMap({
-    url,
-    styleUrl,
+VectorGridLayer.propTypes = {
+    tilesUrl: PropTypes.string.isRequired,
+};
+
+// GenericVectorBaseMap component to create the map
+const GenericVectorBaseMap = ({
+    tileset: { url, projection, tileMatrix },
     center,
     zoom,
-    projection,
-    tileMatrix,
-    attribution,
+    mapRef,
+    vectorTileStyling,
     children,
     ...rest
-}) {
-    const mapRef = useRef();
-
+}) => {
     const crs = new L.Proj.CRS(
         projection.code,
         projection.proj4def,
-        { ...projCRSOptions(tileMatrix), ...projection.options },
+        { ...projCRSOptions(tileMatrix), ...projection.options }
     );
 
     return (
         <MapContainer
             crs={crs}
+            minZoom={0}
+            maxZoom={tileMatrix.numResolutions}
             center={center}
             zoom={zoom}
             ref={mapRef}
             {...rest}
         >
-            <VectorTileLayer url={url} styleUrl={styleUrl} attribution={attribution} />
+            <VectorGridLayer tilesUrl={url} vectorTileStyling={vectorTileStyling} />
             {children}
         </MapContainer>
     );
-}
+};
 
 GenericVectorBaseMap.propTypes = {
-    url: PropTypes.string.isRequired,
-    styleUrl: PropTypes.string.isRequired,
+    tileset: PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        projection: PropTypes.shape({
+            code: PropTypes.string.isRequired,
+            proj4def: PropTypes.string.isRequired,
+            options: PropTypes.object,
+        }).isRequired,
+        tileMatrix: PropTypes.object.isRequired,
+    }).isRequired,
     center: PropTypes.shape({
         lat: PropTypes.number.isRequired,
         lng: PropTypes.number.isRequired,
     }).isRequired,
     zoom: PropTypes.number.isRequired,
-    projection: PropTypes.shape({
-        code: PropTypes.string.isRequired,
-        proj4def: PropTypes.string.isRequired,
-        options: PropTypes.object,
-    }).isRequired,
-    tileMatrix: PropTypes.shape({
-        metersPerUnit: PropTypes.number.isRequired,
-        tileMatrixMinX: PropTypes.number.isRequired,
-        tileMatrixMaxX: PropTypes.number.isRequired,
-        tileWidth: PropTypes.number.isRequired,
-        tileMatrixMinY: PropTypes.number.isRequired,
-        tileMatrixMaxY: PropTypes.number.isRequired,
-        tileMatrixMaxY: PropTypes.number.isRequired,
-        numResolutions: PropTypes.number.isRequired,
-    }).isRequired,
-    attribution: PropTypes.string,
+    mapRef: PropTypes.func,
+    vectorTileStyling: PropTypes.object.isRequired,
     children: PropTypes.node,
 };
 
 export default GenericVectorBaseMap;
+
+

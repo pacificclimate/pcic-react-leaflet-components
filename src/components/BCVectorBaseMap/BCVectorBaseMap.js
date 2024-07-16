@@ -1,32 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import GenericVectorBaseMap from '../GenericVectorBaseMap';
-
+import vectorTileStyling from '../../styles/3005.js';
 export default class BCVectorBaseMap extends PureComponent {
     static propTypes = {
-        // Only props added by this component are defined here.
-        // All other valid props for Map component are passed through to it.
+        center: PropTypes.shape({
+            lat: PropTypes.number.isRequired,
+            lng: PropTypes.number.isRequired,
+        }).isRequired,
+        zoom: PropTypes.number.isRequired,
+        minZoom: PropTypes.number,
+        maxZoom: PropTypes.number,
         mapRef: PropTypes.func,
-        // Callback to which a ref to the Map component is passed.
-        // Allows parent components to diddle with the map established here.
     };
 
     static defaultProps = {
-        mapRef: (() => null),
+        mapRef: () => null,
     };
 
     static tileset = {
         url: process.env.REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
-        styleUrl: process.env.REACT_APP_BC_VECTOR_BASE_MAP_STYLE_URL,
         projection: {
             code: 'EPSG:3005',
             proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
         },
         tileMatrix: {
-            // From the definition of the projection (SRS)
-            metersPerUnit: 1,  // Proj.4: +units=m
-
-            // From tile generation
+            metersPerUnit: 1,
             tileMatrixMinX: -20037508,
             tileMatrixMaxX: 20037508,
             tileWidth: 256,
@@ -49,13 +48,8 @@ export default class BCVectorBaseMap extends PureComponent {
         const { children, ...rest } = this.props;
         return (
             <GenericVectorBaseMap
-                url={BCVectorBaseMap.tileset.url}
-                styleUrl={BCVectorBaseMap.tileset.styleUrl}
-                center={BCVectorBaseMap.initialViewport.center}
-                zoom={BCVectorBaseMap.initialViewport.zoom}
-                projection={BCVectorBaseMap.tileset.projection}
-                tileMatrix={BCVectorBaseMap.tileset.tileMatrix}
-                attribution={BCVectorBaseMap.tileset.attribution}
+                tileset={BCVectorBaseMap.tileset}
+                vectorTileStyling={vectorTileStyling}
                 {...rest}
             >
                 {children}
