@@ -7,26 +7,27 @@ import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
-import vectorTileStyling from '../../styles/3005';
+
 
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
     const map = useMap();
 
     useEffect(() => {
-
-        console.log('Setting up vector grid with URL:', tilesUrl);
         const vectorTileOptions = {
             rendererFactory: L.svg.tile,
             interactive: true,
             getFeatureId: (feature) => feature.properties.id,
             vectorTileLayerStyles: {
-                omt_boundary: [], //vectorTileStyling.boundary,
-                omt_landcover: [], //vectorTileStyling.landcover,
-                omt_landuse: [], //vectorTileStyling.landuse,
+
+                omt_landcover: vectorTileStyling.landcover,
+                omt_landuse: vectorTileStyling.landuse,
+                omt_park: vectorTileStyling.park,
+                omt_boundary: vectorTileStyling.boundary,
+                omt_water: vectorTileStyling.water,
                 omt_mountain_peak: [], //vectorTileStyling.mountain_peak,
-                omt_park: [], //vectorTileStyling.park,
+
                 omt_place: [], //vectorTileStyling.place,
-                omt_transportation: [], //vectorTileStyling.transportation,
+                omt_transportation: vectorTileStyling.transportation,
                 omt_transportation_name: [], //vectorTileStyling.transportation_name,
                 omt_water: vectorTileStyling.water,
                 omt_water_name: [], //vectorTileStyling.water_name,
@@ -35,8 +36,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
                 omt_aerodrome_label: [], //vectorTileStyling.aerodrome_label,
                 omt_building: [], //vectorTileStyling.building,
                 omt_poi: [], //vectorTileStyling.poi,
-                omt_roads: [], //vectorTileStyling.roads,
-                omt_housenumber: [], //vectorTileStyling.housenumber,
+                // omt_housenumber: [], //vectorTileStyling.housenumber,
             }
         };
 
@@ -49,10 +49,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
                 })
                 .addTo(map);
 
-            console.log('Vector grid added to map.');
-
             return () => {
-                console.log('Removing vector grid from map.');
                 map.removeLayer(vectorGrid);
             };
         } catch (error) {
@@ -67,7 +64,6 @@ VectorGridLayer.propTypes = {
     tilesUrl: PropTypes.string.isRequired,
 };
 
-// GenericVectorBaseMap component to create the map
 const GenericVectorBaseMap = ({
     tileset: { url, projection, tileMatrix },
     center,
@@ -120,5 +116,3 @@ GenericVectorBaseMap.propTypes = {
 };
 
 export default GenericVectorBaseMap;
-
-
