@@ -10285,185 +10285,60 @@ GenericBaseMap.propTypes = {
 function __$strToBlobUri(t,e,r){try{return window.URL.createObjectURL(new Blob([Uint8Array.from(t.split("").map(function(t){return t.charCodeAt(0)}))],{type:e}))}catch(i){return "data:"+e+(r?";base64,":",")+t}}function Pbf(t){this.buf=ArrayBuffer.isView&&ArrayBuffer.isView(t)?t:new Uint8Array(t||0),this.pos=0,this.type=0,this.length=this.buf.length;}function readVarintRemainder(t,e,r){var i,n,o=r.buf;if(n=o[r.pos++],i=(112&n)>>4,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<3,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<10,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<17,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(127&n)<<24,n<128)return toNum(t,i,e);if(n=o[r.pos++],i|=(1&n)<<31,n<128)return toNum(t,i,e);throw new Error("Expected varint not more than 10 bytes")}function readPackedEnd(t){return t.type===Pbf.Bytes?t.readVarint()+t.pos:t.pos+1}function toNum(t,e,r){return r?4294967296*e+(t>>>0):4294967296*(e>>>0)+(t>>>0)}function writeBigVarint(t,e){var r,i;if(t>=0?(r=t%4294967296|0,i=t/4294967296|0):(r=~(-t%4294967296),i=~(-t/4294967296),4294967295^r?r=r+1|0:(r=0,i=i+1|0)),t>=0x10000000000000000||t<-0x10000000000000000)throw new Error("Given varint doesn't fit into 10 bytes");e.realloc(10),writeBigVarintLow(r,i,e),writeBigVarintHigh(i,e);}function writeBigVarintLow(t,e,r){r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos++]=127&t|128,t>>>=7,r.buf[r.pos]=127&t;}function writeBigVarintHigh(t,e){var r=(7&t)<<4;e.buf[e.pos++]|=r|((t>>>=3)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t|((t>>>=7)?128:0),t&&(e.buf[e.pos++]=127&t)))));}function makeRoomForExtraLength(t,e,r){var i=e<=16383?1:e<=2097151?2:e<=268435455?3:Math.ceil(Math.log(e)/(7*Math.LN2));r.realloc(i);for(var n=r.pos-1;n>=t;n--)r.buf[n+i]=r.buf[n];}function writePackedVarint(t,e){for(var r=0;r<t.length;r++)e.writeVarint(t[r]);}function writePackedSVarint(t,e){for(var r=0;r<t.length;r++)e.writeSVarint(t[r]);}function writePackedFloat(t,e){for(var r=0;r<t.length;r++)e.writeFloat(t[r]);}function writePackedDouble(t,e){for(var r=0;r<t.length;r++)e.writeDouble(t[r]);}function writePackedBoolean(t,e){for(var r=0;r<t.length;r++)e.writeBoolean(t[r]);}function writePackedFixed32(t,e){for(var r=0;r<t.length;r++)e.writeFixed32(t[r]);}function writePackedSFixed32(t,e){for(var r=0;r<t.length;r++)e.writeSFixed32(t[r]);}function writePackedFixed64(t,e){for(var r=0;r<t.length;r++)e.writeFixed64(t[r]);}function writePackedSFixed64(t,e){for(var r=0;r<t.length;r++)e.writeSFixed64(t[r]);}function readUInt32(t,e){return (t[e]|t[e+1]<<8|t[e+2]<<16)+16777216*t[e+3]}function writeInt32(t,e,r){t[r]=e,t[r+1]=e>>>8,t[r+2]=e>>>16,t[r+3]=e>>>24;}function readInt32(t,e){return (t[e]|t[e+1]<<8|t[e+2]<<16)+(t[e+3]<<24)}function readUtf8(t,e,r){for(var i="",n=e;n<r;){var o=t[n],s=null,a=o>239?4:o>223?3:o>191?2:1;if(n+a>r)break;var u,h,l;1===a?o<128&&(s=o):2===a?128==(192&(u=t[n+1]))&&(s=(31&o)<<6|63&u)<=127&&(s=null):3===a?(u=t[n+1],h=t[n+2],128==(192&u)&&128==(192&h)&&((s=(15&o)<<12|(63&u)<<6|63&h)<=2047||s>=55296&&s<=57343)&&(s=null)):4===a&&(u=t[n+1],h=t[n+2],l=t[n+3],128==(192&u)&&128==(192&h)&&128==(192&l)&&((s=(15&o)<<18|(63&u)<<12|(63&h)<<6|63&l)<=65535||s>=1114112)&&(s=null)),null===s?(s=65533,a=1):s>65535&&(s-=65536,i+=String.fromCharCode(s>>>10&1023|55296),s=56320|1023&s),i+=String.fromCharCode(s),n+=a;}return i}function writeUtf8(t,e,r){for(var i,n,o=0;o<e.length;o++){if((i=e.charCodeAt(o))>55295&&i<57344){if(!n){i>56319||o+1===e.length?(t[r++]=239,t[r++]=191,t[r++]=189):n=i;continue}if(i<56320){t[r++]=239,t[r++]=191,t[r++]=189,n=i;continue}i=n-55296<<10|i-56320|65536,n=null;}else n&&(t[r++]=239,t[r++]=191,t[r++]=189,n=null);i<128?t[r++]=i:(i<2048?t[r++]=i>>6|192:(i<65536?t[r++]=i>>12|224:(t[r++]=i>>18|240,t[r++]=i>>12&63|128),t[r++]=i>>6&63|128),t[r++]=63&i|128);}return r}function Point$1(t,e){this.x=t,this.y=e;}function VectorTileFeature$2(t,e,r,i,n){this.properties={},this.extent=r,this.type=0,this._pbf=t,this._geometry=-1,this._keys=i,this._values=n,t.readFields(readFeature,this,e);}function readFeature(t,e,r){1==t?e.id=r.readVarint():2==t?readTag(r,e):3==t?e.type=r.readVarint():4==t&&(e._geometry=r.pos);}function readTag(t,e){for(var r=t.readVarint()+t.pos;t.pos<r;){var i=e._keys[t.readVarint()],n=e._values[t.readVarint()];e.properties[i]=n;}}function classifyRings(t){var e=t.length;if(e<=1)return [t];for(var r,i,n=[],o=0;o<e;o++){var s=signedArea(t[o]);0!==s&&(void 0===i&&(i=s<0),i===s<0?(r&&n.push(r),r=[t[o]]):r.push(t[o]));}return r&&n.push(r),n}function signedArea(t){for(var e,r,i=0,n=0,o=t.length,s=o-1;n<o;s=n++)e=t[n],r=t[s],i+=(r.x-e.x)*(e.y+r.y);return i}function VectorTileLayer$2(t,e){this.version=1,this.name=null,this.extent=4096,this.length=0,this._pbf=t,this._keys=[],this._values=[],this._features=[],t.readFields(readLayer,this,e),this.length=this._features.length;}function readLayer(t,e,r){15===t?e.version=r.readVarint():1===t?e.name=r.readString():5===t?e.extent=r.readVarint():2===t?e._features.push(r.pos):3===t?e._keys.push(r.readString()):4===t&&e._values.push(readValueMessage(r));}function readValueMessage(t){for(var e=null,r=t.readVarint()+t.pos;t.pos<r;){var i=t.readVarint()>>3;e=1===i?t.readString():2===i?t.readFloat():3===i?t.readDouble():4===i?t.readVarint64():5===i?t.readVarint():6===i?t.readSVarint():7===i?t.readBoolean():null;}return e}function VectorTile$1(t,e){this.layers=t.readFields(readTile,{},e);}function readTile(t,e,r){if(3===t){var i=new VectorTileLayer$1(r,r.readVarint()+r.pos);i.length&&(e[i.name]=i);}}!function(t){function e(t){if("string"!=typeof t&&(t=String(t)),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(t))throw new TypeError("Invalid character in header field name");return t.toLowerCase()}function r(t){return "string"!=typeof t&&(t=String(t)),t}function i(t){var e={next:function(){var e=t.shift();return {done:void 0===e,value:e}}};return v.iterable&&(e[Symbol.iterator]=function(){return e}),e}function n(t){this.map={},t instanceof n?t.forEach(function(t,e){this.append(e,t);},this):Array.isArray(t)?t.forEach(function(t){this.append(t[0],t[1]);},this):t&&Object.getOwnPropertyNames(t).forEach(function(e){this.append(e,t[e]);},this);}function o(t){if(t.bodyUsed)return Promise.reject(new TypeError("Already read"));t.bodyUsed=!0;}function s(t){return new Promise(function(e,r){t.onload=function(){e(t.result);},t.onerror=function(){r(t.error);};})}function a(t){var e=new FileReader,r=s(e);return e.readAsArrayBuffer(t),r}function u(t){var e=new FileReader,r=s(e);return e.readAsText(t),r}function h(t){for(var e=new Uint8Array(t),r=new Array(e.length),i=0;i<e.length;i++)r[i]=String.fromCharCode(e[i]);return r.join("")}function l(t){if(t.slice)return t.slice(0);var e=new Uint8Array(t.byteLength);return e.set(new Uint8Array(t)),e.buffer}function c(){return this.bodyUsed=!1,this._initBody=function(t){if(this._bodyInit=t,t)if("string"==typeof t)this._bodyText=t;else if(v.blob&&Blob.prototype.isPrototypeOf(t))this._bodyBlob=t;else if(v.formData&&FormData.prototype.isPrototypeOf(t))this._bodyFormData=t;else if(v.searchParams&&URLSearchParams.prototype.isPrototypeOf(t))this._bodyText=t.toString();else if(v.arrayBuffer&&v.blob&&b(t))this._bodyArrayBuffer=l(t.buffer),this._bodyInit=new Blob([this._bodyArrayBuffer]);else {if(!v.arrayBuffer||!ArrayBuffer.prototype.isPrototypeOf(t)&&!w(t))throw new Error("unsupported BodyInit type");this._bodyArrayBuffer=l(t);}else this._bodyText="";this.headers.get("content-type")||("string"==typeof t?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):v.searchParams&&URLSearchParams.prototype.isPrototypeOf(t)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"));},v.blob&&(this.blob=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(new Blob([this._bodyArrayBuffer]));if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this._bodyArrayBuffer?o(this)||Promise.resolve(this._bodyArrayBuffer):this.blob().then(a)}),this.text=function(){var t=o(this);if(t)return t;if(this._bodyBlob)return u(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(h(this._bodyArrayBuffer));if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)},v.formData&&(this.formData=function(){return this.text().then(d)}),this.json=function(){return this.text().then(JSON.parse)},this}function f(t){var e=t.toUpperCase();return _.indexOf(e)>-1?e:t}function p(t,e){e=e||{};var r=e.body;if(t instanceof p){if(t.bodyUsed)throw new TypeError("Already read");this.url=t.url,this.credentials=t.credentials,e.headers||(this.headers=new n(t.headers)),this.method=t.method,this.mode=t.mode,r||null==t._bodyInit||(r=t._bodyInit,t.bodyUsed=!0);}else this.url=String(t);if(this.credentials=e.credentials||this.credentials||"omit",!e.headers&&this.headers||(this.headers=new n(e.headers)),this.method=f(e.method||this.method||"GET"),this.mode=e.mode||this.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&r)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(r);}function d(t){var e=new FormData;return t.trim().split("&").forEach(function(t){if(t){var r=t.split("="),i=r.shift().replace(/\+/g," "),n=r.join("=").replace(/\+/g," ");e.append(decodeURIComponent(i),decodeURIComponent(n));}}),e}function y(t){var e=new n;return t.split(/\r?\n/).forEach(function(t){var r=t.split(":"),i=r.shift().trim();if(i){var n=r.join(":").trim();e.append(i,n);}}),e}function m(t,e){e||(e={}),this.type="default",this.status="status"in e?e.status:200,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in e?e.statusText:"OK",this.headers=new n(e.headers),this.url=e.url||"",this._initBody(t);}if(!t.fetch){var v={searchParams:"URLSearchParams"in t,iterable:"Symbol"in t&&"iterator"in Symbol,blob:"FileReader"in t&&"Blob"in t&&function(){try{return new Blob,!0}catch(t){return !1}}(),formData:"FormData"in t,arrayBuffer:"ArrayBuffer"in t};if(v.arrayBuffer)var g=["[object Int8Array]","[object Uint8Array]","[object Uint8ClampedArray]","[object Int16Array]","[object Uint16Array]","[object Int32Array]","[object Uint32Array]","[object Float32Array]","[object Float64Array]"],b=function(t){return t&&DataView.prototype.isPrototypeOf(t)},w=ArrayBuffer.isView||function(t){return t&&g.indexOf(Object.prototype.toString.call(t))>-1};n.prototype.append=function(t,i){t=e(t),i=r(i);var n=this.map[t];this.map[t]=n?n+","+i:i;},n.prototype.delete=function(t){delete this.map[e(t)];},n.prototype.get=function(t){return t=e(t),this.has(t)?this.map[t]:null},n.prototype.has=function(t){return this.map.hasOwnProperty(e(t))},n.prototype.set=function(t,i){this.map[e(t)]=r(i);},n.prototype.forEach=function(t,e){var r=this;for(var i in this.map)r.map.hasOwnProperty(i)&&t.call(e,r.map[i],i,r);},n.prototype.keys=function(){var t=[];return this.forEach(function(e,r){t.push(r);}),i(t)},n.prototype.values=function(){var t=[];return this.forEach(function(e){t.push(e);}),i(t)},n.prototype.entries=function(){var t=[];return this.forEach(function(e,r){t.push([r,e]);}),i(t)},v.iterable&&(n.prototype[Symbol.iterator]=n.prototype.entries);var _=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];p.prototype.clone=function(){return new p(this,{body:this._bodyInit})},c.call(p.prototype),c.call(m.prototype),m.prototype.clone=function(){return new m(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new n(this.headers),url:this.url})},m.error=function(){var t=new m(null,{status:0,statusText:""});return t.type="error",t};var x=[301,302,303,307,308];m.redirect=function(t,e){if(-1===x.indexOf(e))throw new RangeError("Invalid status code");return new m(null,{status:e,headers:{location:t}})},t.Headers=n,t.Request=p,t.Response=m,t.fetch=function(t,e){return new Promise(function(r,i){var n=new p(t,e),o=new XMLHttpRequest;o.onload=function(){var t={status:o.status,statusText:o.statusText,headers:y(o.getAllResponseHeaders()||"")};t.url="responseURL"in o?o.responseURL:t.headers.get("X-Request-URL");var e="response"in o?o.response:o.responseText;r(new m(e,t));},o.onerror=function(){i(new TypeError("Network request failed"));},o.ontimeout=function(){i(new TypeError("Network request failed"));},o.open(n.method,n.url,!0),"include"===n.credentials&&(o.withCredentials=!0),"responseType"in o&&v.blob&&(o.responseType="blob"),n.headers.forEach(function(t,e){o.setRequestHeader(e,t);}),o.send(void 0===n._bodyInit?null:n._bodyInit);})},t.fetch.polyfill=!0;}}("undefined"!=typeof self?self:void 0);var read=function(t,e,r,i,n){var o,s,a=8*n-i-1,u=(1<<a)-1,h=u>>1,l=-7,c=r?n-1:0,f=r?-1:1,p=t[e+c];for(c+=f,o=p&(1<<-l)-1,p>>=-l,l+=a;l>0;o=256*o+t[e+c],c+=f,l-=8);for(s=o&(1<<-l)-1,o>>=-l,l+=i;l>0;s=256*s+t[e+c],c+=f,l-=8);if(0===o)o=1-h;else {if(o===u)return s?NaN:1/0*(p?-1:1);s+=Math.pow(2,i),o-=h;}return (p?-1:1)*s*Math.pow(2,o-i)},write=function(t,e,r,i,n,o){var s,a,u,h=8*o-n-1,l=(1<<h)-1,c=l>>1,f=23===n?Math.pow(2,-24)-Math.pow(2,-77):0,p=i?0:o-1,d=i?1:-1,y=e<0||0===e&&1/e<0?1:0;for(e=Math.abs(e),isNaN(e)||e===1/0?(a=isNaN(e)?1:0,s=l):(s=Math.floor(Math.log(e)/Math.LN2),e*(u=Math.pow(2,-s))<1&&(s--,u*=2),e+=s+c>=1?f/u:f*Math.pow(2,1-c),e*u>=2&&(s++,u/=2),s+c>=l?(a=0,s=l):s+c>=1?(a=(e*u-1)*Math.pow(2,n),s+=c):(a=e*Math.pow(2,c-1)*Math.pow(2,n),s=0));n>=8;t[r+p]=255&a,p+=d,a/=256,n-=8);for(s=s<<n|a,h+=n;h>0;t[r+p]=255&s,p+=d,s/=256,h-=8);t[r+p-d]|=128*y;},index$1={read:read,write:write},index=Pbf,ieee754=index$1;Pbf.Varint=0,Pbf.Fixed64=1,Pbf.Bytes=2,Pbf.Fixed32=5;var SHIFT_LEFT_32=4294967296,SHIFT_RIGHT_32=1/SHIFT_LEFT_32;Pbf.prototype={destroy:function(){this.buf=null;},readFields:function(t,e,r){var i=this;for(r=r||this.length;this.pos<r;){var n=i.readVarint(),o=n>>3,s=i.pos;i.type=7&n,t(o,e,i),i.pos===s&&i.skip(n);}return e},readMessage:function(t,e){return this.readFields(t,e,this.readVarint()+this.pos)},readFixed32:function(){var t=readUInt32(this.buf,this.pos);return this.pos+=4,t},readSFixed32:function(){var t=readInt32(this.buf,this.pos);return this.pos+=4,t},readFixed64:function(){var t=readUInt32(this.buf,this.pos)+readUInt32(this.buf,this.pos+4)*SHIFT_LEFT_32;return this.pos+=8,t},readSFixed64:function(){var t=readUInt32(this.buf,this.pos)+readInt32(this.buf,this.pos+4)*SHIFT_LEFT_32;return this.pos+=8,t},readFloat:function(){var t=ieee754.read(this.buf,this.pos,!0,23,4);return this.pos+=4,t},readDouble:function(){var t=ieee754.read(this.buf,this.pos,!0,52,8);return this.pos+=8,t},readVarint:function(t){var e,r,i=this.buf;return r=i[this.pos++],e=127&r,r<128?e:(r=i[this.pos++],e|=(127&r)<<7,r<128?e:(r=i[this.pos++],e|=(127&r)<<14,r<128?e:(r=i[this.pos++],e|=(127&r)<<21,r<128?e:(r=i[this.pos],e|=(15&r)<<28,readVarintRemainder(e,t,this)))))},readVarint64:function(){return this.readVarint(!0)},readSVarint:function(){var t=this.readVarint();return t%2==1?(t+1)/-2:t/2},readBoolean:function(){return Boolean(this.readVarint())},readString:function(){var t=this.readVarint()+this.pos,e=readUtf8(this.buf,this.pos,t);return this.pos=t,e},readBytes:function(){var t=this.readVarint()+this.pos,e=this.buf.subarray(this.pos,t);return this.pos=t,e},readPackedVarint:function(t,e){var r=this,i=readPackedEnd(this);for(t=t||[];this.pos<i;)t.push(r.readVarint(e));return t},readPackedSVarint:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSVarint());return t},readPackedBoolean:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readBoolean());return t},readPackedFloat:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFloat());return t},readPackedDouble:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readDouble());return t},readPackedFixed32:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFixed32());return t},readPackedSFixed32:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSFixed32());return t},readPackedFixed64:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readFixed64());return t},readPackedSFixed64:function(t){var e=this,r=readPackedEnd(this);for(t=t||[];this.pos<r;)t.push(e.readSFixed64());return t},skip:function(t){var e=7&t;if(e===Pbf.Varint)for(;this.buf[this.pos++]>127;);else if(e===Pbf.Bytes)this.pos=this.readVarint()+this.pos;else if(e===Pbf.Fixed32)this.pos+=4;else {if(e!==Pbf.Fixed64)throw new Error("Unimplemented type: "+e);this.pos+=8;}},writeTag:function(t,e){this.writeVarint(t<<3|e);},realloc:function(t){for(var e=this.length||16;e<this.pos+t;)e*=2;if(e!==this.length){var r=new Uint8Array(e);r.set(this.buf),this.buf=r,this.length=e;}},finish:function(){return this.length=this.pos,this.pos=0,this.buf.subarray(0,this.length)},writeFixed32:function(t){this.realloc(4),writeInt32(this.buf,t,this.pos),this.pos+=4;},writeSFixed32:function(t){this.realloc(4),writeInt32(this.buf,t,this.pos),this.pos+=4;},writeFixed64:function(t){this.realloc(8),writeInt32(this.buf,-1&t,this.pos),writeInt32(this.buf,Math.floor(t*SHIFT_RIGHT_32),this.pos+4),this.pos+=8;},writeSFixed64:function(t){this.realloc(8),writeInt32(this.buf,-1&t,this.pos),writeInt32(this.buf,Math.floor(t*SHIFT_RIGHT_32),this.pos+4),this.pos+=8;},writeVarint:function(t){if((t=+t||0)>268435455||t<0)return void writeBigVarint(t,this);this.realloc(4),this.buf[this.pos++]=127&t|(t>127?128:0),t<=127||(this.buf[this.pos++]=127&(t>>>=7)|(t>127?128:0),t<=127||(this.buf[this.pos++]=127&(t>>>=7)|(t>127?128:0),t<=127||(this.buf[this.pos++]=t>>>7&127)));},writeSVarint:function(t){this.writeVarint(t<0?2*-t-1:2*t);},writeBoolean:function(t){this.writeVarint(Boolean(t));},writeString:function(t){t=String(t),this.realloc(4*t.length),this.pos++;var e=this.pos;this.pos=writeUtf8(this.buf,t,this.pos);var r=this.pos-e;r>=128&&makeRoomForExtraLength(e,r,this),this.pos=e-1,this.writeVarint(r),this.pos+=r;},writeFloat:function(t){this.realloc(4),ieee754.write(this.buf,t,this.pos,!0,23,4),this.pos+=4;},writeDouble:function(t){this.realloc(8),ieee754.write(this.buf,t,this.pos,!0,52,8),this.pos+=8;},writeBytes:function(t){var e=this,r=t.length;this.writeVarint(r),this.realloc(r);for(var i=0;i<r;i++)e.buf[e.pos++]=t[i];},writeRawMessage:function(t,e){this.pos++;var r=this.pos;t(e,this);var i=this.pos-r;i>=128&&makeRoomForExtraLength(r,i,this),this.pos=r-1,this.writeVarint(i),this.pos+=i;},writeMessage:function(t,e,r){this.writeTag(t,Pbf.Bytes),this.writeRawMessage(e,r);},writePackedVarint:function(t,e){this.writeMessage(t,writePackedVarint,e);},writePackedSVarint:function(t,e){this.writeMessage(t,writePackedSVarint,e);},writePackedBoolean:function(t,e){this.writeMessage(t,writePackedBoolean,e);},writePackedFloat:function(t,e){this.writeMessage(t,writePackedFloat,e);},writePackedDouble:function(t,e){this.writeMessage(t,writePackedDouble,e);},writePackedFixed32:function(t,e){this.writeMessage(t,writePackedFixed32,e);},writePackedSFixed32:function(t,e){this.writeMessage(t,writePackedSFixed32,e);},writePackedFixed64:function(t,e){this.writeMessage(t,writePackedFixed64,e);},writePackedSFixed64:function(t,e){this.writeMessage(t,writePackedSFixed64,e);},writeBytesField:function(t,e){this.writeTag(t,Pbf.Bytes),this.writeBytes(e);},writeFixed32Field:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeFixed32(e);},writeSFixed32Field:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeSFixed32(e);},writeFixed64Field:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeFixed64(e);},writeSFixed64Field:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeSFixed64(e);},writeVarintField:function(t,e){this.writeTag(t,Pbf.Varint),this.writeVarint(e);},writeSVarintField:function(t,e){this.writeTag(t,Pbf.Varint),this.writeSVarint(e);},writeStringField:function(t,e){this.writeTag(t,Pbf.Bytes),this.writeString(e);},writeFloatField:function(t,e){this.writeTag(t,Pbf.Fixed32),this.writeFloat(e);},writeDoubleField:function(t,e){this.writeTag(t,Pbf.Fixed64),this.writeDouble(e);},writeBooleanField:function(t,e){this.writeVarintField(t,Boolean(e));}};var index$5=Point$1;Point$1.prototype={clone:function(){return new Point$1(this.x,this.y)},add:function(t){return this.clone()._add(t)},sub:function(t){return this.clone()._sub(t)},mult:function(t){return this.clone()._mult(t)},div:function(t){return this.clone()._div(t)},rotate:function(t){return this.clone()._rotate(t)},matMult:function(t){return this.clone()._matMult(t)},unit:function(){return this.clone()._unit()},perp:function(){return this.clone()._perp()},round:function(){return this.clone()._round()},mag:function(){return Math.sqrt(this.x*this.x+this.y*this.y)},equals:function(t){return this.x===t.x&&this.y===t.y},dist:function(t){return Math.sqrt(this.distSqr(t))},distSqr:function(t){var e=t.x-this.x,r=t.y-this.y;return e*e+r*r},angle:function(){return Math.atan2(this.y,this.x)},angleTo:function(t){return Math.atan2(this.y-t.y,this.x-t.x)},angleWith:function(t){return this.angleWithSep(t.x,t.y)},angleWithSep:function(t,e){return Math.atan2(this.x*e-this.y*t,this.x*t+this.y*e)},_matMult:function(t){var e=t[0]*this.x+t[1]*this.y,r=t[2]*this.x+t[3]*this.y;return this.x=e,this.y=r,this},_add:function(t){return this.x+=t.x,this.y+=t.y,this},_sub:function(t){return this.x-=t.x,this.y-=t.y,this},_mult:function(t){return this.x*=t,this.y*=t,this},_div:function(t){return this.x/=t,this.y/=t,this},_unit:function(){return this._div(this.mag()),this},_perp:function(){var t=this.y;return this.y=this.x,this.x=-t,this},_rotate:function(t){var e=Math.cos(t),r=Math.sin(t),i=e*this.x-r*this.y,n=r*this.x+e*this.y;return this.x=i,this.y=n,this},_round:function(){return this.x=Math.round(this.x),this.y=Math.round(this.y),this}},Point$1.convert=function(t){return t instanceof Point$1?t:Array.isArray(t)?new Point$1(t[0],t[1]):t};var Point=index$5,vectortilefeature=VectorTileFeature$2;VectorTileFeature$2.types=["Unknown","Point","LineString","Polygon"],VectorTileFeature$2.prototype.loadGeometry=function(){var t=this._pbf;t.pos=this._geometry;for(var e,r=t.readVarint()+t.pos,i=1,n=0,o=0,s=0,a=[];t.pos<r;){if(!n){var u=t.readVarint();i=7&u,n=u>>3;}if(n--,1===i||2===i)o+=t.readSVarint(),s+=t.readSVarint(),1===i&&(e&&a.push(e),e=[]),e.push(new Point(o,s));else {if(7!==i)throw new Error("unknown command "+i);e&&e.push(e[0].clone());}}return e&&a.push(e),a},VectorTileFeature$2.prototype.bbox=function(){var t=this._pbf;t.pos=this._geometry;for(var e=t.readVarint()+t.pos,r=1,i=0,n=0,o=0,s=1/0,a=-1/0,u=1/0,h=-1/0;t.pos<e;){if(!i){var l=t.readVarint();r=7&l,i=l>>3;}if(i--,1===r||2===r)n+=t.readSVarint(),o+=t.readSVarint(),n<s&&(s=n),n>a&&(a=n),o<u&&(u=o),o>h&&(h=o);else if(7!==r)throw new Error("unknown command "+r)}return [s,u,a,h]},VectorTileFeature$2.prototype.toGeoJSON=function(t,e,r){function i(t){for(var e=0;e<t.length;e++){var r=t[e],i=180-360*(r.y+u)/s;t[e]=[360*(r.x+a)/s-180,360/Math.PI*Math.atan(Math.exp(i*Math.PI/180))-90];}}var n,o,s=this.extent*Math.pow(2,r),a=this.extent*t,u=this.extent*e,h=this.loadGeometry(),l=VectorTileFeature$2.types[this.type];switch(this.type){case 1:var c=[];for(n=0;n<h.length;n++)c[n]=h[n][0];h=c,i(h);break;case 2:for(n=0;n<h.length;n++)i(h[n]);break;case 3:for(h=classifyRings(h),n=0;n<h.length;n++)for(o=0;o<h[n].length;o++)i(h[n][o]);}1===h.length?h=h[0]:l="Multi"+l;var f={type:"Feature",geometry:{type:l,coordinates:h},properties:this.properties};return "id"in this&&(f.id=this.id),f};var VectorTileFeature$1=vectortilefeature,vectortilelayer=VectorTileLayer$2;VectorTileLayer$2.prototype.feature=function(t){if(t<0||t>=this._features.length)throw new Error("feature index out of bounds");this._pbf.pos=this._features[t];var e=this._pbf.readVarint()+this._pbf.pos;return new VectorTileFeature$1(this._pbf,e,this.extent,this._keys,this._values)};var VectorTileLayer$1=vectortilelayer,vectortile=VectorTile$1,VectorTile=vectortile;L.SVG.Tile=L.SVG.extend({initialize:function(t,e,r){L.SVG.prototype.initialize.call(this,r),this._tileCoord=t,this._size=e,this._initContainer(),this._container.setAttribute("width",this._size.x),this._container.setAttribute("height",this._size.y),this._container.setAttribute("viewBox",[0,0,this._size.x,this._size.y].join(" ")),this._layers={};},getCoord:function(){return this._tileCoord},getContainer:function(){return this._container},onAdd:L.Util.falseFn,addTo:function(t){if(this._map=t,this.options.interactive)for(var e in this._layers){var r=this._layers[e];r._path.style.pointerEvents="auto",this._map._targets[L.stamp(r._path)]=r;}},removeFrom:function(t){if(this.options.interactive)for(var e in this._layers){var r=this._layers[e];delete this._map._targets[L.stamp(r._path)];}delete this._map;},_initContainer:function(){L.SVG.prototype._initContainer.call(this);L.SVG.create("rect");},_addPath:function(t){this._rootGroup.appendChild(t._path),this._layers[L.stamp(t)]=t;},_updateIcon:function(t){var e=t._path=L.SVG.create("image"),r=t.options.icon,i=r.options,n=L.point(i.iconSize),o=i.iconAnchor||n&&n.divideBy(2,!0),s=t._point.subtract(o);e.setAttribute("x",s.x),e.setAttribute("y",s.y),e.setAttribute("width",n.x+"px"),e.setAttribute("height",n.y+"px"),e.setAttribute("href",i.iconUrl);}}),L.svg.tile=function(t,e,r){return new L.SVG.Tile(t,e,r)};var Symbolizer=L.Class.extend({render:function(t,e){this._renderer=t,this.options=e,t._initPath(this),t._updateStyle(this);},updateStyle:function(t,e){this.options=e,t._updateStyle(this);},_getPixelBounds:function(){for(var t=this._parts,e=L.bounds([]),r=0;r<t.length;r++)for(var i=t[r],n=0;n<i.length;n++)e.extend(i[n]);var o=this._clickTolerance(),s=new L.Point(o,o);return e.min._subtract(s),e.max._add(s),e},_clickTolerance:L.Path.prototype._clickTolerance}),PolyBase={_makeFeatureParts:function(t,e){var r,i=t.geometry;this._parts=[];for(var n=0;n<i.length;n++){for(var o=i[n],s=[],a=0;a<o.length;a++)r=o[a],s.push(L.point(r).scaleBy(e));this._parts.push(s);}},makeInteractive:function(){this._pxBounds=this._getPixelBounds();}},PointSymbolizer=L.CircleMarker.extend({includes:Symbolizer.prototype,statics:{iconCache:{}},initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){Symbolizer.prototype.render.call(this,t,e),this._radius=e.radius||L.CircleMarker.prototype.options.radius,this._updatePath();},_makeFeatureParts:function(t,e){var r=t.geometry[0];"object"==typeof r[0]&&"x"in r[0]?(this._point=L.point(r[0]).scaleBy(e),this._empty=L.Util.falseFn):(this._point=L.point(r).scaleBy(e),this._empty=L.Util.falseFn);},makeInteractive:function(){this._updateBounds();},updateStyle:function(t,e){return this._radius=e.radius||this._radius,this._updateBounds(),Symbolizer.prototype.updateStyle.call(this,t,e)},_updateBounds:function(){var t=this.options.icon;if(t){var e=L.point(t.options.iconSize),r=t.options.iconAnchor||e&&e.divideBy(2,!0),i=this._point.subtract(r);this._pxBounds=new L.Bounds(i,i.add(t.options.iconSize));}else L.CircleMarker.prototype._updateBounds.call(this);},_updatePath:function(){this.options.icon?this._renderer._updateIcon(this):L.CircleMarker.prototype._updatePath.call(this);},_getImage:function(){if(this.options.icon){var t=this.options.icon.options.iconUrl,e=PointSymbolizer.iconCache[t];if(!e){var r=this.options.icon;e=PointSymbolizer.iconCache[t]=r.createIcon();}return e}return null},_containsPoint:function(t){return this.options.icon?this._pxBounds.contains(t):L.CircleMarker.prototype._containsPoint.call(this,t)}}),LineSymbolizer=L.Polyline.extend({includes:[Symbolizer.prototype,PolyBase],initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){e.fill=!1,Symbolizer.prototype.render.call(this,t,e),this._updatePath();},updateStyle:function(t,e){e.fill=!1,Symbolizer.prototype.updateStyle.call(this,t,e);}}),FillSymbolizer=L.Polygon.extend({includes:[Symbolizer.prototype,PolyBase],initialize:function(t,e){this.properties=t.properties,this._makeFeatureParts(t,e);},render:function(t,e){Symbolizer.prototype.render.call(this,t,e),this._updatePath();}});L.VectorGrid=L.GridLayer.extend({options:{rendererFactory:L.svg.tile,vectorTileLayerStyles:{},interactive:!1},initialize:function(t){L.setOptions(this,t),L.GridLayer.prototype.initialize.apply(this,arguments),this.options.getFeatureId&&(this._vectorTiles={},this._overriddenStyles={},this.on("tileunload",function(t){var e=this._tileCoordsToKey(t.coords),r=this._vectorTiles[e];r&&this._map&&r.removeFrom(this._map),delete this._vectorTiles[e];},this)),this._dataLayerNames={};},createTile:function(t,e){var r=this.options.getFeatureId,i=this.getTileSize(),n=this.options.rendererFactory(t,i,this.options),o=this._getVectorTilePromise(t);return r&&(this._vectorTiles[this._tileCoordsToKey(t)]=n,n._features={}),o.then(function(i){for(var o in i.layers){this._dataLayerNames[o]=!0;for(var s=i.layers[o],a=this.getTileSize().divideBy(s.extent),u=this.options.vectorTileLayerStyles[o]||L.Path.prototype.options,h=0;h<s.features.length;h++){var l,c=s.features[h],f=u;if(r){l=this.options.getFeatureId(c);var p=this._overriddenStyles[l];p&&(f=p[o]?p[o]:p);}if(f instanceof Function&&(f=f(c.properties,t.z)),f instanceof Array||(f=[f]),f.length){for(var d=this._createLayer(c,a),y=0;y<f.length;y++){var m=L.extend({},L.Path.prototype.options,f[y]);d.render(n,m),n._addPath(d);}this.options.interactive&&d.makeInteractive(),r&&(n._features[l]={layerName:o,feature:d});}}}null!=this._map&&n.addTo(this._map),L.Util.requestAnimFrame(e.bind(t,null,null));}.bind(this)),n.getContainer()},setFeatureStyle:function(t,e){this._overriddenStyles[t]=e;for(var r in this._vectorTiles){var i=this._vectorTiles[r],n=i._features,o=n[t];if(o){var s=o.feature,a=e;e[o.layerName]&&(a=e[o.layerName]),this._updateStyles(s,i,a);}}return this},resetFeatureStyle:function(t){delete this._overriddenStyles[t];for(var e in this._vectorTiles){var r=this._vectorTiles[e],i=r._features,n=i[t];if(n){var o=n.feature,s=this.options.vectorTileLayerStyles[n.layerName]||L.Path.prototype.options;this._updateStyles(o,r,s);}}return this},getDataLayerNames:function(){return Object.keys(this._dataLayerNames)},_updateStyles:function(t,e,r){(r=r instanceof Function?r(t.properties,e.getCoord().z):r)instanceof Array||(r=[r]);for(var i=0;i<r.length;i++){var n=L.extend({},L.Path.prototype.options,r[i]);t.updateStyle(e,n);}},_createLayer:function(t,e,r){var i;switch(t.type){case 1:i=new PointSymbolizer(t,e);break;case 2:i=new LineSymbolizer(t,e);break;case 3:i=new FillSymbolizer(t,e);}return this.options.interactive&&i.addEventParent(this),i}}),L.vectorGrid=function(t){return new L.VectorGrid(t)},L.VectorGrid.Protobuf=L.VectorGrid.extend({options:{subdomains:"abc",fetchOptions:{}},initialize:function(t,e){this._url=t,L.VectorGrid.prototype.initialize.call(this,e);},setUrl:function(t,e){return this._url=t,e||this.redraw(),this},_getSubdomain:L.TileLayer.prototype._getSubdomain,_getVectorTilePromise:function(t){var e={s:this._getSubdomain(t),x:t.x,y:t.y,z:t.z};if(this._map&&!this._map.options.crs.infinite){var r=this._globalTileRange.max.y-t.y;this.options.tms&&(e.y=r),e["-y"]=r;}var i=L.Util.template(this._url,L.extend(e,this.options));return fetch(i,this.options.fetchOptions).then(function(t){return t.ok?t.blob().then(function(t){var e=new FileReader;return new Promise(function(r){e.addEventListener("loadend",function(){var t=new index(e.result);return r(new VectorTile(t))}),e.readAsArrayBuffer(t);})}):{layers:[]}}).then(function(t){for(var e in t.layers){for(var r=[],i=0;i<t.layers[e].length;i++){var n=t.layers[e].feature(i);n.geometry=n.loadGeometry(),r.push(n);}t.layers[e].features=r;}return t})}}),L.vectorGrid.protobuf=function(t,e){return new L.VectorGrid.Protobuf(t,e)}
 ;var workerCode=__$strToBlobUri('"use strict";function simplify$1(e,t){var r,n,o,i,a=t*t,s=e.length,l=0,u=s-1,c=[];for(e[l][2]=1,e[u][2]=1;u;){for(n=0,r=l+1;r<u;r++)(o=getSqSegDist(e[r],e[l],e[u]))>n&&(i=r,n=o);n>a?(e[i][2]=n,c.push(l),c.push(i),l=i):(u=c.pop(),l=c.pop())}}function getSqSegDist(e,t,r){var n=t[0],o=t[1],i=r[0],a=r[1],s=e[0],l=e[1],u=i-n,c=a-o;if(0!==u||0!==c){var f=((s-n)*u+(l-o)*c)/(u*u+c*c);f>1?(n=i,o=a):f>0&&(n+=u*f,o+=c*f)}return u=s-n,c=l-o,u*u+c*c}function convert$1(e,t){var r=[];if("FeatureCollection"===e.type)for(var n=0;n<e.features.length;n++)convertFeature(r,e.features[n],t);else"Feature"===e.type?convertFeature(r,e,t):convertFeature(r,{geometry:e},t);return r}function convertFeature(e,t,r){if(null!==t.geometry){var n,o,i,a,s=t.geometry,l=s.type,u=s.coordinates,c=t.properties;if("Point"===l)e.push(create(c,1,[projectPoint(u)]));else if("MultiPoint"===l)e.push(create(c,1,project(u)));else if("LineString"===l)e.push(create(c,2,[project(u,r)]));else if("MultiLineString"===l||"Polygon"===l){for(i=[],n=0;n<u.length;n++)a=project(u[n],r),"Polygon"===l&&(a.outer=0===n),i.push(a);e.push(create(c,"Polygon"===l?3:2,i))}else if("MultiPolygon"===l){for(i=[],n=0;n<u.length;n++)for(o=0;o<u[n].length;o++)a=project(u[n][o],r),a.outer=0===o,i.push(a);e.push(create(c,3,i))}else{if("GeometryCollection"!==l)throw new Error("Input data is not a valid GeoJSON object.");for(n=0;n<s.geometries.length;n++)convertFeature(e,{geometry:s.geometries[n],properties:c},r)}}}function create(e,t,r){var n={geometry:r,type:t,tags:e||null,min:[2,1],max:[-1,0]};return calcBBox(n),n}function project(e,t){for(var r=[],n=0;n<e.length;n++)r.push(projectPoint(e[n]));return t&&(simplify(r,t),calcSize(r)),r}function projectPoint(e){var t=Math.sin(e[1]*Math.PI/180),r=e[0]/360+.5,n=.5-.25*Math.log((1+t)/(1-t))/Math.PI;return n=n<0?0:n>1?1:n,[r,n,0]}function calcSize(e){for(var t,r,n=0,o=0,i=0;i<e.length-1;i++)t=r||e[i],r=e[i+1],n+=t[0]*r[1]-r[0]*t[1],o+=Math.abs(r[0]-t[0])+Math.abs(r[1]-t[1]);e.area=Math.abs(n/2),e.dist=o}function calcBBox(e){var t=e.geometry,r=e.min,n=e.max;if(1===e.type)calcRingBBox(r,n,t);else for(var o=0;o<t.length;o++)calcRingBBox(r,n,t[o]);return e}function calcRingBBox(e,t,r){for(var n,o=0;o<r.length;o++)n=r[o],e[0]=Math.min(n[0],e[0]),t[0]=Math.max(n[0],t[0]),e[1]=Math.min(n[1],e[1]),t[1]=Math.max(n[1],t[1])}function transformTile(e,t){if(e.transformed)return e;var r,n,o,i=e.z2,a=e.x,s=e.y;for(r=0;r<e.features.length;r++){var l=e.features[r],u=l.geometry;if(1===l.type)for(n=0;n<u.length;n++)u[n]=transformPoint(u[n],t,i,a,s);else for(n=0;n<u.length;n++){var c=u[n];for(o=0;o<c.length;o++)c[o]=transformPoint(c[o],t,i,a,s)}}return e.transformed=!0,e}function transformPoint(e,t,r,n,o){return[Math.round(t*(e[0]*r-n)),Math.round(t*(e[1]*r-o))]}function clip$1(e,t,r,n,o,i,a,s){if(r/=t,n/=t,a>=r&&s<=n)return e;if(a>n||s<r)return null;for(var l=[],u=0;u<e.length;u++){var c,f,p=e[u],h=p.geometry,m=p.type;if(c=p.min[o],f=p.max[o],c>=r&&f<=n)l.push(p);else if(!(c>n||f<r)){var g=1===m?clipPoints(h,r,n,o):clipGeometry(h,r,n,o,i,3===m);g.length&&l.push({geometry:g,type:m,tags:e[u].tags||null,min:p.min,max:p.max})}}return l.length?l:null}function clipPoints(e,t,r,n){for(var o=[],i=0;i<e.length;i++){var a=e[i],s=a[n];s>=t&&s<=r&&o.push(a)}return o}function clipGeometry(e,t,r,n,o,i){for(var a=[],s=0;s<e.length;s++){var l,u,c,f=0,p=0,h=null,m=e[s],g=m.area,d=m.dist,v=m.outer,y=m.length,x=[];for(u=0;u<y-1;u++)l=h||m[u],h=m[u+1],f=p||l[n],p=h[n],f<t?p>r?(x.push(o(l,h,t),o(l,h,r)),i||(x=newSlice(a,x,g,d,v))):p>=t&&x.push(o(l,h,t)):f>r?p<t?(x.push(o(l,h,r),o(l,h,t)),i||(x=newSlice(a,x,g,d,v))):p<=r&&x.push(o(l,h,r)):(x.push(l),p<t?(x.push(o(l,h,t)),i||(x=newSlice(a,x,g,d,v))):p>r&&(x.push(o(l,h,r)),i||(x=newSlice(a,x,g,d,v))));l=m[y-1],f=l[n],f>=t&&f<=r&&x.push(l),c=x[x.length-1],i&&c&&(x[0][0]!==c[0]||x[0][1]!==c[1])&&x.push(x[0]),newSlice(a,x,g,d,v)}return a}function newSlice(e,t,r,n,o){return t.length&&(t.area=r,t.dist=n,void 0!==o&&(t.outer=o),e.push(t)),[]}function wrap$1(e,t,r){var n=e,o=clip$2(e,1,-1-t,t,0,r,-1,2),i=clip$2(e,1,1-t,2+t,0,r,-1,2);return(o||i)&&(n=clip$2(e,1,-t,1+t,0,r,-1,2),o&&(n=shiftFeatureCoords(o,1).concat(n)),i&&(n=n.concat(shiftFeatureCoords(i,-1)))),n}function shiftFeatureCoords(e,t){for(var r=[],n=0;n<e.length;n++){var o,i=e[n],a=i.type;if(1===a)o=shiftCoords(i.geometry,t);else{o=[];for(var s=0;s<i.geometry.length;s++)o.push(shiftCoords(i.geometry[s],t))}r.push({geometry:o,type:a,tags:i.tags,min:[i.min[0]+t,i.min[1]],max:[i.max[0]+t,i.max[1]]})}return r}function shiftCoords(e,t){var r=[];r.area=e.area,r.dist=e.dist;for(var n=0;n<e.length;n++)r.push([e[n][0]+t,e[n][1],e[n][2]]);return r}function createTile$1(e,t,r,n,o,i){for(var a={features:[],numPoints:0,numSimplified:0,numFeatures:0,source:null,x:r,y:n,z2:t,transformed:!1,min:[2,1],max:[-1,0]},s=0;s<e.length;s++){a.numFeatures++,addFeature(a,e[s],o,i);var l=e[s].min,u=e[s].max;l[0]<a.min[0]&&(a.min[0]=l[0]),l[1]<a.min[1]&&(a.min[1]=l[1]),u[0]>a.max[0]&&(a.max[0]=u[0]),u[1]>a.max[1]&&(a.max[1]=u[1])}return a}function addFeature(e,t,r,n){var o,i,a,s,l=t.geometry,u=t.type,c=[],f=r*r;if(1===u)for(o=0;o<l.length;o++)c.push(l[o]),e.numPoints++,e.numSimplified++;else for(o=0;o<l.length;o++)if(a=l[o],n||!(2===u&&a.dist<r||3===u&&a.area<f)){var p=[];for(i=0;i<a.length;i++)s=a[i],(n||s[2]>f)&&(p.push(s),e.numSimplified++),e.numPoints++;3===u&&rewind(p,a.outer),c.push(p)}else e.numPoints+=a.length;c.length&&e.features.push({geometry:c,type:u,tags:t.tags||null})}function rewind(e,t){signedArea(e)<0===t&&e.reverse()}function signedArea(e){for(var t,r,n=0,o=0,i=e.length,a=i-1;o<i;a=o++)t=e[o],r=e[a],n+=(r[0]-t[0])*(t[1]+r[1]);return n}function geojsonvt(e,t){return new GeoJSONVT(e,t)}function GeoJSONVT(e,t){t=this.options=extend(Object.create(this.options),t);var r=t.debug;r&&console.time("preprocess data");var n=1<<t.maxZoom,o=convert(e,t.tolerance/(n*t.extent));this.tiles={},this.tileCoords=[],r&&(console.timeEnd("preprocess data"),console.log("index: maxZoom: %d, maxPoints: %d",t.indexMaxZoom,t.indexMaxPoints),console.time("generate tiles"),this.stats={},this.total=0),o=wrap(o,t.buffer/t.extent,intersectX),o.length&&this.splitTile(o,0,0,0),r&&(o.length&&console.log("features: %d, points: %d",this.tiles[0].numFeatures,this.tiles[0].numPoints),console.timeEnd("generate tiles"),console.log("tiles generated:",this.total,JSON.stringify(this.stats)))}function toID(e,t,r){return 32*((1<<e)*r+t)+e}function intersectX(e,t,r){return[r,(r-e[0])*(t[1]-e[1])/(t[0]-e[0])+e[1],1]}function intersectY(e,t,r){return[(r-e[1])*(t[0]-e[0])/(t[1]-e[1])+e[0],r,1]}function extend(e,t){for(var r in t)e[r]=t[r];return e}function isClippedSquare(e,t,r){var n=e.source;if(1!==n.length)return!1;var o=n[0];if(3!==o.type||o.geometry.length>1)return!1;var i=o.geometry[0].length;if(5!==i)return!1;for(var a=0;a<i;a++){var s=transform.point(o.geometry[0][a],t,e.z2,e.x,e.y);if(s[0]!==-r&&s[0]!==t+r||s[1]!==-r&&s[1]!==t+r)return!1}return!0}function feature$1(e,t){var r=t.id,n=t.bbox,o=null==t.properties?{}:t.properties,i=object(e,t);return null==r&&null==n?{type:"Feature",properties:o,geometry:i}:null==n?{type:"Feature",id:r,properties:o,geometry:i}:{type:"Feature",id:r,bbox:n,properties:o,geometry:i}}function object(e,t){function r(e,t){t.length&&t.pop();for(var r=u[e<0?~e:e],n=0,o=r.length;n<o;++n)t.push(l(r[n].slice(),n));e<0&&reverse(t,o)}function n(e){return l(e.slice())}function o(e){for(var t=[],n=0,o=e.length;n<o;++n)r(e[n],t);return t.length<2&&t.push(t[0].slice()),t}function i(e){for(var t=o(e);t.length<4;)t.push(t[0].slice());return t}function a(e){return e.map(i)}function s(e){var t,r=e.type;switch(r){case"GeometryCollection":return{type:r,geometries:e.geometries.map(s)};case"Point":t=n(e.coordinates);break;case"MultiPoint":t=e.coordinates.map(n);break;case"LineString":t=o(e.arcs);break;case"MultiLineString":t=e.arcs.map(o);break;case"Polygon":t=a(e.arcs);break;case"MultiPolygon":t=e.arcs.map(a);break;default:return null}return{type:r,coordinates:t}}var l=transform$3(e),u=e.arcs;return s(t)}function extractArcs(e,t,r){function n(e){var t=e<0?~e:e;(c[t]||(c[t]=[])).push({i:e,g:l})}function o(e){e.forEach(n)}function i(e){e.forEach(o)}function a(e){e.forEach(i)}function s(e){switch(l=e,e.type){case"GeometryCollection":e.geometries.forEach(s);break;case"LineString":o(e.arcs);break;case"MultiLineString":case"Polygon":i(e.arcs);break;case"MultiPolygon":a(e.arcs)}}var l,u=[],c=[];return s(t),c.forEach(null==r?function(e){u.push(e[0].i)}:function(e){r(e[0].g,e[e.length-1].g)&&u.push(e[0].i)}),u}function planarRingArea(e){for(var t,r=-1,n=e.length,o=e[n-1],i=0;++r<n;)t=o,o=e[r],i+=t[0]*o[1]-t[1]*o[0];return Math.abs(i)}var simplify_1=simplify$1,convert_1=convert$1,simplify=simplify_1,tile=transformTile,point=transformPoint,transform$1={tile:tile,point:point},clip_1=clip$1,clip$2=clip_1,wrap_1=wrap$1,tile$1=createTile$1,index=geojsonvt,convert=convert_1,transform=transform$1,clip=clip_1,wrap=wrap_1,createTile=tile$1;GeoJSONVT.prototype.options={maxZoom:14,indexMaxZoom:5,indexMaxPoints:1e5,solidChildren:!1,tolerance:3,extent:4096,buffer:64,debug:0},GeoJSONVT.prototype.splitTile=function(e,t,r,n,o,i,a){for(var s=this,l=[e,t,r,n],u=this.options,c=u.debug,f=null;l.length;){n=l.pop(),r=l.pop(),t=l.pop(),e=l.pop();var p=1<<t,h=toID(t,r,n),m=s.tiles[h],g=t===u.maxZoom?0:u.tolerance/(p*u.extent);if(!m&&(c>1&&console.time("creation"),m=s.tiles[h]=createTile(e,p,r,n,g,t===u.maxZoom),s.tileCoords.push({z:t,x:r,y:n}),c)){c>1&&(console.log("tile z%d-%d-%d (features: %d, points: %d, simplified: %d)",t,r,n,m.numFeatures,m.numPoints,m.numSimplified),console.timeEnd("creation"));var d="z"+t;s.stats[d]=(s.stats[d]||0)+1,s.total++}if(m.source=e,o){if(t===u.maxZoom||t===o)continue;var v=1<<o-t;if(r!==Math.floor(i/v)||n!==Math.floor(a/v))continue}else if(t===u.indexMaxZoom||m.numPoints<=u.indexMaxPoints)continue;if(u.solidChildren||!isClippedSquare(m,u.extent,u.buffer)){m.source=null,c>1&&console.time("clipping");var y,x,b,M,P,S,w=.5*u.buffer/u.extent,$=.5-w,C=.5+w,F=1+w;y=x=b=M=null,P=clip(e,p,r-w,r+C,0,intersectX,m.min[0],m.max[0]),S=clip(e,p,r+$,r+F,0,intersectX,m.min[0],m.max[0]),P&&(y=clip(P,p,n-w,n+C,1,intersectY,m.min[1],m.max[1]),x=clip(P,p,n+$,n+F,1,intersectY,m.min[1],m.max[1])),S&&(b=clip(S,p,n-w,n+C,1,intersectY,m.min[1],m.max[1]),M=clip(S,p,n+$,n+F,1,intersectY,m.min[1],m.max[1])),c>1&&console.timeEnd("clipping"),y&&l.push(y,t+1,2*r,2*n),x&&l.push(x,t+1,2*r,2*n+1),b&&l.push(b,t+1,2*r+1,2*n),M&&l.push(M,t+1,2*r+1,2*n+1)}else o&&(f=t)}return f},GeoJSONVT.prototype.getTile=function(e,t,r){var n=this,o=this.options,i=o.extent,a=o.debug,s=1<<e;t=(t%s+s)%s;var l=toID(e,t,r);if(this.tiles[l])return transform.tile(this.tiles[l],i);a>1&&console.log("drilling down to z%d-%d-%d",e,t,r);for(var u,c=e,f=t,p=r;!u&&c>0;)c--,f=Math.floor(f/2),p=Math.floor(p/2),u=n.tiles[toID(c,f,p)];if(!u||!u.source)return null;if(a>1&&console.log("found parent tile z%d-%d-%d",c,f,p),isClippedSquare(u,i,o.buffer))return transform.tile(u,i);a>1&&console.time("drilling down");var h=this.splitTile(u.source,c,f,p,e,t,r);if(a>1&&console.timeEnd("drilling down"),null!==h){var m=1<<e-h;l=toID(h,Math.floor(t/m),Math.floor(r/m))}return this.tiles[l]?transform.tile(this.tiles[l],i):null};var identity=function(e){return e},transform$3=function(e){if(null==(t=e.transform))return identity;var t,r,n,o=t.scale[0],i=t.scale[1],a=t.translate[0],s=t.translate[1];return function(e,t){return t||(r=n=0),e[0]=(r+=e[0])*o+a,e[1]=(n+=e[1])*i+s,e}},bbox=function(e){function t(e){s[0]=e[0],s[1]=e[1],a(s),s[0]<l&&(l=s[0]),s[0]>c&&(c=s[0]),s[1]<u&&(u=s[1]),s[1]>f&&(f=s[1])}function r(e){switch(e.type){case"GeometryCollection":e.geometries.forEach(r);break;case"Point":t(e.coordinates);break;case"MultiPoint":e.coordinates.forEach(t)}}var n=e.bbox;if(!n){var o,i,a=transform$3(e),s=new Array(2),l=1/0,u=l,c=-l,f=-l;e.arcs.forEach(function(e){for(var t=-1,r=e.length;++t<r;)o=e[t],s[0]=o[0],s[1]=o[1],a(s,t),s[0]<l&&(l=s[0]),s[0]>c&&(c=s[0]),s[1]<u&&(u=s[1]),s[1]>f&&(f=s[1])});for(i in e.objects)r(e.objects[i]);n=e.bbox=[l,u,c,f]}return n},reverse=function(e,t){for(var r,n=e.length,o=n-t;o<--n;)r=e[o],e[o++]=e[n],e[n]=r},feature=function(e,t){return"GeometryCollection"===t.type?{type:"FeatureCollection",features:t.geometries.map(function(t){return feature$1(e,t)})}:feature$1(e,t)},stitch=function(e,t){function r(t){var r,n=e.arcs[t<0?~t:t],o=n[0];return e.transform?(r=[0,0],n.forEach(function(e){r[0]+=e[0],r[1]+=e[1]})):r=n[n.length-1],t<0?[r,o]:[o,r]}function n(e,t){for(var r in e){var n=e[r];delete t[n.start],delete n.start,delete n.end,n.forEach(function(e){o[e<0?~e:e]=1}),s.push(n)}}var o={},i={},a={},s=[],l=-1;return t.forEach(function(r,n){var o,i=e.arcs[r<0?~r:r];i.length<3&&!i[1][0]&&!i[1][1]&&(o=t[++l],t[l]=r,t[n]=o)}),t.forEach(function(e){var t,n,o=r(e),s=o[0],l=o[1];if(t=a[s])if(delete a[t.end],t.push(e),t.end=l,n=i[l]){delete i[n.start];var u=n===t?t:t.concat(n);i[u.start=t.start]=a[u.end=n.end]=u}else i[t.start]=a[t.end]=t;else if(t=i[l])if(delete i[t.start],t.unshift(e),t.start=s,n=a[s]){delete a[n.end];var c=n===t?t:n.concat(t);i[c.start=n.start]=a[c.end=t.end]=c}else i[t.start]=a[t.end]=t;else t=[e],i[t.start=s]=a[t.end=l]=t}),n(a,i),n(i,a),t.forEach(function(e){o[e<0?~e:e]||s.push([e])}),s},bisect=function(e,t){for(var r=0,n=e.length;r<n;){var o=r+n>>>1;e[o]<t?r=o+1:n=o}return r},slicers={},options;onmessage=function(e){if("slice"===e.data[0]){var t=e.data[1];if(options=e.data[2],t.type&&"Topology"===t.type)for(var r in t.objects)slicers[r]=index(feature(t,t.objects[r]),options);else slicers[options.vectorTileLayerName]=index(t,options)}else if("get"===e.data[0]){var n=e.data[1],o={};for(var r in slicers){var i=slicers[r].getTile(n.z,n.x,n.y);if(i){var a={features:[],extent:options.extent,name:options.vectorTileLayerName,length:i.features.length};for(var s in i.features){var l={geometry:i.features[s].geometry,properties:i.features[s].tags,type:i.features[s].type};a.features.push(l)}o[r]=a}}postMessage({layers:o,coords:n})}};\n',"text/plain; charset=us-ascii",!1);L.VectorGrid.Slicer=L.VectorGrid.extend({options:{vectorTileLayerName:"sliced",extent:4096,maxZoom:14},initialize:function(t,e){L.VectorGrid.prototype.initialize.call(this,e);var e={};for(var r in this.options)"rendererFactory"!==r&&"vectorTileLayerStyles"!==r&&"function"!=typeof this.options[r]&&(e[r]=this.options[r]);this._worker=new Worker(workerCode),this._worker.postMessage(["slice",t,e]);},_getVectorTilePromise:function(t){var e=this,r=new Promise(function(r){e._worker.addEventListener("message",function i(n){n.data.coords&&n.data.coords.x===t.x&&n.data.coords.y===t.y&&n.data.coords.z===t.z&&(r(n.data),e._worker.removeEventListener("message",i));});});return this._worker.postMessage(["get",t]),r}}),L.vectorGrid.slicer=function(t,e){return new L.VectorGrid.Slicer(t,e)},L.Canvas.Tile=L.Canvas.extend({initialize:function(t,e,r){L.Canvas.prototype.initialize.call(this,r),this._tileCoord=t,this._size=e,this._initContainer(),this._container.setAttribute("width",this._size.x),this._container.setAttribute("height",this._size.y),this._layers={},this._drawnLayers={},this._drawing=!0,r.interactive&&(this._container.style.pointerEvents="auto");},getCoord:function(){return this._tileCoord},getContainer:function(){return this._container},getOffset:function(){return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin())},onAdd:L.Util.falseFn,addTo:function(t){this._map=t;},removeFrom:function(t){delete this._map;},_onClick:function(t){var e,r,i=this._map.mouseEventToLayerPoint(t).subtract(this.getOffset());for(var n in this._layers)e=this._layers[n],e.options.interactive&&e._containsPoint(i)&&!this._map._draggableMoved(e)&&(r=e);r&&(L.DomEvent.fakeStop(t),this._fireEvent([r],t));},_onMouseMove:function(t){if(this._map&&!this._map.dragging.moving()&&!this._map._animatingZoom){var e=this._map.mouseEventToLayerPoint(t).subtract(this.getOffset());this._handleMouseHover(t,e);}},_updateIcon:function(t){if(this._drawing){var e=t.options.icon,r=e.options,i=L.point(r.iconSize),n=r.iconAnchor||i&&i.divideBy(2,!0),o=t._point.subtract(n),s=this._ctx,a=t._getImage();a.complete?s.drawImage(a,o.x,o.y,i.x,i.y):L.DomEvent.on(a,"load",function(){s.drawImage(a,o.x,o.y,i.x,i.y);}),this._drawnLayers[t._leaflet_id]=t;}}}),L.canvas.tile=function(t,e,r){return new L.Canvas.Tile(t,e,r)};
 
-var vectorTileStyling = {
-  boundary: function boundary(properties, zoom) {
-    console.log('omt_boundary:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 0 || zoom > 21) return [];
-    return [];
-  },
-  landcover: function landcover(properties, zoom) {
-    console.log('omt_landcover:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 8 || zoom > 14) return [];
-    return [];
-  },
-  landuse: function landuse(properties, zoom) {
-    console.log('omt_landuse:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 0 || zoom > 13) return [];
-    return [];
-  },
-  mountain_peak: function mountain_peak(properties, zoom) {
-    console.log('omt_mountain_peak:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 9 || zoom > 21) return [];
-    return [];
-  },
-  park: function park(properties, zoom) {
-    console.log('omt_park:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 10 || zoom > 21) return [];
-    return [];
-  },
-  place: function place(properties, zoom) {
-    console.log('omt_place:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 10 || zoom > 21) return [];
-    return [];
-  },
-  transportation: function transportation(properties, zoom) {
-    console.log('omt_transportation:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 10 || zoom > 21) return [];
-    return [];
-  },
-  transportation_name: function transportation_name(properties, zoom) {
-    console.log('omt_transportation_name:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 14 || zoom > 21) return [];
-    return [];
-  },
-  water: function water(properties, zoom) {
-    var zoomLevel = Number(zoom);
-    if (zoomLevel < 6 || zoomLevel > 14) return [];
-    var waterStyle = {
-      ocean: {
-        weight: 0.0,
-        color: '#1E90FF',
-        fillColor: '#1E90FF',
-        fillOpacity: 1,
-        fill: true
-      },
-      river: {
-        weight: 0.0,
-        color: '#ADD8E6',
-        fillColor: '#ADD8E6',
-        fillOpacity: 1,
-        fill: true
-      },
-      lake: {
-        weight: 0.0,
-        color: '#ADD8E6',
-        fillColor: '#ADD8E6',
-        fillOpacity: 1,
-        fill: true
-      },
-      pond: {
-        weight: 0.0,
-        color: '#ADD8E6',
-        fillColor: '#ADD8E6',
-        fillOpacity: 1,
-        fill: true
-      },
-      swimming_pool: {
-        weight: 0.0,
-        color: '#00FF7F',
-        fillColor: '#00FF7F',
-        fillOpacity: 1,
-        fill: true
-      }
-    };
-    var waterClass = properties.class;
-    if (waterClass === 'ocean') return waterStyle.ocean;
-    if (waterClass === 'river' && zoomLevel >= 9) return waterStyle.river;
-    if (waterClass === 'lake' && zoomLevel >= 7) return waterStyle.lake;
-    if (waterClass === 'pond' && zoomLevel >= 11) return waterStyle.pond;
-    if (waterClass === 'swimming_pool' && zoomLevel > 9) return waterStyle.swimming_pool;
-    return [];
-  },
-  water_name: function water_name(properties, zoom) {
-    console.log('omt_water_name:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 7 || zoom > 21) return [];
-    return [];
-  },
-  waterway: function waterway(properties, zoom) {
-    console.log('omt_waterway:', {
-      properties: properties,
-      zoom: zoom
-    });
-    if (zoom < 7 || zoom > 14) return [];
-    return [];
-  }
-};
+var _excluded$5 = ["tileset", "center", "zoom", "mapRef", "vectorTileStyling", "wmsUrl", "children"];
 
-var _excluded$5 = ["tileset", "center", "zoom", "mapRef", "vectorTileStyling", "children"];
-
-var VectorGridLayer = function VectorGridLayer(_ref) {
-  var tilesUrl = _ref.tilesUrl,
-      vectorTileStyling = _ref.vectorTileStyling;
+var LabelsLayer = function LabelsLayer(_ref) {
+  var wmsUrl = _ref.wmsUrl;
   var map = useMap();
   useEffect(function () {
-    console.log('Setting up vector grid with URL:', tilesUrl);
+    var wmsLayer = L$1.tileLayer.wms(wmsUrl, {
+      layers: 'omt_place',
+      styles: '3005_place',
+      format: 'image/png',
+      transparent: true,
+      version: '1.1.0',
+      crs: L$1.CRS.EPSG3005
+    }).addTo(map);
+    return function () {
+      map.removeLayer(wmsLayer);
+    };
+  }, [map]);
+  return null;
+};
+
+var BUFFER_SIZE = 512;
+
+var VectorGridLayer = function VectorGridLayer(_ref2) {
+  var tilesUrl = _ref2.tilesUrl,
+      vectorTileStyling = _ref2.vectorTileStyling;
+  var map = useMap();
+  useEffect(function () {
     var vectorTileOptions = {
       rendererFactory: L$1.svg.tile,
       interactive: true,
+      buffer: BUFFER_SIZE,
       getFeatureId: function getFeatureId(feature) {
         return feature.properties.id;
       },
-      vectorTileLayerStyles: {
-        omt_boundary: [],
-        //vectorTileStyling.boundary,
-        omt_landcover: [],
-        //vectorTileStyling.landcover,
-        omt_landuse: [],
-        //vectorTileStyling.landuse,
-        omt_mountain_peak: [],
-        //vectorTileStyling.mountain_peak,
-        omt_park: [],
-        //vectorTileStyling.park,
-        omt_place: [],
-        //vectorTileStyling.place,
-        omt_transportation: [],
-        //vectorTileStyling.transportation,
-        omt_transportation_name: [],
-        //vectorTileStyling.transportation_name,
-        omt_water: vectorTileStyling.water,
-        omt_water_name: [],
-        //vectorTileStyling.water_name,
-        omt_waterway: [],
-        //vectorTileStyling.waterway,
-        omt_aeroway: [],
-        //vectorTileStyling.aeroway,
-        omt_aerodrome_label: [],
-        //vectorTileStyling.aerodrome_label,
-        omt_building: [],
-        //vectorTileStyling.building,
-        omt_poi: [],
-        //vectorTileStyling.poi,
-        omt_roads: [],
-        //vectorTileStyling.roads,
-        omt_housenumber: [] //vectorTileStyling.housenumber,
 
+      /* Not included in vector style below:
+        - omt_place,
+        - omt_aeroway,
+        - omt_aerodrome_label,
+        - omt_building,
+        - omt_poi,
+        - omt_mountain_peak,
+        - omt_transportation_name,
+        - omt_water_name.
+      */
+      vectorTileLayerStyles: {
+        omt_landcover: vectorTileStyling.landcover,
+        omt_landuse: vectorTileStyling.landuse,
+        omt_park: vectorTileStyling.park,
+        omt_boundary: vectorTileStyling.boundary,
+        omt_water: vectorTileStyling.water,
+        omt_transportation: vectorTileStyling.transportation,
+        omt_waterway: vectorTileStyling.waterway
       }
     };
 
@@ -10473,9 +10348,7 @@ var VectorGridLayer = function VectorGridLayer(_ref) {
         L$1.DomEvent.stopPropagation(e);
         L$1.DomEvent.preventDefault(e);
       }).addTo(map);
-      console.log('Vector grid added to map.');
       return function () {
-        console.log('Removing vector grid from map.');
         map.removeLayer(vectorGrid);
       };
     } catch (error) {
@@ -10487,19 +10360,20 @@ var VectorGridLayer = function VectorGridLayer(_ref) {
 
 VectorGridLayer.propTypes = {
   tilesUrl: propTypes.exports.string.isRequired
-}; // GenericVectorBaseMap component to create the map
+};
 
-var GenericVectorBaseMap = function GenericVectorBaseMap(_ref2) {
-  var _ref2$tileset = _ref2.tileset,
-      url = _ref2$tileset.url,
-      projection = _ref2$tileset.projection,
-      tileMatrix = _ref2$tileset.tileMatrix,
-      center = _ref2.center,
-      zoom = _ref2.zoom,
-      mapRef = _ref2.mapRef,
-      vectorTileStyling = _ref2.vectorTileStyling,
-      children = _ref2.children,
-      rest = _objectWithoutProperties(_ref2, _excluded$5);
+var GenericVectorBaseMap = function GenericVectorBaseMap(_ref3) {
+  var _ref3$tileset = _ref3.tileset,
+      url = _ref3$tileset.url,
+      projection = _ref3$tileset.projection,
+      tileMatrix = _ref3$tileset.tileMatrix,
+      center = _ref3.center,
+      zoom = _ref3.zoom,
+      mapRef = _ref3.mapRef,
+      vectorTileStyling = _ref3.vectorTileStyling,
+      wmsUrl = _ref3.wmsUrl,
+      children = _ref3.children,
+      rest = _objectWithoutProperties(_ref3, _excluded$5);
 
   var crs = new L$1.Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
   return /*#__PURE__*/React.createElement(MapContainer, _extends({
@@ -10512,6 +10386,8 @@ var GenericVectorBaseMap = function GenericVectorBaseMap(_ref2) {
   }, rest), /*#__PURE__*/React.createElement(VectorGridLayer, {
     tilesUrl: url,
     vectorTileStyling: vectorTileStyling
+  }), /*#__PURE__*/React.createElement(LabelsLayer, {
+    wmsUrl: wmsUrl
   }), children);
 };
 
@@ -10532,6 +10408,7 @@ GenericVectorBaseMap.propTypes = {
   zoom: propTypes.exports.number.isRequired,
   mapRef: propTypes.exports.func,
   vectorTileStyling: propTypes.exports.object.isRequired,
+  wmsUrl: propTypes.exports.string.isRequired,
   children: propTypes.exports.node
 };
 
@@ -10607,6 +10484,223 @@ _defineProperty$1(BCBaseMap, "initialViewport", {
   zoom: 6
 });
 
+var vectorTileStyling = {
+  boundary: function boundary(properties, zoom) {
+    if (zoom < 6 || zoom > 14) return [];
+    var BoundaryStyle = {
+      Level_2: {
+        weight: 2,
+        color: '#a3a3a3',
+        fill: false
+      },
+      Level_2_disputed: {
+        weight: 2,
+        color: '#a3a3a3',
+        fill: false,
+        dashArray: '5, 5',
+        // 5 pixels dash, 5 pixels gap
+        dashOffset: '0'
+      }
+    };
+    var adminLevel = properties.admin_level;
+    var isMaritime = properties.maritime;
+    var isDisputed = properties.disputed;
+    if (adminLevel >= 3 && !isMaritime) return [];
+    if (adminLevel < 3 && isDisputed) return BoundaryStyle.Level_2_disputed;
+    if (adminLevel < 3 && !isDisputed) return BoundaryStyle.Level_2;
+    return [];
+  },
+  landcover: function landcover(properties, zoom) {
+    if (zoom < 8 || zoom > 14) return [];
+    var landcoverStyle = {
+      glacier: {
+        weight: 0.0,
+        color: '#ffffff',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        fill: true
+      },
+      forest: {
+        weight: 0.0,
+        color: '#b1d193',
+        fillColor: '#b1d193',
+        fillOpacity: 1,
+        fill: true
+      },
+      farmland: {
+        weight: 0.0,
+        color: '#98cb7f',
+        fillColor: '#98cb7f',
+        fillOpacity: 1,
+        fill: true
+      }
+    };
+    var landcoverClass = properties.class;
+    var glacierClasses = ['snow', 'glacier'];
+    var forestClasses = ['tree', 'forest'];
+    if (glacierClasses.includes(landcoverClass)) return landcoverStyle.glacier;
+    if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
+    if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
+    return [{
+      fillColor: '#f3f2f1',
+      // Default background 
+      fillOpacity: 1,
+      color: '#000000',
+      weight: 0
+    }];
+  },
+  landuse: function landuse(properties, zoom) {
+    if (zoom < 10 || zoom > 13) return [];
+    var landuseStyle = {
+      residential: {
+        weight: 0.0,
+        color: '#bbbbbb',
+        fillColor: '#bbbbbb',
+        fillOpacity: 1,
+        fill: true
+      }
+    };
+    var landuseClass = properties.class;
+    var residentialClasses = ['residential', 'suburb', 'neighbourhood'];
+    if (residentialClasses.includes(landuseClass)) return landuseStyle.residential;
+    return [];
+  },
+  park: function park(properties, zoom) {
+    if (zoom <= 10 || zoom >= 14) return [];
+    return [{
+      weight: 0.0,
+      color: '#b1d193',
+      fillColor: '#b1d193',
+      fillOpacity: 1,
+      fill: true
+    }];
+  },
+  transportation: function transportation(properties, zoom) {
+    if (zoom < 13 || zoom > 14) return [];
+    var transportationStyle = {
+      motorway: {
+        weight: 2,
+        color: '#FFD1D2'
+      },
+      trunk: {
+        weight: 1.8,
+        color: '#ffffff'
+      },
+      primary: {
+        weight: 1.6,
+        color: '#ffffff'
+      },
+      secondary: {
+        weight: 1.4,
+        color: '#ffffff'
+      },
+      tertiary: {
+        weight: 1.2,
+        color: '#ffffff'
+      },
+      minor: {
+        weight: 1,
+        color: '#ffffff'
+      },
+      path: {
+        weight: 0.8,
+        color: '#aaaaaa'
+      },
+      network_us: {
+        weight: 2.5,
+        color: '#fed1ff'
+      },
+      network_ca: {
+        weight: 2.5,
+        color: '#d1eeff'
+      }
+    };
+    var transportationClass = properties.class;
+    var network = properties.network;
+    if (network && network.startsWith('us-')) return transportationStyle.network_us;
+    if (network && network === 'ca-transcanada') return transportationStyle.network_ca;
+    return transportationStyle[transportationClass] || [];
+  },
+  water: function water(properties, zoom) {
+    if (zoom < 6 || zoom > 14) return [];
+    var waterStyle = {
+      ocean: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      river: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      lake: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      pond: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      swimming_pool: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      }
+    };
+    var waterClass = properties.class;
+    if (waterClass === 'ocean') return waterStyle.ocean;
+    if (waterClass === 'river' && zoom >= 11) return waterStyle.river;
+    if (waterClass === 'lake' && zoom >= 11) return waterStyle.lake;
+    if (waterClass === 'pond' && zoom >= 13) return waterStyle.pond;
+    if (waterClass === 'swimming_pool' && zoom > 14) return waterStyle.swimming_pool;
+    return [];
+  },
+  waterway: function waterway(properties, zoom) {
+    if (zoom < 7 || zoom > 14) return [];
+    var waterwayStyle = {
+      stream: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      river: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      },
+      canal: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true
+      }
+    };
+    var waterwayClass = properties.class;
+    if (waterwayClass === 'stream' && zoom >= 10) return waterwayStyle.stream;
+    if (waterwayClass === 'river' && zoom >= 9) return waterwayStyle.river;
+    if (waterwayClass === 'canal' && zoom >= 10) return waterwayStyle.canal;
+    return [];
+  }
+};
+
 var _excluded$3 = ["children"];
 
 var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
@@ -10629,7 +10723,8 @@ var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
 
       return /*#__PURE__*/React.createElement(GenericVectorBaseMap, _extends({
         tileset: BCVectorBaseMap.tileset,
-        vectorTileStyling: vectorTileStyling
+        vectorTileStyling: vectorTileStyling,
+        wmsUrl: process.env.REACT_APP_LABELS_WMS_URL
       }, rest), children);
     }
   }]);
@@ -10904,17 +10999,17 @@ var _Symbol = Symbol$5;
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$7 = Object.prototype;
+var objectProto$9 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$7.toString;
+var nativeObjectToString$1 = objectProto$9.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -10927,7 +11022,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$5.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$7.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -10950,14 +11045,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$6 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$6.toString;
+var nativeObjectToString = objectProto$8.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -11144,17 +11239,17 @@ var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
 /** Used for built-in method references. */
 var funcProto$1 = Function.prototype,
-    objectProto$5 = Object.prototype;
+    objectProto$7 = Object.prototype;
 
 /** Used to resolve the decompiled source of functions. */
 var funcToString$1 = funcProto$1.toString;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
 
 /** Used to detect if a method is native. */
 var reIsNative = RegExp('^' +
-  funcToString$1.call(hasOwnProperty$4).replace(reRegExpChar, '\\$&')
+  funcToString$1.call(hasOwnProperty$6).replace(reRegExpChar, '\\$&')
   .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
 );
 
@@ -12149,17 +12244,25 @@ function requireConstant () {
 	return constant_1;
 }
 
-var getNative$4 = _getNative;
+var _defineProperty;
+var hasRequired_defineProperty;
 
-var defineProperty$1 = (function() {
-  try {
-    var func = getNative$4(Object, 'defineProperty');
-    func({}, '', {});
-    return func;
-  } catch (e) {}
-}());
+function require_defineProperty () {
+	if (hasRequired_defineProperty) return _defineProperty;
+	hasRequired_defineProperty = 1;
+	var getNative = _getNative;
 
-var _defineProperty = defineProperty$1;
+	var defineProperty = (function() {
+	  try {
+	    var func = getNative(Object, 'defineProperty');
+	    func({}, '', {});
+	    return func;
+	  } catch (e) {}
+	}());
+
+	_defineProperty = defineProperty;
+	return _defineProperty;
+}
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -12168,7 +12271,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = _defineProperty,
+	    defineProperty = require_defineProperty(),
 	    identity = requireIdentity();
 
 	/**
@@ -13208,7 +13311,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = _defineProperty;
+var defineProperty = require_defineProperty();
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -13267,20 +13370,20 @@ var _baseAssignValue = baseAssignValue$2;
  * // => true
  */
 
-function eq$1(value, other) {
+function eq$2(value, other) {
   return value === other || (value !== value && other !== other);
 }
 
-var eq_1 = eq$1;
+var eq_1 = eq$2;
 
 var baseAssignValue$1 = _baseAssignValue,
-    eq = eq_1;
+    eq$1 = eq_1;
 
 /** Used for built-in method references. */
-var objectProto$4 = Object.prototype;
+var objectProto$6 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
 
 /**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent
@@ -13294,7 +13397,7 @@ var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
  */
 function assignValue$2(object, key, value) {
   var objValue = object[key];
-  if (!(hasOwnProperty$3.call(object, key) && eq(objValue, value)) ||
+  if (!(hasOwnProperty$5.call(object, key) && eq$1(objValue, value)) ||
       (value === undefined && !(key in object))) {
     baseAssignValue$1(object, key, value);
   }
@@ -14018,247 +14121,183 @@ var _baseAssign = baseAssign$1;
  * @memberOf ListCache
  */
 
-var _listCacheClear;
-var hasRequired_listCacheClear;
-
-function require_listCacheClear () {
-	if (hasRequired_listCacheClear) return _listCacheClear;
-	hasRequired_listCacheClear = 1;
-	function listCacheClear() {
-	  this.__data__ = [];
-	  this.size = 0;
-	}
-
-	_listCacheClear = listCacheClear;
-	return _listCacheClear;
+function listCacheClear$1() {
+  this.__data__ = [];
+  this.size = 0;
 }
 
-var _assocIndexOf;
-var hasRequired_assocIndexOf;
+var _listCacheClear = listCacheClear$1;
 
-function require_assocIndexOf () {
-	if (hasRequired_assocIndexOf) return _assocIndexOf;
-	hasRequired_assocIndexOf = 1;
-	var eq = eq_1;
+var eq = eq_1;
 
-	/**
-	 * Gets the index at which the `key` is found in `array` of key-value pairs.
-	 *
-	 * @private
-	 * @param {Array} array The array to inspect.
-	 * @param {*} key The key to search for.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-	function assocIndexOf(array, key) {
-	  var length = array.length;
-	  while (length--) {
-	    if (eq(array[length][0], key)) {
-	      return length;
-	    }
-	  }
-	  return -1;
-	}
-
-	_assocIndexOf = assocIndexOf;
-	return _assocIndexOf;
+/**
+ * Gets the index at which the `key` is found in `array` of key-value pairs.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {*} key The key to search for.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ */
+function assocIndexOf$4(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
 }
 
-var _listCacheDelete;
-var hasRequired_listCacheDelete;
+var _assocIndexOf = assocIndexOf$4;
 
-function require_listCacheDelete () {
-	if (hasRequired_listCacheDelete) return _listCacheDelete;
-	hasRequired_listCacheDelete = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$3 = _assocIndexOf;
 
-	/** Used for built-in method references. */
-	var arrayProto = Array.prototype;
+/** Used for built-in method references. */
+var arrayProto = Array.prototype;
 
-	/** Built-in value references. */
-	var splice = arrayProto.splice;
+/** Built-in value references. */
+var splice = arrayProto.splice;
 
-	/**
-	 * Removes `key` and its value from the list cache.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function listCacheDelete(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Removes `key` and its value from the list cache.
+ *
+ * @private
+ * @name delete
+ * @memberOf ListCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function listCacheDelete$1(key) {
+  var data = this.__data__,
+      index = assocIndexOf$3(data, key);
 
-	  if (index < 0) {
-	    return false;
-	  }
-	  var lastIndex = data.length - 1;
-	  if (index == lastIndex) {
-	    data.pop();
-	  } else {
-	    splice.call(data, index, 1);
-	  }
-	  --this.size;
-	  return true;
-	}
-
-	_listCacheDelete = listCacheDelete;
-	return _listCacheDelete;
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  --this.size;
+  return true;
 }
 
-var _listCacheGet;
-var hasRequired_listCacheGet;
+var _listCacheDelete = listCacheDelete$1;
 
-function require_listCacheGet () {
-	if (hasRequired_listCacheGet) return _listCacheGet;
-	hasRequired_listCacheGet = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$2 = _assocIndexOf;
 
-	/**
-	 * Gets the list cache value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function listCacheGet(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Gets the list cache value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf ListCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function listCacheGet$1(key) {
+  var data = this.__data__,
+      index = assocIndexOf$2(data, key);
 
-	  return index < 0 ? undefined : data[index][1];
-	}
-
-	_listCacheGet = listCacheGet;
-	return _listCacheGet;
+  return index < 0 ? undefined : data[index][1];
 }
 
-var _listCacheHas;
-var hasRequired_listCacheHas;
+var _listCacheGet = listCacheGet$1;
 
-function require_listCacheHas () {
-	if (hasRequired_listCacheHas) return _listCacheHas;
-	hasRequired_listCacheHas = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$1 = _assocIndexOf;
 
-	/**
-	 * Checks if a list cache value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf ListCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function listCacheHas(key) {
-	  return assocIndexOf(this.__data__, key) > -1;
-	}
-
-	_listCacheHas = listCacheHas;
-	return _listCacheHas;
+/**
+ * Checks if a list cache value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf ListCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function listCacheHas$1(key) {
+  return assocIndexOf$1(this.__data__, key) > -1;
 }
 
-var _listCacheSet;
-var hasRequired_listCacheSet;
+var _listCacheHas = listCacheHas$1;
 
-function require_listCacheSet () {
-	if (hasRequired_listCacheSet) return _listCacheSet;
-	hasRequired_listCacheSet = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf = _assocIndexOf;
 
-	/**
-	 * Sets the list cache `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the list cache instance.
-	 */
-	function listCacheSet(key, value) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Sets the list cache `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf ListCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the list cache instance.
+ */
+function listCacheSet$1(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
 
-	  if (index < 0) {
-	    ++this.size;
-	    data.push([key, value]);
-	  } else {
-	    data[index][1] = value;
-	  }
-	  return this;
-	}
-
-	_listCacheSet = listCacheSet;
-	return _listCacheSet;
+  if (index < 0) {
+    ++this.size;
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
 }
 
-var _ListCache;
-var hasRequired_ListCache;
+var _listCacheSet = listCacheSet$1;
 
-function require_ListCache () {
-	if (hasRequired_ListCache) return _ListCache;
-	hasRequired_ListCache = 1;
-	var listCacheClear = require_listCacheClear(),
-	    listCacheDelete = require_listCacheDelete(),
-	    listCacheGet = require_listCacheGet(),
-	    listCacheHas = require_listCacheHas(),
-	    listCacheSet = require_listCacheSet();
+var listCacheClear = _listCacheClear,
+    listCacheDelete = _listCacheDelete,
+    listCacheGet = _listCacheGet,
+    listCacheHas = _listCacheHas,
+    listCacheSet = _listCacheSet;
 
-	/**
-	 * Creates an list cache object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function ListCache(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates an list cache object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function ListCache$4(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `ListCache`.
-	ListCache.prototype.clear = listCacheClear;
-	ListCache.prototype['delete'] = listCacheDelete;
-	ListCache.prototype.get = listCacheGet;
-	ListCache.prototype.has = listCacheHas;
-	ListCache.prototype.set = listCacheSet;
-
-	_ListCache = ListCache;
-	return _ListCache;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _stackClear;
-var hasRequired_stackClear;
+// Add methods to `ListCache`.
+ListCache$4.prototype.clear = listCacheClear;
+ListCache$4.prototype['delete'] = listCacheDelete;
+ListCache$4.prototype.get = listCacheGet;
+ListCache$4.prototype.has = listCacheHas;
+ListCache$4.prototype.set = listCacheSet;
 
-function require_stackClear () {
-	if (hasRequired_stackClear) return _stackClear;
-	hasRequired_stackClear = 1;
-	var ListCache = require_ListCache();
+var _ListCache = ListCache$4;
 
-	/**
-	 * Removes all key-value entries from the stack.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Stack
-	 */
-	function stackClear() {
-	  this.__data__ = new ListCache;
-	  this.size = 0;
-	}
+var ListCache$3 = _ListCache;
 
-	_stackClear = stackClear;
-	return _stackClear;
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear$1() {
+  this.__data__ = new ListCache$3;
+  this.size = 0;
 }
+
+var _stackClear = stackClear$1;
 
 /**
  * Removes `key` and its value from the stack.
@@ -14270,23 +14309,15 @@ function require_stackClear () {
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
  */
 
-var _stackDelete;
-var hasRequired_stackDelete;
+function stackDelete$1(key) {
+  var data = this.__data__,
+      result = data['delete'](key);
 
-function require_stackDelete () {
-	if (hasRequired_stackDelete) return _stackDelete;
-	hasRequired_stackDelete = 1;
-	function stackDelete(key) {
-	  var data = this.__data__,
-	      result = data['delete'](key);
-
-	  this.size = data.size;
-	  return result;
-	}
-
-	_stackDelete = stackDelete;
-	return _stackDelete;
+  this.size = data.size;
+  return result;
 }
+
+var _stackDelete = stackDelete$1;
 
 /**
  * Gets the stack value for `key`.
@@ -14298,19 +14329,11 @@ function require_stackDelete () {
  * @returns {*} Returns the entry value.
  */
 
-var _stackGet;
-var hasRequired_stackGet;
-
-function require_stackGet () {
-	if (hasRequired_stackGet) return _stackGet;
-	hasRequired_stackGet = 1;
-	function stackGet(key) {
-	  return this.__data__.get(key);
-	}
-
-	_stackGet = stackGet;
-	return _stackGet;
+function stackGet$1(key) {
+  return this.__data__.get(key);
 }
+
+var _stackGet = stackGet$1;
 
 /**
  * Checks if a stack value for `key` exists.
@@ -14322,66 +14345,42 @@ function require_stackGet () {
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
  */
 
-var _stackHas;
-var hasRequired_stackHas;
-
-function require_stackHas () {
-	if (hasRequired_stackHas) return _stackHas;
-	hasRequired_stackHas = 1;
-	function stackHas(key) {
-	  return this.__data__.has(key);
-	}
-
-	_stackHas = stackHas;
-	return _stackHas;
+function stackHas$1(key) {
+  return this.__data__.has(key);
 }
 
-var getNative$3 = _getNative,
+var _stackHas = stackHas$1;
+
+var getNative$4 = _getNative,
     root$4 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$1 = getNative$3(root$4, 'Map');
+var Map$3 = getNative$4(root$4, 'Map');
 
-var _Map = Map$1;
+var _Map = Map$3;
 
-var _nativeCreate;
-var hasRequired_nativeCreate;
+var getNative$3 = _getNative;
 
-function require_nativeCreate () {
-	if (hasRequired_nativeCreate) return _nativeCreate;
-	hasRequired_nativeCreate = 1;
-	var getNative = _getNative;
+/* Built-in method references that are verified to be native. */
+var nativeCreate$4 = getNative$3(Object, 'create');
 
-	/* Built-in method references that are verified to be native. */
-	var nativeCreate = getNative(Object, 'create');
+var _nativeCreate = nativeCreate$4;
 
-	_nativeCreate = nativeCreate;
-	return _nativeCreate;
+var nativeCreate$3 = _nativeCreate;
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear$1() {
+  this.__data__ = nativeCreate$3 ? nativeCreate$3(null) : {};
+  this.size = 0;
 }
 
-var _hashClear;
-var hasRequired_hashClear;
-
-function require_hashClear () {
-	if (hasRequired_hashClear) return _hashClear;
-	hasRequired_hashClear = 1;
-	var nativeCreate = require_nativeCreate();
-
-	/**
-	 * Removes all key-value entries from the hash.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Hash
-	 */
-	function hashClear() {
-	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
-	  this.size = 0;
-	}
-
-	_hashClear = hashClear;
-	return _hashClear;
-}
+var _hashClear = hashClear$1;
 
 /**
  * Removes `key` and its value from the hash.
@@ -14394,195 +14393,147 @@ function require_hashClear () {
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
  */
 
-var _hashDelete;
-var hasRequired_hashDelete;
-
-function require_hashDelete () {
-	if (hasRequired_hashDelete) return _hashDelete;
-	hasRequired_hashDelete = 1;
-	function hashDelete(key) {
-	  var result = this.has(key) && delete this.__data__[key];
-	  this.size -= result ? 1 : 0;
-	  return result;
-	}
-
-	_hashDelete = hashDelete;
-	return _hashDelete;
+function hashDelete$1(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
 }
 
-var _hashGet;
-var hasRequired_hashGet;
+var _hashDelete = hashDelete$1;
 
-function require_hashGet () {
-	if (hasRequired_hashGet) return _hashGet;
-	hasRequired_hashGet = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate$2 = _nativeCreate;
 
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto$5 = Object.prototype;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to check objects for own properties. */
+var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
 
-	/**
-	 * Gets the hash value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function hashGet(key) {
-	  var data = this.__data__;
-	  if (nativeCreate) {
-	    var result = data[key];
-	    return result === HASH_UNDEFINED ? undefined : result;
-	  }
-	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
-	}
-
-	_hashGet = hashGet;
-	return _hashGet;
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet$1(key) {
+  var data = this.__data__;
+  if (nativeCreate$2) {
+    var result = data[key];
+    return result === HASH_UNDEFINED$1 ? undefined : result;
+  }
+  return hasOwnProperty$4.call(data, key) ? data[key] : undefined;
 }
 
-var _hashHas;
-var hasRequired_hashHas;
+var _hashGet = hashGet$1;
 
-function require_hashHas () {
-	if (hasRequired_hashHas) return _hashHas;
-	hasRequired_hashHas = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate$1 = _nativeCreate;
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto$4 = Object.prototype;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to check objects for own properties. */
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
 
-	/**
-	 * Checks if a hash value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf Hash
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function hashHas(key) {
-	  var data = this.__data__;
-	  return nativeCreate ? (data[key] !== undefined) : hasOwnProperty.call(data, key);
-	}
-
-	_hashHas = hashHas;
-	return _hashHas;
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas$1(key) {
+  var data = this.__data__;
+  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$3.call(data, key);
 }
 
-var _hashSet;
-var hasRequired_hashSet;
+var _hashHas = hashHas$1;
 
-function require_hashSet () {
-	if (hasRequired_hashSet) return _hashSet;
-	hasRequired_hashSet = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate = _nativeCreate;
 
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
 
-	/**
-	 * Sets the hash `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the hash instance.
-	 */
-	function hashSet(key, value) {
-	  var data = this.__data__;
-	  this.size += this.has(key) ? 0 : 1;
-	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
-	  return this;
-	}
-
-	_hashSet = hashSet;
-	return _hashSet;
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet$1(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+  return this;
 }
 
-var _Hash;
-var hasRequired_Hash;
+var _hashSet = hashSet$1;
 
-function require_Hash () {
-	if (hasRequired_Hash) return _Hash;
-	hasRequired_Hash = 1;
-	var hashClear = require_hashClear(),
-	    hashDelete = require_hashDelete(),
-	    hashGet = require_hashGet(),
-	    hashHas = require_hashHas(),
-	    hashSet = require_hashSet();
+var hashClear = _hashClear,
+    hashDelete = _hashDelete,
+    hashGet = _hashGet,
+    hashHas = _hashHas,
+    hashSet = _hashSet;
 
-	/**
-	 * Creates a hash object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function Hash(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash$1(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `Hash`.
-	Hash.prototype.clear = hashClear;
-	Hash.prototype['delete'] = hashDelete;
-	Hash.prototype.get = hashGet;
-	Hash.prototype.has = hashHas;
-	Hash.prototype.set = hashSet;
-
-	_Hash = Hash;
-	return _Hash;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _mapCacheClear;
-var hasRequired_mapCacheClear;
+// Add methods to `Hash`.
+Hash$1.prototype.clear = hashClear;
+Hash$1.prototype['delete'] = hashDelete;
+Hash$1.prototype.get = hashGet;
+Hash$1.prototype.has = hashHas;
+Hash$1.prototype.set = hashSet;
 
-function require_mapCacheClear () {
-	if (hasRequired_mapCacheClear) return _mapCacheClear;
-	hasRequired_mapCacheClear = 1;
-	var Hash = require_Hash(),
-	    ListCache = require_ListCache(),
-	    Map = _Map;
+var _Hash = Hash$1;
 
-	/**
-	 * Removes all key-value entries from the map.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf MapCache
-	 */
-	function mapCacheClear() {
-	  this.size = 0;
-	  this.__data__ = {
-	    'hash': new Hash,
-	    'map': new (Map || ListCache),
-	    'string': new Hash
-	  };
-	}
+var Hash = _Hash,
+    ListCache$2 = _ListCache,
+    Map$2 = _Map;
 
-	_mapCacheClear = mapCacheClear;
-	return _mapCacheClear;
+/**
+ * Removes all key-value entries from the map.
+ *
+ * @private
+ * @name clear
+ * @memberOf MapCache
+ */
+function mapCacheClear$1() {
+  this.size = 0;
+  this.__data__ = {
+    'hash': new Hash,
+    'map': new (Map$2 || ListCache$2),
+    'string': new Hash
+  };
 }
+
+var _mapCacheClear = mapCacheClear$1;
 
 /**
  * Checks if `value` is suitable for use as unique object key.
@@ -14592,277 +14543,205 @@ function require_mapCacheClear () {
  * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
  */
 
-var _isKeyable;
-var hasRequired_isKeyable;
-
-function require_isKeyable () {
-	if (hasRequired_isKeyable) return _isKeyable;
-	hasRequired_isKeyable = 1;
-	function isKeyable(value) {
-	  var type = typeof value;
-	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
-	    ? (value !== '__proto__')
-	    : (value === null);
-	}
-
-	_isKeyable = isKeyable;
-	return _isKeyable;
+function isKeyable$1(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
 }
 
-var _getMapData;
-var hasRequired_getMapData;
+var _isKeyable = isKeyable$1;
 
-function require_getMapData () {
-	if (hasRequired_getMapData) return _getMapData;
-	hasRequired_getMapData = 1;
-	var isKeyable = require_isKeyable();
+var isKeyable = _isKeyable;
 
-	/**
-	 * Gets the data for `map`.
-	 *
-	 * @private
-	 * @param {Object} map The map to query.
-	 * @param {string} key The reference key.
-	 * @returns {*} Returns the map data.
-	 */
-	function getMapData(map, key) {
-	  var data = map.__data__;
-	  return isKeyable(key)
-	    ? data[typeof key == 'string' ? 'string' : 'hash']
-	    : data.map;
-	}
-
-	_getMapData = getMapData;
-	return _getMapData;
+/**
+ * Gets the data for `map`.
+ *
+ * @private
+ * @param {Object} map The map to query.
+ * @param {string} key The reference key.
+ * @returns {*} Returns the map data.
+ */
+function getMapData$4(map, key) {
+  var data = map.__data__;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
 }
 
-var _mapCacheDelete;
-var hasRequired_mapCacheDelete;
+var _getMapData = getMapData$4;
 
-function require_mapCacheDelete () {
-	if (hasRequired_mapCacheDelete) return _mapCacheDelete;
-	hasRequired_mapCacheDelete = 1;
-	var getMapData = require_getMapData();
+var getMapData$3 = _getMapData;
 
-	/**
-	 * Removes `key` and its value from the map.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function mapCacheDelete(key) {
-	  var result = getMapData(this, key)['delete'](key);
-	  this.size -= result ? 1 : 0;
-	  return result;
-	}
-
-	_mapCacheDelete = mapCacheDelete;
-	return _mapCacheDelete;
+/**
+ * Removes `key` and its value from the map.
+ *
+ * @private
+ * @name delete
+ * @memberOf MapCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function mapCacheDelete$1(key) {
+  var result = getMapData$3(this, key)['delete'](key);
+  this.size -= result ? 1 : 0;
+  return result;
 }
 
-var _mapCacheGet;
-var hasRequired_mapCacheGet;
+var _mapCacheDelete = mapCacheDelete$1;
 
-function require_mapCacheGet () {
-	if (hasRequired_mapCacheGet) return _mapCacheGet;
-	hasRequired_mapCacheGet = 1;
-	var getMapData = require_getMapData();
+var getMapData$2 = _getMapData;
 
-	/**
-	 * Gets the map value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function mapCacheGet(key) {
-	  return getMapData(this, key).get(key);
-	}
-
-	_mapCacheGet = mapCacheGet;
-	return _mapCacheGet;
+/**
+ * Gets the map value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf MapCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function mapCacheGet$1(key) {
+  return getMapData$2(this, key).get(key);
 }
 
-var _mapCacheHas;
-var hasRequired_mapCacheHas;
+var _mapCacheGet = mapCacheGet$1;
 
-function require_mapCacheHas () {
-	if (hasRequired_mapCacheHas) return _mapCacheHas;
-	hasRequired_mapCacheHas = 1;
-	var getMapData = require_getMapData();
+var getMapData$1 = _getMapData;
 
-	/**
-	 * Checks if a map value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf MapCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function mapCacheHas(key) {
-	  return getMapData(this, key).has(key);
-	}
-
-	_mapCacheHas = mapCacheHas;
-	return _mapCacheHas;
+/**
+ * Checks if a map value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf MapCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function mapCacheHas$1(key) {
+  return getMapData$1(this, key).has(key);
 }
 
-var _mapCacheSet;
-var hasRequired_mapCacheSet;
+var _mapCacheHas = mapCacheHas$1;
 
-function require_mapCacheSet () {
-	if (hasRequired_mapCacheSet) return _mapCacheSet;
-	hasRequired_mapCacheSet = 1;
-	var getMapData = require_getMapData();
+var getMapData = _getMapData;
 
-	/**
-	 * Sets the map `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache instance.
-	 */
-	function mapCacheSet(key, value) {
-	  var data = getMapData(this, key),
-	      size = data.size;
+/**
+ * Sets the map `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf MapCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the map cache instance.
+ */
+function mapCacheSet$1(key, value) {
+  var data = getMapData(this, key),
+      size = data.size;
 
-	  data.set(key, value);
-	  this.size += data.size == size ? 0 : 1;
-	  return this;
-	}
-
-	_mapCacheSet = mapCacheSet;
-	return _mapCacheSet;
+  data.set(key, value);
+  this.size += data.size == size ? 0 : 1;
+  return this;
 }
 
-var _MapCache;
-var hasRequired_MapCache;
+var _mapCacheSet = mapCacheSet$1;
 
-function require_MapCache () {
-	if (hasRequired_MapCache) return _MapCache;
-	hasRequired_MapCache = 1;
-	var mapCacheClear = require_mapCacheClear(),
-	    mapCacheDelete = require_mapCacheDelete(),
-	    mapCacheGet = require_mapCacheGet(),
-	    mapCacheHas = require_mapCacheHas(),
-	    mapCacheSet = require_mapCacheSet();
+var mapCacheClear = _mapCacheClear,
+    mapCacheDelete = _mapCacheDelete,
+    mapCacheGet = _mapCacheGet,
+    mapCacheHas = _mapCacheHas,
+    mapCacheSet = _mapCacheSet;
 
-	/**
-	 * Creates a map cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function MapCache(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates a map cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function MapCache$2(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `MapCache`.
-	MapCache.prototype.clear = mapCacheClear;
-	MapCache.prototype['delete'] = mapCacheDelete;
-	MapCache.prototype.get = mapCacheGet;
-	MapCache.prototype.has = mapCacheHas;
-	MapCache.prototype.set = mapCacheSet;
-
-	_MapCache = MapCache;
-	return _MapCache;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _stackSet;
-var hasRequired_stackSet;
+// Add methods to `MapCache`.
+MapCache$2.prototype.clear = mapCacheClear;
+MapCache$2.prototype['delete'] = mapCacheDelete;
+MapCache$2.prototype.get = mapCacheGet;
+MapCache$2.prototype.has = mapCacheHas;
+MapCache$2.prototype.set = mapCacheSet;
 
-function require_stackSet () {
-	if (hasRequired_stackSet) return _stackSet;
-	hasRequired_stackSet = 1;
-	var ListCache = require_ListCache(),
-	    Map = _Map,
-	    MapCache = require_MapCache();
+var _MapCache = MapCache$2;
 
-	/** Used as the size to enable large array optimizations. */
-	var LARGE_ARRAY_SIZE = 200;
+var ListCache$1 = _ListCache,
+    Map$1 = _Map,
+    MapCache$1 = _MapCache;
 
-	/**
-	 * Sets the stack `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Stack
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the stack cache instance.
-	 */
-	function stackSet(key, value) {
-	  var data = this.__data__;
-	  if (data instanceof ListCache) {
-	    var pairs = data.__data__;
-	    if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
-	      pairs.push([key, value]);
-	      this.size = ++data.size;
-	      return this;
-	    }
-	    data = this.__data__ = new MapCache(pairs);
-	  }
-	  data.set(key, value);
-	  this.size = data.size;
-	  return this;
-	}
+/** Used as the size to enable large array optimizations. */
+var LARGE_ARRAY_SIZE = 200;
 
-	_stackSet = stackSet;
-	return _stackSet;
+/**
+ * Sets the stack `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Stack
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the stack cache instance.
+ */
+function stackSet$1(key, value) {
+  var data = this.__data__;
+  if (data instanceof ListCache$1) {
+    var pairs = data.__data__;
+    if (!Map$1 || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+      pairs.push([key, value]);
+      this.size = ++data.size;
+      return this;
+    }
+    data = this.__data__ = new MapCache$1(pairs);
+  }
+  data.set(key, value);
+  this.size = data.size;
+  return this;
 }
 
-var _Stack;
-var hasRequired_Stack;
+var _stackSet = stackSet$1;
 
-function require_Stack () {
-	if (hasRequired_Stack) return _Stack;
-	hasRequired_Stack = 1;
-	var ListCache = require_ListCache(),
-	    stackClear = require_stackClear(),
-	    stackDelete = require_stackDelete(),
-	    stackGet = require_stackGet(),
-	    stackHas = require_stackHas(),
-	    stackSet = require_stackSet();
+var ListCache = _ListCache,
+    stackClear = _stackClear,
+    stackDelete = _stackDelete,
+    stackGet = _stackGet,
+    stackHas = _stackHas,
+    stackSet = _stackSet;
 
-	/**
-	 * Creates a stack cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function Stack(entries) {
-	  var data = this.__data__ = new ListCache(entries);
-	  this.size = data.size;
-	}
-
-	// Add methods to `Stack`.
-	Stack.prototype.clear = stackClear;
-	Stack.prototype['delete'] = stackDelete;
-	Stack.prototype.get = stackGet;
-	Stack.prototype.has = stackHas;
-	Stack.prototype.set = stackSet;
-
-	_Stack = Stack;
-	return _Stack;
+/**
+ * Creates a stack cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Stack$1(entries) {
+  var data = this.__data__ = new ListCache(entries);
+  this.size = data.size;
 }
+
+// Add methods to `Stack`.
+Stack$1.prototype.clear = stackClear;
+Stack$1.prototype['delete'] = stackDelete;
+Stack$1.prototype.get = stackGet;
+Stack$1.prototype.has = stackHas;
+Stack$1.prototype.set = stackSet;
+
+var _Stack = Stack$1;
 
 /**
  * This function is like
@@ -15645,7 +15524,7 @@ var isSet$1 = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
 
 var isSet_1 = isSet$1;
 
-var Stack = require_Stack(),
+var Stack = _Stack,
     arrayEach = _arrayEach,
     assignValue = _assignValue,
     baseAssign = _baseAssign,
@@ -16095,7 +15974,7 @@ var hasRequired_SetCache;
 function require_SetCache () {
 	if (hasRequired_SetCache) return _SetCache;
 	hasRequired_SetCache = 1;
-	var MapCache = require_MapCache(),
+	var MapCache = _MapCache,
 	    setCacheAdd = require_setCacheAdd(),
 	    setCacheHas = require_setCacheHas();
 
@@ -16556,7 +16435,7 @@ var hasRequired_baseIsEqualDeep;
 function require_baseIsEqualDeep () {
 	if (hasRequired_baseIsEqualDeep) return _baseIsEqualDeep;
 	hasRequired_baseIsEqualDeep = 1;
-	var Stack = require_Stack(),
+	var Stack = _Stack,
 	    equalArrays = require_equalArrays(),
 	    equalByTag = require_equalByTag(),
 	    equalObjects = require_equalObjects(),
@@ -16685,7 +16564,7 @@ var hasRequired_baseIsMatch;
 function require_baseIsMatch () {
 	if (hasRequired_baseIsMatch) return _baseIsMatch;
 	hasRequired_baseIsMatch = 1;
-	var Stack = require_Stack(),
+	var Stack = _Stack,
 	    baseIsEqual = require_baseIsEqual();
 
 	/** Used to compose bitmasks for value comparisons. */
@@ -16906,7 +16785,7 @@ function require_isKey () {
 	return _isKey;
 }
 
-var MapCache = require_MapCache();
+var MapCache = _MapCache;
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
