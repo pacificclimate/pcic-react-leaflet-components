@@ -50,6 +50,7 @@ export default class BCVectorBaseMap extends PureComponent {
             <GenericVectorBaseMap
                 tileset={BCVectorBaseMap.tileset}
                 vectorTileStyling={vectorTileStyling}
+                wmsUrl={process.env.REACT_APP_LABELS_WMS_URL}
                 {...rest}
             >
                 {children}

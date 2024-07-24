@@ -1,51 +1,7 @@
-const createSvgIcon = (text, fontSize) => {
-  const svg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="200" height="50">
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="${fontSize}" fill="#5F95D3" stroke="" stroke-width="0.5">
-          ${text}
-      </text>
-  </svg>`;
-  return L.icon({
-    iconUrl: `data:image/svg+xml;base64,${btoa(svg)}`,
-    iconSize: [200, 50],
-    iconAnchor: [100, 25]
-  });
-};
-
-const createMountainPeakIcon = (text, fontSize) => {
-  const svg = `
-  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="40">
-    <polygon points="15,2 27,27 3,27" style="fill:#ffcb99;fill-opacity:0.9;stroke:#a3a3a3;stroke-width:0.5" />
-    <text x="50%" y="35" dominant-baseline="middle" text-anchor="middle" font-size="${fontSize}" fill="#cb8716">
-      ${text}
-    </text>
-  </svg>`;
-  return L.icon({
-    iconUrl: `data:image/svg+xml;base64,${btoa(svg)}`,
-    iconSize: [30, 40],
-    iconAnchor: [15, 40]
-  });
-};
-
-// Line attrs:
-// color: "#a3a3a3"
-// dashArray: null
-// dashOffset: null
-// fill: false
-// fillColor: null
-// fillOpacity: 0.2
-// fillRule: "evenodd"
-// interactive: true
-// lineCap: "round"
-// lineJoin : "round"
-// opacity: 1
-// pane: "overlayPane"
-// stroke: true
-// weight: 0.1
-
 const vectorTileStyling = {
+
   boundary: function (properties, zoom) {
-    if (zoom < 6 || zoom > 21) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const BoundaryStyle = {
       Level_2: {
@@ -90,6 +46,13 @@ const vectorTileStyling = {
         fillOpacity: 1,
         fill: true,
       },
+      farmland: {
+        weight: 0.0,
+        color: '#98cb7f',
+        fillColor: '#98cb7f',
+        fillOpacity: 1,
+        fill: true,
+      },
     };
 
     const landcoverClass = properties.class;
@@ -97,7 +60,7 @@ const vectorTileStyling = {
     const forestClasses = ['tree', 'forest'];
     if (glacierClasses.includes(landcoverClass)) return landcoverStyle.glacier;
     if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
-
+    if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
     return [{
       fillColor: '#f3f2f1', // Default background 
       fillOpacity: 1,
@@ -107,13 +70,15 @@ const vectorTileStyling = {
   },
 
   landuse: function (properties, zoom) {
-    if (zoom < 6 || zoom > 13) return [];
+    if (zoom < 10 || zoom > 13) return [];
 
     const landuseStyle = {
       residential: {
-        weight: 0.1,
+        weight: 0.0,
         color: '#bbbbbb',
-        fill: false,
+        fillColor: '#bbbbbb',
+        fillOpacity: 1,
+        fill: true,
       },
     }
 
@@ -122,13 +87,8 @@ const vectorTileStyling = {
     const residentialClasses = ['residential', 'suburb', 'neighbourhood'];
     if (residentialClasses.includes(landuseClass)) return landuseStyle.residential;
 
+
     return [];
-  },
-  mountain_peak: function (properties, zoom) {
-    if (zoom < 13 || zoom > 14) return [];
-    return {
-      icon: createMountainPeakIcon(properties.name, 8)
-    };
   },
 
   park: function (properties, zoom) {
@@ -142,78 +102,6 @@ const vectorTileStyling = {
         fillOpacity: 1,
         fill: true,
       }];
-  },
-
-  place: function (properties, zoom) {
-    if (zoom < 10 || zoom > 14) return [];
-    const placeStyles = {
-      continent: {
-        fontSize: 20,
-        color: '#000000'
-      },
-      country: {
-        fontSize: 18,
-        color: '#000000'
-      },
-      state: {
-        fontSize: 16,
-        color: '#000000'
-      },
-      province: {
-        fontSize: 16,
-        color: '#000000'
-      },
-      city: {
-        fontSize: 14,
-        color: '#000000'
-      },
-      town: {
-        fontSize: 12,
-        color: '#000000'
-      },
-      village: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      hamlet: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      borough: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      suburb: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      quarter: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      neighbourhood: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      isolated_dwelling: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      island: {
-        fontSize: 10,
-        color: '#000000'
-      },
-      aboriginal_lands: {
-        fontSize: 10,
-        color: '#000000'
-      }
-
-    };
-    const placeClass = properties.class;
-    const style = placeStyles[placeClass] || { fontSize: 10, color: '#000000' };
-    return {
-      icon: createSvgIcon(properties.name, style.fontSize, style.color)
-    };
   },
 
   transportation: function (properties, zoom) {
@@ -267,20 +155,9 @@ const vectorTileStyling = {
     return transportationStyle[transportationClass] || [];
   },
 
-  transportation_name: function (properties, zoom) {
-    if (zoom < 13 || zoom > 14) return [];
-    return [];
-  },
-
-  transportation_name: function (properties, zoom) {
-
-    if (zoom < 13 || zoom > 14) return [];
-    return [];
-  },
-
   water: function (properties, zoom) {
-    const zoomLevel = Number(zoom);
-    if (zoomLevel < 6 || zoomLevel > 14) return [];
+
+    if (zoom < 6 || zoom > 14) return [];
 
     const waterStyle = {
       ocean: {
@@ -322,47 +199,48 @@ const vectorTileStyling = {
 
     const waterClass = properties.class;
     if (waterClass === 'ocean') return waterStyle.ocean;
-    if (waterClass === 'river' && zoomLevel >= 9) return waterStyle.river;
-    if (waterClass === 'lake' && zoomLevel >= 7) return waterStyle.lake;
-    if (waterClass === 'pond' && zoomLevel >= 11) return waterStyle.pond;
-    if (waterClass === 'swimming_pool' && zoomLevel > 9) return waterStyle.swimming_pool;
-
-    return [];
-  },
-  water_name: function (properties, zoom) {
-    const zoomLevel = Number(zoom);
-    if (zoom <= 6 || zoom >= 14) return [];
-
-    const waterNameStyle = {
-      ocean: createSvgIcon(properties.name, 14),
-      sea: createSvgIcon(properties.name, 12),
-      bay: createSvgIcon(properties.name, 10),
-      strait: createSvgIcon(properties.name, 10),
-      lake: createSvgIcon(properties.name, 8),
-    };
-
-    const waterNameClass = properties.class;
-
-    if (waterNameClass === 'ocean') return { icon: waterNameStyle.ocean };
-    if (waterNameClass === 'sea' && zoomLevel >= 6) return { icon: waterNameStyle.sea };
-    if (waterNameClass === 'bay' && zoomLevel >= 13) return { icon: waterNameStyle.bay };
-    if (waterNameClass === 'strait' && zoomLevel >= 7) return { icon: waterNameStyle.strait };
-    if (waterNameClass === 'lake' && zoomLevel > 9) return { icon: waterNameStyle.lake };
+    if (waterClass === 'river' && zoom >= 11) return waterStyle.river;
+    if (waterClass === 'lake' && zoom >= 11) return waterStyle.lake;
+    if (waterClass === 'pond' && zoom >= 13) return waterStyle.pond;
+    if (waterClass === 'swimming_pool' && zoom > 14) return waterStyle.swimming_pool;
 
     return [];
   },
 
   waterway: function (properties, zoom) {
     if (zoom < 7 || zoom > 14) return [];
-    return [
-      {
-        weight: 2,
-        color: '#f3f3f0',
+
+    const waterwayStyle = {
+      stream: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true,
+      },
+      river: {
+        weight: 0.0,
+        color: '#c2c9cb',
+        fillColor: '#c2c9cb',
+        fillOpacity: 1,
+        fill: true,
+      },
+      canal: {
+        weight: 0.0,
+        color: '#c2c9cb',
         fillColor: '#c2c9cb',
         fillOpacity: 1,
         fill: true,
       }
-    ];
+    };
+
+    const waterwayClass = properties.class;
+    if (waterwayClass === 'stream' && zoom >= 10) return waterwayStyle.stream;
+    if (waterwayClass === 'river' && zoom >= 9) return waterwayStyle.river;
+    if (waterwayClass === 'canal' && zoom >= 10) return waterwayStyle.canal;
+
+
+    return [];
   }
 };
 

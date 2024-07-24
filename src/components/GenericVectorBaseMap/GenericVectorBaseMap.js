@@ -8,7 +8,28 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
+const LabelsLayer = ({ wmsUrl }) => {
+    const map = useMap();
 
+    useEffect(() => {
+        const wmsLayer = L.tileLayer.wms(wmsUrl, {
+            layers: 'omt_place',
+            styles: '3005_place',
+            format: 'image/png',
+            transparent: true,
+            version: '1.1.0',
+            crs: L.CRS.EPSG3005
+        }).addTo(map);
+
+        return () => {
+            map.removeLayer(wmsLayer);
+        };
+    }, [map]);
+
+    return null;
+};
+
+const BUFFER_SIZE = 512;
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
     const map = useMap();
 
@@ -16,27 +37,28 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
         const vectorTileOptions = {
             rendererFactory: L.svg.tile,
             interactive: true,
+            buffer: BUFFER_SIZE,
             getFeatureId: (feature) => feature.properties.id,
+            /* Not included in vector style below:
+              - omt_place,
+              - omt_aeroway,
+              - omt_aerodrome_label,
+              - omt_building,
+              - omt_poi,
+              - omt_mountain_peak,
+              - omt_transportation_name,
+              - omt_water_name.
+            */
             vectorTileLayerStyles: {
-
                 omt_landcover: vectorTileStyling.landcover,
                 omt_landuse: vectorTileStyling.landuse,
                 omt_park: vectorTileStyling.park,
                 omt_boundary: vectorTileStyling.boundary,
                 omt_water: vectorTileStyling.water,
-                omt_mountain_peak: [], //vectorTileStyling.mountain_peak,
-
-                omt_place: [], //vectorTileStyling.place,
                 omt_transportation: vectorTileStyling.transportation,
-                omt_transportation_name: [], //vectorTileStyling.transportation_name,
-                omt_water: vectorTileStyling.water,
-                omt_water_name: [], //vectorTileStyling.water_name,
-                omt_waterway: [], //vectorTileStyling.waterway,
-                omt_aeroway: [], //vectorTileStyling.aeroway,
-                omt_aerodrome_label: [], //vectorTileStyling.aerodrome_label,
-                omt_building: [], //vectorTileStyling.building,
-                omt_poi: [], //vectorTileStyling.poi,
-                // omt_housenumber: [], //vectorTileStyling.housenumber,
+                omt_waterway: vectorTileStyling.waterway,
+
+
             }
         };
 
@@ -70,6 +92,7 @@ const GenericVectorBaseMap = ({
     zoom,
     mapRef,
     vectorTileStyling,
+    wmsUrl,
     children,
     ...rest
 }) => {
@@ -90,6 +113,7 @@ const GenericVectorBaseMap = ({
             {...rest}
         >
             <VectorGridLayer tilesUrl={url} vectorTileStyling={vectorTileStyling} />
+            <LabelsLayer wmsUrl={wmsUrl} />
             {children}
         </MapContainer>
     );
@@ -112,6 +136,7 @@ GenericVectorBaseMap.propTypes = {
     zoom: PropTypes.number.isRequired,
     mapRef: PropTypes.func,
     vectorTileStyling: PropTypes.object.isRequired,
+    wmsUrl: PropTypes.string.isRequired,
     children: PropTypes.node,
 };
 
