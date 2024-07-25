@@ -13,8 +13,8 @@ const LabelsLayer = ({ wmsUrl }) => {
 
     useEffect(() => {
         const wmsLayer = L.tileLayer.wms(wmsUrl, {
-            layers: 'omt_place',
-            styles: '3005_place',
+            layers: 'OMT_NA_LG_TEXT',
+            styles: 'OMT_TEXT_ZOOM_FILTER',
             format: 'image/png',
             transparent: true,
             version: '1.1.0',

@@ -10292,8 +10292,8 @@ var LabelsLayer = function LabelsLayer(_ref) {
   var map = useMap();
   useEffect(function () {
     var wmsLayer = L$1.tileLayer.wms(wmsUrl, {
-      layers: 'omt_place',
-      styles: '3005_place',
+      layers: 'OMT_NA_LG_TEXT',
+      styles: 'OMT_TEXT_ZOOM_FILTER',
       format: 'image/png',
       transparent: true,
       version: '1.1.0',
@@ -10989,10 +10989,10 @@ function require_root () {
 	return _root;
 }
 
-var root$b = require_root();
+var root$a = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$b.Symbol;
+var Symbol$5 = root$a.Symbol;
 
 var _Symbol = Symbol$5;
 
@@ -11167,10 +11167,10 @@ function isFunction$1(value) {
 
 var isFunction_1 = isFunction$1;
 
-var root$a = require_root();
+var root$9 = require_root();
 
 /** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$a['__core-js_shared__'];
+var coreJsData$1 = root$9['__core-js_shared__'];
 
 var _coreJsData = coreJsData$1;
 
@@ -11297,18 +11297,18 @@ var baseIsNative = _baseIsNative,
  * @param {string} key The key of the method to get.
  * @returns {*} Returns the function if it's native, else `undefined`.
  */
-function getNative$6(object, key) {
+function getNative$7(object, key) {
   var value = getValue(object, key);
   return baseIsNative(value) ? value : undefined;
 }
 
-var _getNative = getNative$6;
+var _getNative = getNative$7;
 
-var getNative$5 = _getNative,
-    root$9 = require_root();
+var getNative$6 = _getNative,
+    root$8 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var WeakMap$1 = getNative$5(root$9, 'WeakMap');
+var WeakMap$1 = getNative$6(root$8, 'WeakMap');
 
 var _WeakMap = WeakMap$1;
 
@@ -11423,7 +11423,7 @@ function createCtor$4(Ctor) {
 var _createCtor = createCtor$4;
 
 var createCtor$3 = _createCtor,
-    root$8 = require_root();
+    root$7 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$6 = 1;
@@ -11443,7 +11443,7 @@ function createBind$1(func, bitmask, thisArg) {
       Ctor = createCtor$3(func);
 
   function wrapper() {
-    var fn = (this && this !== root$8 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$7 && this instanceof wrapper) ? Ctor : func;
     return fn.apply(isBind ? thisArg : this, arguments);
   }
   return wrapper;
@@ -12244,25 +12244,17 @@ function requireConstant () {
 	return constant_1;
 }
 
-var _defineProperty;
-var hasRequired_defineProperty;
+var getNative$5 = _getNative;
 
-function require_defineProperty () {
-	if (hasRequired_defineProperty) return _defineProperty;
-	hasRequired_defineProperty = 1;
-	var getNative = _getNative;
+var defineProperty$1 = (function() {
+  try {
+    var func = getNative$5(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
 
-	var defineProperty = (function() {
-	  try {
-	    var func = getNative(Object, 'defineProperty');
-	    func({}, '', {});
-	    return func;
-	  } catch (e) {}
-	}());
-
-	_defineProperty = defineProperty;
-	return _defineProperty;
-}
+var _defineProperty = defineProperty$1;
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -12271,7 +12263,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = require_defineProperty(),
+	    defineProperty = _defineProperty,
 	    identity = requireIdentity();
 
 	/**
@@ -12691,7 +12683,7 @@ var composeArgs$1 = _composeArgs,
     getHolder$1 = _getHolder,
     reorder = _reorder,
     replaceHolders$2 = _replaceHolders,
-    root$7 = require_root();
+    root$6 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$3 = 1,
@@ -12766,7 +12758,7 @@ function createHybrid$2(func, bitmask, thisArg, partials, holders, partialsRight
     if (isAry && ary < length) {
       args.length = ary;
     }
-    if (this && this !== root$7 && this instanceof wrapper) {
+    if (this && this !== root$6 && this instanceof wrapper) {
       fn = Ctor || createCtor$2(fn);
     }
     return fn.apply(thisBinding, args);
@@ -12782,7 +12774,7 @@ var apply$1 = require_apply(),
     createRecurry = _createRecurry,
     getHolder = _getHolder,
     replaceHolders$1 = _replaceHolders,
-    root$6 = require_root();
+    root$5 = require_root();
 
 /**
  * Creates a function that wraps `func` to enable currying.
@@ -12815,7 +12807,7 @@ function createCurry$1(func, bitmask, arity) {
         func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
         args, holders, undefined, undefined, arity - length);
     }
-    var fn = (this && this !== root$6 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
     return apply$1(fn, this, args);
   }
   return wrapper;
@@ -12825,7 +12817,7 @@ var _createCurry = createCurry$1;
 
 var apply = require_apply(),
     createCtor = _createCtor,
-    root$5 = require_root();
+    root$4 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$2 = 1;
@@ -12852,7 +12844,7 @@ function createPartial$1(func, bitmask, thisArg, partials) {
         leftIndex = -1,
         leftLength = partials.length,
         args = Array(leftLength + argsLength),
-        fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
+        fn = (this && this !== root$4 && this instanceof wrapper) ? Ctor : func;
 
     while (++leftIndex < leftLength) {
       args[leftIndex] = partials[leftIndex];
@@ -13311,7 +13303,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = require_defineProperty();
+var defineProperty = _defineProperty;
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -14352,10 +14344,10 @@ function stackHas$1(key) {
 var _stackHas = stackHas$1;
 
 var getNative$4 = _getNative,
-    root$4 = require_root();
+    root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$3 = getNative$4(root$4, 'Map');
+var Map$3 = getNative$4(root$3, 'Map');
 
 var _Map = Map$3;
 
@@ -15127,26 +15119,26 @@ function getAllKeysIn$1(object) {
 var _getAllKeysIn = getAllKeysIn$1;
 
 var getNative$2 = _getNative,
-    root$3 = require_root();
+    root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var DataView$2 = getNative$2(root$3, 'DataView');
+var DataView$2 = getNative$2(root$2, 'DataView');
 
 var _DataView = DataView$2;
 
 var getNative$1 = _getNative,
-    root$2 = require_root();
+    root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$1(root$2, 'Promise');
+var Promise$2 = getNative$1(root$1, 'Promise');
 
 var _Promise = Promise$2;
 
 var getNative = _getNative,
-    root$1 = require_root();
+    root = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative(root$1, 'Set');
+var Set$1 = getNative(root, 'Set');
 
 var _Set = Set$1;
 
@@ -15237,14 +15229,22 @@ function initCloneArray$1(array) {
 
 var _initCloneArray = initCloneArray$1;
 
-var root = require_root();
+var _Uint8Array;
+var hasRequired_Uint8Array;
 
-/** Built-in value references. */
-var Uint8Array$2 = root.Uint8Array;
+function require_Uint8Array () {
+	if (hasRequired_Uint8Array) return _Uint8Array;
+	hasRequired_Uint8Array = 1;
+	var root = require_root();
 
-var _Uint8Array = Uint8Array$2;
+	/** Built-in value references. */
+	var Uint8Array = root.Uint8Array;
 
-var Uint8Array$1 = _Uint8Array;
+	_Uint8Array = Uint8Array;
+	return _Uint8Array;
+}
+
+var Uint8Array$1 = require_Uint8Array();
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -16216,7 +16216,7 @@ function require_equalByTag () {
 	if (hasRequired_equalByTag) return _equalByTag;
 	hasRequired_equalByTag = 1;
 	var Symbol = _Symbol,
-	    Uint8Array = _Uint8Array,
+	    Uint8Array = require_Uint8Array(),
 	    eq = eq_1,
 	    equalArrays = require_equalArrays(),
 	    mapToArray = require_mapToArray(),
