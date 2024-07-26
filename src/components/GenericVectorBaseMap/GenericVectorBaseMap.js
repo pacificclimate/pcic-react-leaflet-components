@@ -35,7 +35,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
 
     useEffect(() => {
         const vectorTileOptions = {
-            rendererFactory: L.svg.tile,
+            rendererFactory: L.canvas.tile,
             interactive: true,
             buffer: BUFFER_SIZE,
             getFeatureId: (feature) => feature.properties.id,
@@ -63,13 +63,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
         };
 
         try {
-            const vectorGrid = L.vectorGrid.protobuf(tilesUrl, vectorTileOptions)
-                .on('click', function (e) {
-                    console.log('Clicked feature properties:', e.layer);
-                    L.DomEvent.stopPropagation(e);
-                    L.DomEvent.preventDefault(e);
-                })
-                .addTo(map);
+            const vectorGrid = L.vectorGrid.protobuf(tilesUrl, vectorTileOptions).addTo(map);
 
             return () => {
                 map.removeLayer(vectorGrid);
