@@ -105,7 +105,7 @@ const vectorTileStyling = {
   },
 
   transportation: function (properties, zoom) {
-    if (zoom < 8 || zoom > 14) return [];
+    if (zoom < 11 || zoom > 14) return [];
 
     const transportationStyle = {
       motorway: {
@@ -148,17 +148,12 @@ const vectorTileStyling = {
 
     const transportationClass = properties.class;
     const network = properties.network;
-    if (zoom < 11) {
-      if (network && network.startsWith('us-')) return transportationStyle.network_us;
-      if (network && network === 'ca-transcanada') return transportationStyle.network_ca;
-    }
-    if (zoom >= 11) {
-      return transportationStyles[transportationClass] || null;
-    }
 
-    return [];
+    if (network && network.startsWith('us-')) return transportationStyle.network_us;
+    if (network && network === 'ca-transcanada') return transportationStyle.network_ca;
+
+    return transportationStyle[transportationClass] || [];
   },
-
   aeroway: function (properties, zoom) {
     if (zoom < 11 || zoom > 14) return [];
 
@@ -177,13 +172,20 @@ const vectorTileStyling = {
         fillOpacity: 1,
         fill: true,
       },
+
       runway: {
-        weight: 1.6,
+        weight: 0.0,
         color: '#ffffff',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        fill: true,
       },
       taxiway: {
-        weight: 1.2,
+        weight: 0.0,
         color: '#ffffff',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        fill: true,
       },
     };
 
@@ -191,7 +193,6 @@ const vectorTileStyling = {
 
     return aerowayStyle[aerowayClass] || [];
   },
-
   water: function (properties, zoom) {
 
     if (zoom < 6 || zoom > 14) return [];
@@ -245,7 +246,7 @@ const vectorTileStyling = {
   },
 
   waterway: function (properties, zoom) {
-    if (zoom < 6 || zoom > 14) return [];
+    if (zoom < 7 || zoom > 14) return [];
 
     const waterwayStyle = {
       stream: {
