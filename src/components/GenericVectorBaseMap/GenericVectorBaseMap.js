@@ -80,6 +80,7 @@ const GenericVectorBaseMap = ({
     mapRef,
     vectorTileStyling,
     wmsUrl,
+    wmsLayerOptions,
     children,
     ...rest
 }) => {
