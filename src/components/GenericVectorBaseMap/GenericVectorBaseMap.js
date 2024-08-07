@@ -8,23 +8,16 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
-const LabelsLayer = ({ wmsUrl }) => {
+const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
     const map = useMap();
 
     useEffect(() => {
-        const wmsLayer = L.tileLayer.wms(wmsUrl, {
-            layers: 'omt-mbtiles:OMT_NA_LG_TEXT',
-            styles: 'OMT_TEXT_ZOOM_FILTER',
-            format: 'image/png',
-            transparent: true,
-            version: '1.1.0',
-            crs: L.CRS.EPSG3005
-        }).addTo(map);
+        const wmsLayer = L.tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
 
         return () => {
             map.removeLayer(wmsLayer);
         };
-    }, [map]);
+    }, [map, wmsUrl, wmsOptions]);
 
     return null;
 };
@@ -107,7 +100,7 @@ const GenericVectorBaseMap = ({
             {...rest}
         >
             <VectorGridLayer tilesUrl={url} vectorTileStyling={vectorTileStyling} />
-            <LabelsLayer wmsUrl={wmsUrl} />
+            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} />
             {children}
         </MapContainer>
     );
@@ -131,6 +124,13 @@ GenericVectorBaseMap.propTypes = {
     mapRef: PropTypes.func,
     vectorTileStyling: PropTypes.object.isRequired,
     wmsUrl: PropTypes.string.isRequired,
+    wmsLayerOptions: PropTypes.shape({
+        layers: PropTypes.string,
+        format: PropTypes.string,
+        transparent: PropTypes.bool,
+        version: PropTypes.string,
+        crs: PropTypes.instanceOf(L.CRS)
+    }).isRequired,
     children: PropTypes.node,
 };
 

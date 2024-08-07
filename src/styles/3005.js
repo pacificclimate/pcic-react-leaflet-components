@@ -1,7 +1,7 @@
 const vectorTileStyling = {
 
   boundary: function (properties, zoom) {
-    if (zoom < 6 || zoom > 14) return [];
+    if (zoom <= 6 || zoom > 14) return [];
 
     const BoundaryStyle = {
       Level_2: {
@@ -62,7 +62,7 @@ const vectorTileStyling = {
     if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
     if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
     return [{
-      fillColor: '#f3f2f1', // Default background 
+      fillColor: '#f3f3f0', // Default background 
       fillOpacity: 1,
       color: '#000000',
       weight: 0,
@@ -157,7 +157,7 @@ const vectorTileStyling = {
 
   water: function (properties, zoom) {
 
-    if (zoom < 6 || zoom > 14) return [];
+    if (zoom <= 6 || zoom > 14) return [];
 
     const waterStyle = {
       ocean: {
