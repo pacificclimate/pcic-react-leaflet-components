@@ -50,6 +50,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
                 omt_water: vectorTileStyling.water,
                 omt_transportation: vectorTileStyling.transportation,
                 omt_waterway: vectorTileStyling.waterway,
+                omt_aeroway: vectorTileStyling.aeroway.
 
 
             }

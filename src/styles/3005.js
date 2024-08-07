@@ -154,7 +154,45 @@ const vectorTileStyling = {
 
     return transportationStyle[transportationClass] || [];
   },
+  aeroway: function (properties, zoom) {
+    if (zoom < 11 || zoom > 14) return [];
 
+    const aerowayStyle = {
+      helipad: {
+        weight: 0.0,
+        color: '#FFD1D2',
+        fillColor: '#FFD1D2',
+        fillOpacity: 1,
+        fill: true,
+      },
+      gate: {
+        weight: 0.0,
+        color: '#FFD1D2',
+        fillColor: '#FFD1D2',
+        fillOpacity: 1,
+        fill: true,
+      },
+
+      runway: {
+        weight: 0.0,
+        color: '#ffffff',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        fill: true,
+      },
+      taxiway: {
+        weight: 0.0,
+        color: '#ffffff',
+        fillColor: '#ffffff',
+        fillOpacity: 1,
+        fill: true,
+      },
+    };
+
+    const aerowayClass = properties.class;
+
+    return aerowayStyle[aerowayClass] || [];
+  },
   water: function (properties, zoom) {
 
     if (zoom < 6 || zoom > 14) return [];
