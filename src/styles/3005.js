@@ -174,14 +174,14 @@ const vectorTileStyling = {
       },
 
       runway: {
-        weight: 0.0,
+        weight: 1.6,
         color: '#ffffff',
         fillColor: '#ffffff',
         fillOpacity: 1,
         fill: true,
       },
       taxiway: {
-        weight: 0.0,
+        weight: 1.4,
         color: '#ffffff',
         fillColor: '#ffffff',
         fillOpacity: 1,
@@ -246,7 +246,7 @@ const vectorTileStyling = {
   },
 
   waterway: function (properties, zoom) {
-    if (zoom < 7 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const waterwayStyle = {
       stream: {
