@@ -1,7 +1,7 @@
 const vectorTileStyling = {
 
   boundary: function (properties, zoom) {
-    if (zoom <= 6 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const BoundaryStyle = {
       Level_2: {
@@ -93,7 +93,7 @@ const vectorTileStyling = {
 
   park: function (properties, zoom) {
 
-    if (zoom <= 10 || zoom >= 14) return [];
+    if (zoom < 9 || zoom >= 14) return [];
     return [
       {
         weight: 0.0,
@@ -105,7 +105,7 @@ const vectorTileStyling = {
   },
 
   transportation: function (properties, zoom) {
-    if (zoom < 13 || zoom > 14) return [];
+    if (zoom < 11 || zoom > 14) return [];
 
     const transportationStyle = {
       motorway: {
@@ -157,7 +157,7 @@ const vectorTileStyling = {
 
   water: function (properties, zoom) {
 
-    if (zoom <= 6 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const waterStyle = {
       ocean: {
@@ -199,8 +199,8 @@ const vectorTileStyling = {
 
     const waterClass = properties.class;
     if (waterClass === 'ocean') return waterStyle.ocean;
-    if (waterClass === 'river' && zoom >= 11) return waterStyle.river;
-    if (waterClass === 'lake' && zoom >= 11) return waterStyle.lake;
+    if (waterClass === 'river' && zoom >= 8) return waterStyle.river;
+    if (waterClass === 'lake' && zoom >= 8) return waterStyle.lake;
     if (waterClass === 'pond' && zoom >= 13) return waterStyle.pond;
     if (waterClass === 'swimming_pool' && zoom > 14) return waterStyle.swimming_pool;
 
