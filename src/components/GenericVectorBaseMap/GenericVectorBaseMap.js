@@ -13,18 +13,19 @@ const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
 
     useEffect(() => {
         const wmsLayer = L.tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
-
         return () => {
             map.removeLayer(wmsLayer);
         };
-    }, [map, wmsUrl, wmsOptions]);
+    }, [map]);
 
     return null;
 };
 
 const BUFFER_SIZE = 512;
-const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
+const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
+
     const map = useMap();
+
 
     useEffect(() => {
         const vectorTileOptions = {
@@ -51,6 +52,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
                 omt_transportation: vectorTileStyling.transportation,
                 omt_waterway: vectorTileStyling.waterway,
                 omt_aeroway: vectorTileStyling.aeroway,
+                omt_mountain_peak: []
 
 
             }
@@ -65,13 +67,22 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling }) => {
         } catch (error) {
             console.error('Error setting up vector grid:', error);
         }
-    }, [tilesUrl, map]);
+    }, [map]);
 
     return null;
 };
 
 VectorGridLayer.propTypes = {
     tilesUrl: PropTypes.string.isRequired,
+    vectorTileStyling: PropTypes.object.isRequired,
+    zoom: PropTypes.number.isRequired,
+    center: PropTypes.shape({
+        lat: PropTypes.number.isRequired,
+        lng: PropTypes.number.isRequired
+    }).isRequired,
+    crs: PropTypes.instanceOf(L.CRS).isRequired,
+    wmsUrl: PropTypes.string.isRequired,
+    wmsOptions: PropTypes.object.isRequired,
 };
 
 const GenericVectorBaseMap = ({
@@ -101,8 +112,17 @@ const GenericVectorBaseMap = ({
             ref={mapRef}
             {...rest}
         >
-            <VectorGridLayer tilesUrl={url} vectorTileStyling={vectorTileStyling} />
-            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} />
+            <VectorGridLayer
+                tilesUrl={url}
+                vectorTileStyling={vectorTileStyling}
+                zoom={zoom}
+                center={center}
+                crs={crs}
+                wmsUrl={wmsUrl}
+                wmsOptions={wmsLayerOptions}
+                {...rest}
+            />
+            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
             {children}
         </MapContainer>
     );

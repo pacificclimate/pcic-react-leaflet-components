@@ -57,7 +57,7 @@ const vectorTileStyling = {
 
     const landcoverClass = properties.class;
     const glacierClasses = ['snow', 'glacier'];
-    const forestClasses = ['tree', 'forest'];
+    const forestClasses = ['tree', 'forest', 'wetland', 'grass'];
     if (glacierClasses.includes(landcoverClass)) return landcoverStyle.glacier;
     if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
     if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
