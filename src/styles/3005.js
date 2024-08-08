@@ -105,7 +105,7 @@ const vectorTileStyling = {
   },
 
   transportation: function (properties, zoom) {
-    if (zoom < 11 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const transportationStyle = {
       motorway: {
@@ -149,8 +149,15 @@ const vectorTileStyling = {
     const transportationClass = properties.class;
     const network = properties.network;
 
-    if (network && network.startsWith('us-')) return transportationStyle.network_us;
-    if (network && network === 'ca-transcanada') return transportationStyle.network_ca;
+    if (network && network.startsWith('us-') && zoom >= 6) return transportationStyle.network_us;
+    if (network && network === 'ca-transcanada' && zoom >= 6) return transportationStyle.network_ca;
+    if (transportationClass === 'motorway' && zoom >= 6) return transportationStyle.motorway;
+    if (transportationClass === 'trunk' && zoom >= 6) return transportationStyle.trunk;
+    if (transportationClass === 'primary' && zoom >= 8) return transportationStyle.primary;
+    if (transportationClass === 'secondary' && zoom >= 10) return transportationStyle.secondary;
+    if (transportationClass === 'tertiary' && zoom >= 11) return transportationStyle.tertiary;
+    if (transportationClass === 'minor' && zoom >= 12) return transportationStyle.minor;
+    if (transportationClass === 'path' && zoom >= 13) return transportationStyle.path;
 
     return transportationStyle[transportationClass] || [];
   },
