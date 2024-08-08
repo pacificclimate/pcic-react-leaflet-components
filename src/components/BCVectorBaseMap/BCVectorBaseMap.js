@@ -53,7 +53,8 @@ export default class BCVectorBaseMap extends PureComponent {
             format: 'image/png',
             transparent: true,
             version: '1.1.0',
-            crs: L.CRS.EPSG3005
+            crs: L.CRS.EPSG3005,
+            tiled: true,
         };
         return (
             <GenericVectorBaseMap
