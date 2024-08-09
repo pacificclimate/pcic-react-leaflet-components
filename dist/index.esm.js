@@ -10604,10 +10604,10 @@ var vectorTileStyling = {
   park: function park(properties, zoom) {
     if (zoom < 9 || zoom >= 14) return [];
     return [{
-      weight: 0.2,
-      color: '#00af56',
-      fillColor: '#00af56',
-      fillOpacity: 0.6,
+      weight: 0.0,
+      color: '#98cb7f',
+      fillColor: '#98cb7f',
+      fillOpacity: 1,
       fill: true
     }];
   },
