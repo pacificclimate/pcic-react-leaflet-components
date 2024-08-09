@@ -113,9 +113,9 @@ const vectorTileStyling = {
     return [
       {
         weight: 0.2,
-        color: '#78F7A7',
-        fillColor: '#96F5C2',
-        fillOpacity: .2,
+        color: '#00af56',
+        fillColor: '#00af56',
+        fillOpacity: 0.6,
         fill: true,
       }];
   },
