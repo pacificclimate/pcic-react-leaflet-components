@@ -15,6 +15,20 @@ const vectorTileStyling = {
         fill: false,
         dashArray: '5, 5',  // 5 pixels dash, 5 pixels gap
         dashOffset: '0'
+      },
+      Level_4: {
+        weight: 1.6,
+        color: '#81968A',
+        fill: false,
+        dashArray: '5, 5',
+        dashOffset: '0'
+      },
+      Level_6: {
+        weight: 1,
+        color: '#81968A',
+        fill: false,
+        dashArray: '3, 3',
+        dashOffset: '0'
       }
     };
 
@@ -24,6 +38,8 @@ const vectorTileStyling = {
     if (adminLevel >= 3 && !isMaritime) return [];
     if (adminLevel < 3 && isDisputed) return BoundaryStyle.Level_2_disputed;
     if (adminLevel < 3 && !isDisputed) return BoundaryStyle.Level_2;
+    if (adminLevel == 4 && zoom == 9) return BoundaryStyle.Level_4;
+    if (adminLevel == 6 && zoom >= 11) return BoundaryStyle.Level_6;
 
     return [];
   },
@@ -62,7 +78,7 @@ const vectorTileStyling = {
     if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
     if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
     return [{
-      fillColor: '#f3f3f0', // Default background 
+      fillColor: '#f7f7f7', // Default background 
       fillOpacity: 1,
       color: '#000000',
       weight: 0,
@@ -96,10 +112,10 @@ const vectorTileStyling = {
     if (zoom < 9 || zoom >= 14) return [];
     return [
       {
-        weight: 0.0,
-        color: '#b1d193',
-        fillColor: '#b1d193',
-        fillOpacity: 1,
+        weight: 0.2,
+        color: '#78F7A7',
+        fillColor: '#96F5C2',
+        fillOpacity: .2,
         fill: true,
       }];
   },
@@ -110,15 +126,15 @@ const vectorTileStyling = {
     const transportationStyle = {
       motorway: {
         weight: 2,
-        color: '#FFD1D2'
+        color: '#FD4F4F'
       },
       trunk: {
         weight: 1.8,
-        color: '#ffffff'
+        color: '#FDE44F'
       },
       primary: {
         weight: 1.6,
-        color: '#ffffff'
+        color: '#FDAF4F'
       },
       secondary: {
         weight: 1.4,
@@ -138,21 +154,27 @@ const vectorTileStyling = {
       },
       network_us: {
         weight: 2.5,
-        color: '#fed1ff'
+        color: '#FCA1FD'
       },
       network_ca: {
         weight: 2.5,
-        color: '#d1eeff'
+        color: '#FF7B9B'
       }
     };
 
     const transportationClass = properties.class;
     const network = properties.network;
 
-    if (network && network.startsWith('us-')) return transportationStyle.network_us;
-    if (network && network === 'ca-transcanada') return transportationStyle.network_ca;
+    if (network && network.startsWith('us-') && zoom >= 6) return transportationStyle.network_us;
+    if (network && network === 'ca-transcanada' && zoom >= 6) return transportationStyle.network_ca;
 
-    return transportationStyle[transportationClass] || [];
+    if (transportationClass === 'motorway' && zoom >= 8) return transportationStyle.motorway;
+    if (transportationClass === 'trunk' && zoom >= 8) return transportationStyle.trunk;
+    if (transportationClass === 'secondary' && zoom >= 10) return transportationStyle.secondary;
+    if (transportationClass === 'tertiary' && zoom >= 13) return transportationStyle.tertiary;
+    if (transportationClass === 'minor' && zoom > 14) return transportationStyle.minor;
+    if (transportationClass === 'path' && zoom > 14) return transportationStyle.path;
+    return [];
   },
   aeroway: function (properties, zoom) {
     if (zoom < 11 || zoom > 14) return [];
@@ -175,15 +197,15 @@ const vectorTileStyling = {
 
       runway: {
         weight: 1.6,
-        color: '#ffffff',
-        fillColor: '#ffffff',
+        color: '#A9B0FF',
+        fillColor: '#A9B0FF',
         fillOpacity: 1,
         fill: true,
       },
       taxiway: {
         weight: 1.4,
-        color: '#ffffff',
-        fillColor: '#ffffff',
+        color: '#A9B0FF',
+        fillColor: '#A9B0FF',
         fillOpacity: 1,
         fill: true,
       },
