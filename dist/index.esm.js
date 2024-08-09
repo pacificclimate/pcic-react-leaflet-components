@@ -10804,7 +10804,11 @@ var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
         format: 'image/png',
         transparent: true,
         version: '1.1.0',
-        crs: L$1.CRS.EPSG3005
+        crs: L$1.CRS.EPSG3005,
+        tiled: true,
+        vendorParams: {
+          labelPartials: true
+        }
       };
       return /*#__PURE__*/React.createElement(GenericVectorBaseMap, _extends({
         tileset: BCVectorBaseMap.tileset,
