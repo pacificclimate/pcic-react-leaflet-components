@@ -35,11 +35,11 @@ const vectorTileStyling = {
     const adminLevel = properties.admin_level;
     const isMaritime = properties.maritime;
     const isDisputed = properties.disputed;
-    if (adminLevel == 4 && zoom == 9) return BoundaryStyle.Level_4;
-    if (adminLevel == 6 && zoom >= 11) return BoundaryStyle.Level_6;
+    if (adminLevel == 4 && zoom == 9) return [BoundaryStyle.Level_4];
+    if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
-    if (adminLevel < 3 && isDisputed) return BoundaryStyle.Level_2_disputed;
-    if (adminLevel < 3 && !isDisputed) return BoundaryStyle.Level_2;
+    if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
+    if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
 
 
     return [];
@@ -75,9 +75,9 @@ const vectorTileStyling = {
     const landcoverClass = properties.class;
     const glacierClasses = ['snow', 'glacier'];
     const forestClasses = ['tree', 'forest', 'wetland', 'grass'];
-    if (glacierClasses.includes(landcoverClass)) return landcoverStyle.glacier;
-    if (forestClasses.includes(landcoverClass)) return landcoverStyle.forest;
-    if (landcoverClass === 'farmland' && zoom > 9) return landcoverStyle.farmland;
+    if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
+    if (forestClasses.includes(landcoverClass)) return [landcoverStyle.forest];
+    if (landcoverClass === 'farmland' && zoom > 9) return [landcoverStyle.farmland];
     return [{
       fillColor: '#f7f7f7', // Default background 
       fillOpacity: 1,
@@ -102,7 +102,7 @@ const vectorTileStyling = {
     const landuseClass = properties.class;
 
     const residentialClasses = ['residential', 'suburb', 'neighbourhood'];
-    if (residentialClasses.includes(landuseClass)) return landuseStyle.residential;
+    if (residentialClasses.includes(landuseClass)) return [landuseStyle.residential];
 
 
     return [];
@@ -166,15 +166,15 @@ const vectorTileStyling = {
     const transportationClass = properties.class;
     const network = properties.network;
 
-    if (network && network.startsWith('us-') && zoom >= 6) return transportationStyle.network_us;
-    if (network && network === 'ca-transcanada' && zoom >= 6) return transportationStyle.network_ca;
+    if (network && network.startsWith('us-') && zoom >= 6) return [transportationStyle.network_us];
+    if (network && network === 'ca-transcanada' && zoom >= 6) return [transportationStyle.network_ca];
 
-    if (transportationClass === 'motorway' && zoom >= 8) return transportationStyle.motorway;
-    if (transportationClass === 'trunk' && zoom >= 8) return transportationStyle.trunk;
-    if (transportationClass === 'secondary' && zoom >= 10) return transportationStyle.secondary;
-    if (transportationClass === 'tertiary' && zoom >= 13) return transportationStyle.tertiary;
-    if (transportationClass === 'minor' && zoom > 14) return transportationStyle.minor;
-    if (transportationClass === 'path' && zoom > 14) return transportationStyle.path;
+    if (transportationClass === 'motorway' && zoom >= 8) return [transportationStyle.motorway];
+    if (transportationClass === 'trunk' && zoom >= 8) return [transportationStyle.trunk];
+    if (transportationClass === 'secondary' && zoom >= 10) return [transportationStyle.secondary];
+    if (transportationClass === 'tertiary' && zoom >= 13) return [transportationStyle.tertiary];
+    if (transportationClass === 'minor' && zoom > 14) return [transportationStyle.minor];
+    if (transportationClass === 'path' && zoom > 14) return [transportationStyle.path];
     return [];
   },
   aeroway: function (properties, zoom) {
@@ -214,7 +214,7 @@ const vectorTileStyling = {
 
     const aerowayClass = properties.class;
 
-    return aerowayStyle[aerowayClass] || [];
+    return [aerowayStyle[aerowayClass]] || [];
   },
   water: function (properties, zoom) {
 
@@ -259,11 +259,11 @@ const vectorTileStyling = {
     };
 
     const waterClass = properties.class;
-    if (waterClass === 'ocean') return waterStyle.ocean;
-    if (waterClass === 'river' && zoom >= 8) return waterStyle.river;
-    if (waterClass === 'lake' && zoom >= 8) return waterStyle.lake;
-    if (waterClass === 'pond' && zoom >= 13) return waterStyle.pond;
-    if (waterClass === 'swimming_pool' && zoom > 14) return waterStyle.swimming_pool;
+    if (waterClass === 'ocean') return [waterStyle.ocean];
+    if (waterClass === 'river' && zoom >= 8) return [waterStyle.river];
+    if (waterClass === 'lake' && zoom >= 8) return [waterStyle.lake];
+    if (waterClass === 'pond' && zoom >= 13) return [waterStyle.pond];
+    if (waterClass === 'swimming_pool' && zoom > 14) return [waterStyle.swimming_pool];
 
     return [];
   },
@@ -296,9 +296,9 @@ const vectorTileStyling = {
     };
 
     const waterwayClass = properties.class;
-    if (waterwayClass === 'stream' && zoom >= 10) return waterwayStyle.stream;
-    if (waterwayClass === 'river' && zoom >= 9) return waterwayStyle.river;
-    if (waterwayClass === 'canal' && zoom >= 10) return waterwayStyle.canal;
+    if (waterwayClass === 'stream' && zoom >= 10) return [waterwayStyle.stream];
+    if (waterwayClass === 'river' && zoom >= 9) return [waterwayStyle.river];
+    if (waterwayClass === 'canal' && zoom >= 10) return [waterwayStyle.canal];
 
 
     return [];
