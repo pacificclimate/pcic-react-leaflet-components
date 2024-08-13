@@ -62,6 +62,7 @@ const vectorTileStyling = {
         fillColor: '#b1d193',
         fillOpacity: 1,
         fill: true,
+        radius: 0, // force polygon rendering
       },
       farmland: {
         weight: 0.0,
@@ -69,6 +70,7 @@ const vectorTileStyling = {
         fillColor: '#98cb7f',
         fillOpacity: 1,
         fill: true,
+        radius: 0, 
       },
     };
 
@@ -118,6 +120,7 @@ const vectorTileStyling = {
         fillColor: '#98cb7f',
         fillOpacity: 1,
         fill: true,
+        radius: 0, 
       }];
   },
 
