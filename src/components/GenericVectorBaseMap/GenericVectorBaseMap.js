@@ -32,6 +32,11 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
             rendererFactory: L.canvas.tile,
             interactive: true,
             buffer: BUFFER_SIZE,
+            tolerance: function (zoom) {
+                if (zoom < 10) return 8;
+                if (zoom < 14) return 4;
+                return 2;
+            },
             getFeatureId: (feature) => feature.properties.id,
             /* Not included in vector style below:
               - omt_place,
