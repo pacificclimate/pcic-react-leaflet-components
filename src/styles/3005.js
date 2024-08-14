@@ -83,7 +83,7 @@ const vectorTileStyling = {
     };
 
     const landcoverClass = properties.class;
-    const glacierClasses = ['snow', 'glacier'];
+    const glacierClasses = ['snow', 'glacier', 'ice'];
     const forestClasses = ['tree', 'forest', 'wetland', 'grass', ' wood'];
     if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
     if (forestClasses.includes(landcoverClass)) return [landcoverStyle.forest];
