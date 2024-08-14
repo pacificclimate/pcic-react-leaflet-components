@@ -10347,9 +10347,9 @@ var VectorGridLayer = function VectorGridLayer(_ref2) {
       vectorTileLayerStyles: {
         omt_water: vectorTileStyling.water,
         omt_waterway: vectorTileStyling.waterway,
+        omt_park: vectorTileStyling.park,
         omt_landcover: vectorTileStyling.landcover,
         omt_landuse: vectorTileStyling.landuse,
-        omt_park: vectorTileStyling.park,
         omt_boundary: vectorTileStyling.boundary,
         omt_aeroway: vectorTileStyling.aeroway,
         omt_transportation: vectorTileStyling.transportation
@@ -10572,15 +10572,15 @@ var vectorTileStyling = {
     var landcoverStyle = {
       glacier: {
         weight: 0.0,
-        color: '#B7F2EB',
-        fillColor: '#B7F2EB',
+        color: '#6cadc0',
+        fillColor: '#6cadc0',
         fillOpacity: 1,
         fill: true
       },
       forest: {
         weight: 0.0,
-        color: '#b1d193',
-        fillColor: '#b1d193',
+        color: '#58764a',
+        fillColor: '#58764a',
         fillOpacity: 1,
         fill: true,
         radius: 0 // force polygon rendering
@@ -10629,8 +10629,8 @@ var vectorTileStyling = {
     if (zoom < 9 || zoom >= 14) return [];
     return [{
       weight: 0.0,
-      color: '#98cb7f',
-      fillColor: '#98cb7f',
+      color: '#a0cb7f',
+      fillColor: '#a0cb7f',
       fillOpacity: 1,
       fill: true,
       radius: 0
@@ -10693,15 +10693,15 @@ var vectorTileStyling = {
     var aerowayStyle = {
       helipad: {
         weight: 0.0,
-        color: '#FFD1D2',
-        fillColor: '#FFD1D2',
+        color: '##fff8a9',
+        fillColor: '##fff8a9',
         fillOpacity: 1,
         fill: true
       },
       gate: {
         weight: 0.0,
-        color: '#FFD1D2',
-        fillColor: '#FFD1D2',
+        color: '##fff8a9',
+        fillColor: '##fff8a9',
         fillOpacity: 1,
         fill: true
       },
@@ -10728,44 +10728,44 @@ var vectorTileStyling = {
     var waterStyle = {
       ocean: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '##96a2a6',
+        fillColor: '##96a2a6',
         fillOpacity: 1,
         fill: true
       },
       river: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '##abbabe',
+        fillColor: '##abbabe',
         fillOpacity: 1,
         fill: true
       },
       lake: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true
       },
       pond: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true
       },
       swimming_pool: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true
       }
     };
     var waterClass = properties.class;
     if (waterClass === 'ocean') return [waterStyle.ocean];
-    if (waterClass === 'river' && zoom >= 8) return [waterStyle.river];
-    if (waterClass === 'lake' && zoom >= 8) return [waterStyle.lake];
+    if (waterClass === 'river' && zoom >= 6) return [waterStyle.river];
+    if (waterClass === 'lake' && zoom >= 6) return [waterStyle.lake];
     if (waterClass === 'pond' && zoom >= 13) return [waterStyle.pond];
     if (waterClass === 'swimming_pool' && zoom > 14) return [waterStyle.swimming_pool];
     return [];
@@ -10796,8 +10796,8 @@ var vectorTileStyling = {
       }
     };
     var waterwayClass = properties.class;
-    if (waterwayClass === 'stream' && zoom >= 10) return [waterwayStyle.stream];
-    if (waterwayClass === 'river' && zoom >= 9) return [waterwayStyle.river];
+    if (waterwayClass === 'stream' && zoom >= 6) return [waterwayStyle.stream];
+    if (waterwayClass === 'river' && zoom >= 6) return [waterwayStyle.river];
     if (waterwayClass === 'canal' && zoom >= 10) return [waterwayStyle.canal];
     return [];
   }
@@ -11103,10 +11103,10 @@ function require_root () {
 	return _root;
 }
 
-var root$a = require_root();
+var root$b = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$a.Symbol;
+var Symbol$5 = root$b.Symbol;
 
 var _Symbol = Symbol$5;
 
@@ -11281,10 +11281,10 @@ function isFunction$1(value) {
 
 var isFunction_1 = isFunction$1;
 
-var root$9 = require_root();
+var root$a = require_root();
 
 /** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$9['__core-js_shared__'];
+var coreJsData$1 = root$a['__core-js_shared__'];
 
 var _coreJsData = coreJsData$1;
 
@@ -11411,18 +11411,18 @@ var baseIsNative = _baseIsNative,
  * @param {string} key The key of the method to get.
  * @returns {*} Returns the function if it's native, else `undefined`.
  */
-function getNative$7(object, key) {
+function getNative$6(object, key) {
   var value = getValue(object, key);
   return baseIsNative(value) ? value : undefined;
 }
 
-var _getNative = getNative$7;
+var _getNative = getNative$6;
 
-var getNative$6 = _getNative,
-    root$8 = require_root();
+var getNative$5 = _getNative,
+    root$9 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var WeakMap$1 = getNative$6(root$8, 'WeakMap');
+var WeakMap$1 = getNative$5(root$9, 'WeakMap');
 
 var _WeakMap = WeakMap$1;
 
@@ -11537,7 +11537,7 @@ function createCtor$4(Ctor) {
 var _createCtor = createCtor$4;
 
 var createCtor$3 = _createCtor,
-    root$7 = require_root();
+    root$8 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$6 = 1;
@@ -11557,7 +11557,7 @@ function createBind$1(func, bitmask, thisArg) {
       Ctor = createCtor$3(func);
 
   function wrapper() {
-    var fn = (this && this !== root$7 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$8 && this instanceof wrapper) ? Ctor : func;
     return fn.apply(isBind ? thisArg : this, arguments);
   }
   return wrapper;
@@ -12358,17 +12358,25 @@ function requireConstant () {
 	return constant_1;
 }
 
-var getNative$5 = _getNative;
+var _defineProperty;
+var hasRequired_defineProperty;
 
-var defineProperty$1 = (function() {
-  try {
-    var func = getNative$5(Object, 'defineProperty');
-    func({}, '', {});
-    return func;
-  } catch (e) {}
-}());
+function require_defineProperty () {
+	if (hasRequired_defineProperty) return _defineProperty;
+	hasRequired_defineProperty = 1;
+	var getNative = _getNative;
 
-var _defineProperty = defineProperty$1;
+	var defineProperty = (function() {
+	  try {
+	    var func = getNative(Object, 'defineProperty');
+	    func({}, '', {});
+	    return func;
+	  } catch (e) {}
+	}());
+
+	_defineProperty = defineProperty;
+	return _defineProperty;
+}
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -12377,7 +12385,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = _defineProperty,
+	    defineProperty = require_defineProperty(),
 	    identity = requireIdentity();
 
 	/**
@@ -12797,7 +12805,7 @@ var composeArgs$1 = _composeArgs,
     getHolder$1 = _getHolder,
     reorder = _reorder,
     replaceHolders$2 = _replaceHolders,
-    root$6 = require_root();
+    root$7 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$3 = 1,
@@ -12872,7 +12880,7 @@ function createHybrid$2(func, bitmask, thisArg, partials, holders, partialsRight
     if (isAry && ary < length) {
       args.length = ary;
     }
-    if (this && this !== root$6 && this instanceof wrapper) {
+    if (this && this !== root$7 && this instanceof wrapper) {
       fn = Ctor || createCtor$2(fn);
     }
     return fn.apply(thisBinding, args);
@@ -12888,7 +12896,7 @@ var apply$1 = require_apply(),
     createRecurry = _createRecurry,
     getHolder = _getHolder,
     replaceHolders$1 = _replaceHolders,
-    root$5 = require_root();
+    root$6 = require_root();
 
 /**
  * Creates a function that wraps `func` to enable currying.
@@ -12921,7 +12929,7 @@ function createCurry$1(func, bitmask, arity) {
         func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
         args, holders, undefined, undefined, arity - length);
     }
-    var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$6 && this instanceof wrapper) ? Ctor : func;
     return apply$1(fn, this, args);
   }
   return wrapper;
@@ -12931,7 +12939,7 @@ var _createCurry = createCurry$1;
 
 var apply = require_apply(),
     createCtor = _createCtor,
-    root$4 = require_root();
+    root$5 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$2 = 1;
@@ -12958,7 +12966,7 @@ function createPartial$1(func, bitmask, thisArg, partials) {
         leftIndex = -1,
         leftLength = partials.length,
         args = Array(leftLength + argsLength),
-        fn = (this && this !== root$4 && this instanceof wrapper) ? Ctor : func;
+        fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
 
     while (++leftIndex < leftLength) {
       args[leftIndex] = partials[leftIndex];
@@ -13417,7 +13425,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = _defineProperty;
+var defineProperty = require_defineProperty();
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -14458,10 +14466,10 @@ function stackHas$1(key) {
 var _stackHas = stackHas$1;
 
 var getNative$4 = _getNative,
-    root$3 = require_root();
+    root$4 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$3 = getNative$4(root$3, 'Map');
+var Map$3 = getNative$4(root$4, 'Map');
 
 var _Map = Map$3;
 
@@ -15233,26 +15241,26 @@ function getAllKeysIn$1(object) {
 var _getAllKeysIn = getAllKeysIn$1;
 
 var getNative$2 = _getNative,
-    root$2 = require_root();
+    root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var DataView$2 = getNative$2(root$2, 'DataView');
+var DataView$2 = getNative$2(root$3, 'DataView');
 
 var _DataView = DataView$2;
 
 var getNative$1 = _getNative,
-    root$1 = require_root();
+    root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$1(root$1, 'Promise');
+var Promise$2 = getNative$1(root$2, 'Promise');
 
 var _Promise = Promise$2;
 
 var getNative = _getNative,
-    root = require_root();
+    root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative(root, 'Set');
+var Set$1 = getNative(root$1, 'Set');
 
 var _Set = Set$1;
 
@@ -15343,22 +15351,14 @@ function initCloneArray$1(array) {
 
 var _initCloneArray = initCloneArray$1;
 
-var _Uint8Array;
-var hasRequired_Uint8Array;
+var root = require_root();
 
-function require_Uint8Array () {
-	if (hasRequired_Uint8Array) return _Uint8Array;
-	hasRequired_Uint8Array = 1;
-	var root = require_root();
+/** Built-in value references. */
+var Uint8Array$2 = root.Uint8Array;
 
-	/** Built-in value references. */
-	var Uint8Array = root.Uint8Array;
+var _Uint8Array = Uint8Array$2;
 
-	_Uint8Array = Uint8Array;
-	return _Uint8Array;
-}
-
-var Uint8Array$1 = require_Uint8Array();
+var Uint8Array$1 = _Uint8Array;
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -16330,7 +16330,7 @@ function require_equalByTag () {
 	if (hasRequired_equalByTag) return _equalByTag;
 	hasRequired_equalByTag = 1;
 	var Symbol = _Symbol,
-	    Uint8Array = require_Uint8Array(),
+	    Uint8Array = _Uint8Array,
 	    eq = eq_1,
 	    equalArrays = require_equalArrays(),
 	    mapToArray = require_mapToArray(),

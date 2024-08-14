@@ -59,15 +59,15 @@ const vectorTileStyling = {
     const landcoverStyle = {
       glacier: {
         weight: 0.0,
-        color: '#B7F2EB',
-        fillColor: '#B7F2EB',
+        color: '#6cadc0',
+        fillColor: '#6cadc0',
         fillOpacity: 1,
         fill: true,
       },
       forest: {
         weight: 0.0,
-        color: '#b1d193',
-        fillColor: '#b1d193',
+        color: '#58764a',
+        fillColor: '#58764a',
         fillOpacity: 1,
         fill: true,
         radius: 0, // force polygon rendering
@@ -124,8 +124,8 @@ const vectorTileStyling = {
     return [
       {
         weight: 0.0,
-        color: '#98cb7f',
-        fillColor: '#98cb7f',
+        color: '#a0cb7f',
+        fillColor: '#a0cb7f',
         fillOpacity: 1,
         fill: true,
         radius: 0,
@@ -194,15 +194,15 @@ const vectorTileStyling = {
     const aerowayStyle = {
       helipad: {
         weight: 0.0,
-        color: '#FFD1D2',
-        fillColor: '#FFD1D2',
+        color: '##fff8a9',
+        fillColor: '##fff8a9',
         fillOpacity: 1,
         fill: true,
       },
       gate: {
         weight: 0.0,
-        color: '#FFD1D2',
-        fillColor: '#FFD1D2',
+        color: '##fff8a9',
+        fillColor: '##fff8a9',
         fillOpacity: 1,
         fill: true,
       },
@@ -234,36 +234,36 @@ const vectorTileStyling = {
     const waterStyle = {
       ocean: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '##96a2a6',
+        fillColor: '##96a2a6',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '##abbabe',
+        fillColor: '##abbabe',
         fillOpacity: 1,
         fill: true,
       },
       lake: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
       pond: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true,
       },
       swimming_pool: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true,
       }
@@ -271,8 +271,8 @@ const vectorTileStyling = {
 
     const waterClass = properties.class;
     if (waterClass === 'ocean') return [waterStyle.ocean];
-    if (waterClass === 'river' && zoom >= 8) return [waterStyle.river];
-    if (waterClass === 'lake' && zoom >= 8) return [waterStyle.lake];
+    if (waterClass === 'river' && zoom >= 6) return [waterStyle.river];
+    if (waterClass === 'lake' && zoom >= 6) return [waterStyle.lake];
     if (waterClass === 'pond' && zoom >= 13) return [waterStyle.pond];
     if (waterClass === 'swimming_pool' && zoom > 14) return [waterStyle.swimming_pool];
 
@@ -307,8 +307,8 @@ const vectorTileStyling = {
     };
 
     const waterwayClass = properties.class;
-    if (waterwayClass === 'stream' && zoom >= 10) return [waterwayStyle.stream];
-    if (waterwayClass === 'river' && zoom >= 9) return [waterwayStyle.river];
+    if (waterwayClass === 'stream' && zoom >= 6) return [waterwayStyle.stream];
+    if (waterwayClass === 'river' && zoom >= 6) return [waterwayStyle.river];
     if (waterwayClass === 'canal' && zoom >= 10) return [waterwayStyle.canal];
 
 
