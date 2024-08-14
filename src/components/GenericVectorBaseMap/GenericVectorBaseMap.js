@@ -56,9 +56,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
                 omt_water: vectorTileStyling.water,
                 omt_transportation: vectorTileStyling.transportation,
                 omt_waterway: vectorTileStyling.waterway,
-                omt_aeroway: vectorTileStyling.aeroway,
-                omt_mountain_peak: []
-
+                omt_aeroway: vectorTileStyling.aeroway
 
             }
         };

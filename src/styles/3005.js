@@ -29,12 +29,20 @@ const vectorTileStyling = {
         fill: false,
         dashArray: '3, 3',
         dashOffset: '0'
+      },
+      Aboriginal_lands: {
+        weight: 0,
+        color: '#CFA6D3',
+        fillOpacity: 1,
+        fill: true,
       }
     };
 
     const adminLevel = properties.admin_level;
     const isMaritime = properties.maritime;
     const isDisputed = properties.disputed;
+    const boundaryClass = properties.class;
+    if (boundaryClass == 'aboriginal_lands' && zoom >= 7) return [BoundaryStyle.Aboriginal_lands];
     if (adminLevel == 4 && zoom == 9) return [BoundaryStyle.Level_4];
     if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
@@ -46,13 +54,13 @@ const vectorTileStyling = {
   },
 
   landcover: function (properties, zoom) {
-    if (zoom < 8 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const landcoverStyle = {
       glacier: {
         weight: 0.0,
-        color: '#ffffff',
-        fillColor: '#ffffff',
+        color: '#B7F2EB',
+        fillColor: '#B7F2EB',
         fillOpacity: 1,
         fill: true,
       },
@@ -81,7 +89,7 @@ const vectorTileStyling = {
     if (forestClasses.includes(landcoverClass)) return [landcoverStyle.forest];
     if (landcoverClass === 'farmland' && zoom > 9) return [landcoverStyle.farmland];
     return [{
-      fillColor: '#f7f7f7', // Default background 
+      fillColor: '#fdfdfd', // Default background 
       fillOpacity: 1,
       color: '#000000',
       weight: 0,
@@ -95,7 +103,7 @@ const vectorTileStyling = {
       residential: {
         weight: 0.0,
         color: '#bbbbbb',
-        fillColor: '#bbbbbb',
+        fillColor: '#866759',
         fillOpacity: 1,
         fill: true,
       },
