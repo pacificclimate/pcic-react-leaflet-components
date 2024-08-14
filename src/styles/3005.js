@@ -47,7 +47,7 @@ const vectorTileStyling = {
     if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
     if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
-    if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
+    if (adminLevel < 3 && !isDisputed && isMaritime) return [BoundaryStyle.Level_2];
 
 
     return [];
