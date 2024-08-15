@@ -47,7 +47,7 @@ const vectorTileStyling = {
     if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
     if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
-    if (adminLevel < 3 && !isDisputed && isMaritime) return [BoundaryStyle.Level_2];
+    if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
 
 
     return [];
@@ -285,22 +285,22 @@ const vectorTileStyling = {
     const waterwayStyle = {
       stream: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
       canal: {
         weight: 0.0,
-        color: '#c2c9cb',
-        fillColor: '#c2c9cb',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true,
       }
