@@ -49,12 +49,12 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
               - omt_water_name.
             */
             vectorTileLayerStyles: {
-                omt_park: vectorTileStyling.park,
                 omt_landcover: vectorTileStyling.landcover,
                 omt_landuse: vectorTileStyling.landuse,
+                omt_park: vectorTileStyling.park,
+                omt_boundary: vectorTileStyling.boundary,
                 omt_water: vectorTileStyling.water,
                 omt_waterway: vectorTileStyling.waterway,
-                omt_boundary: vectorTileStyling.boundary,
                 omt_aeroway: vectorTileStyling.aeroway,
                 omt_transportation: vectorTileStyling.transportation,
 
