@@ -30,8 +30,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
     useEffect(() => {
         const vectorTileOptions = {
             rendererFactory: L.canvas.tile,
-            interactive: true,
-            buffer: BUFFER_SIZE,
+            interactive: false,
             tolerance: function (zoom) {
                 if (zoom < 10) return 8;
                 if (zoom < 14) return 4;

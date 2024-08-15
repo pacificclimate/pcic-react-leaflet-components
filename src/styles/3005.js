@@ -43,8 +43,8 @@ const vectorTileStyling = {
     const isDisputed = properties.disputed;
     const boundaryClass = properties.class;
     if (boundaryClass == 'aboriginal_lands' && zoom >= 7) return [BoundaryStyle.Aboriginal_lands];
-    if (adminLevel == 4 && zoom == 9) return [BoundaryStyle.Level_4];
-    if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
+    if (adminLevel == 4) return [BoundaryStyle.Level_4];
+    if (adminLevel == 6 && zoom >= 10) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
     if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
     if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
@@ -111,7 +111,7 @@ const vectorTileStyling = {
 
     const landuseClass = properties.class;
 
-    const residentialClasses = ['residential', 'suburb', 'neighbourhood'];
+    const residentialClasses = ['residential', 'suburb', 'neighbourhood', 'military', 'university', 'hospital'];
     if (residentialClasses.includes(landuseClass)) return [landuseStyle.residential];
 
 
@@ -120,6 +120,7 @@ const vectorTileStyling = {
 
   park: function (properties, zoom) {
 
+    console.log(properties)
     if (zoom < 9 || zoom >= 14) return [];
     return [
       {

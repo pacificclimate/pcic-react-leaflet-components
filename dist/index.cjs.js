@@ -10309,8 +10309,6 @@ var LabelsLayer = function LabelsLayer(_ref) {
   return null;
 };
 
-var BUFFER_SIZE = 512;
-
 var VectorGridLayer = function VectorGridLayer(_ref2) {
   var tilesUrl = _ref2.tilesUrl,
       vectorTileStyling = _ref2.vectorTileStyling;
@@ -10323,8 +10321,7 @@ var VectorGridLayer = function VectorGridLayer(_ref2) {
   React.useEffect(function () {
     var vectorTileOptions = {
       rendererFactory: L__default["default"].canvas.tile,
-      interactive: true,
-      buffer: BUFFER_SIZE,
+      interactive: false,
       tolerance: function tolerance(zoom) {
         if (zoom < 10) return 8;
         if (zoom < 14) return 4;
@@ -10564,8 +10561,8 @@ var vectorTileStyling = {
     var isDisputed = properties.disputed;
     var boundaryClass = properties.class;
     if (boundaryClass == 'aboriginal_lands' && zoom >= 7) return [BoundaryStyle.Aboriginal_lands];
-    if (adminLevel == 4 && zoom == 9) return [BoundaryStyle.Level_4];
-    if (adminLevel == 6 && zoom >= 11) return [BoundaryStyle.Level_6];
+    if (adminLevel == 4) return [BoundaryStyle.Level_4];
+    if (adminLevel == 6 && zoom >= 10) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
     if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
     if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
@@ -10625,11 +10622,12 @@ var vectorTileStyling = {
       }
     };
     var landuseClass = properties.class;
-    var residentialClasses = ['residential', 'suburb', 'neighbourhood'];
+    var residentialClasses = ['residential', 'suburb', 'neighbourhood', 'military', 'university', 'hospital'];
     if (residentialClasses.includes(landuseClass)) return [landuseStyle.residential];
     return [];
   },
   park: function park(properties, zoom) {
+    console.log(properties);
     if (zoom < 9 || zoom >= 14) return [];
     return [{
       weight: 0.0,
