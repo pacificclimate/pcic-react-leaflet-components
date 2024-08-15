@@ -50,8 +50,8 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
             */
             vectorTileLayerStyles: {
                 omt_landcover: [], //vectorTileStyling.landcover,
-                omt_landuse: [], //vectorTileStyling.landuse,
-                omt_park: [], //vectorTileStyling.park,
+                omt_landuse: vectorTileStyling.landuse,
+                omt_park: vectorTileStyling.park,
                 omt_water: vectorTileStyling.water,
                 omt_boundary: vectorTileStyling.boundary,
                 omt_waterway: [], //vectorTileStyling.waterway,
@@ -63,7 +63,6 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
 
         try {
             const vectorGrid = L.vectorGrid.protobuf(tilesUrl, vectorTileOptions).addTo(map);
-
             return () => {
                 map.removeLayer(vectorGrid);
             };
