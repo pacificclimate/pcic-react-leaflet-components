@@ -53,7 +53,7 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
                 omt_landuse: [], //vectorTileStyling.landuse,
                 omt_park: [], //vectorTileStyling.park,
                 omt_water: vectorTileStyling.water,
-                omt_boundary: [],//vectorTileStyling.boundary,
+                omt_boundary: vectorTileStyling.boundary,
                 omt_waterway: [], //vectorTileStyling.waterway,
                 omt_aeroway: [], //vectorTileStyling.aeroway,
                 omt_transportation: [] //vectorTileStyling.transportation,
@@ -125,7 +125,7 @@ const GenericVectorBaseMap = ({
                 wmsOptions={wmsLayerOptions}
                 {...rest}
             />
-            {/* <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} /> */}
+            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
             {children}
         </MapContainer>
     );

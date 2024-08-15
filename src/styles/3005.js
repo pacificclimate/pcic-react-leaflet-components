@@ -194,15 +194,15 @@ const vectorTileStyling = {
     const aerowayStyle = {
       helipad: {
         weight: 0.0,
-        color: '##fff8a9',
-        fillColor: '##fff8a9',
+        color: '#fff8a9',
+        fillColor: '#fff8a9',
         fillOpacity: 1,
         fill: true,
       },
       gate: {
         weight: 0.0,
-        color: '##fff8a9',
-        fillColor: '##fff8a9',
+        color: '#fff8a9',
+        fillColor: '#fff8a9',
         fillOpacity: 1,
         fill: true,
       },
@@ -234,15 +234,15 @@ const vectorTileStyling = {
     const waterStyle = {
       ocean: {
         weight: 0.0,
-        color: '##96a2a6',
-        fillColor: '##96a2a6',
+        color: '#96a2a6',
+        fillColor: '#96a2a6',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '##abbabe',
-        fillColor: '##abbabe',
+        color: '#abbabe',
+        fillColor: '#abbabe',
         fillOpacity: 1,
         fill: true,
       },
