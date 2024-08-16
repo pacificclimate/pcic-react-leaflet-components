@@ -21,7 +21,6 @@ const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
     return null;
 };
 
-const BUFFER_SIZE = 512;
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
 
     const map = useMap();
@@ -32,9 +31,9 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
             rendererFactory: L.canvas.tile,
             interactive: false,
             tolerance: function (zoom) {
-                if (zoom < 10) return 8;
-                if (zoom < 14) return 4;
-                return 2;
+                if (zoom < 10) return 4;
+                if (zoom < 14) return 2;
+                return 1;
             },
             getFeatureId: (feature) => feature.properties.id,
             /* Not included in vector style below:
@@ -54,8 +53,8 @@ const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUr
                 omt_water: vectorTileStyling.water,
                 omt_boundary: vectorTileStyling.boundary,
                 omt_waterway: vectorTileStyling.waterway,
-                omt_aeroway: [], //vectorTileStyling.aeroway,
-                omt_transportation: [] //vectorTileStyling.transportation,
+                omt_aeroway: vectorTileStyling.aeroway,
+                omt_transportation: vectorTileStyling.transportation,
 
             }
         };

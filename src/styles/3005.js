@@ -59,18 +59,17 @@ const vectorTileStyling = {
     const landcoverStyle = {
       glacier: {
         weight: 0.0,
-        color: '#6cadc0',
-        fillColor: '#6cadc0',
+        color: '#FFFFFF',
+        fillColor: '#FFFFFF',
         fillOpacity: 1,
         fill: true,
       },
       forest: {
         weight: 0.0,
-        color: '#58764a',
-        fillColor: '#58764a',
+        color: '#7ab46f',
+        fillColor: '#7ab46f',
         fillOpacity: 1,
         fill: true,
-        radius: 0, // force polygon rendering
       },
       farmland: {
         weight: 0.0,
@@ -78,16 +77,32 @@ const vectorTileStyling = {
         fillColor: '#98cb7f',
         fillOpacity: 1,
         fill: true,
-        radius: 0,
+      },
+      rock: {
+        weight: 0.0,
+        color: '#9D9284',
+        fillColor: '#9D9284',
+        fillOpacity: 1,
+        fill: true,
+      },
+      sand: {
+        weight: 0.0,
+        color: '#f6dfa7',
+        fillColor: '#f6dfa7',
+        fillOpacity: 1,
+        fill: true,
       },
     };
 
     const landcoverClass = properties.class;
     const glacierClasses = ['snow', 'glacier', 'ice'];
     const forestClasses = ['tree', 'forest', 'wetland', 'grass', ' wood'];
+
     if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
     if (forestClasses.includes(landcoverClass)) return [landcoverStyle.forest];
-    if (landcoverClass === 'farmland' && zoom > 9) return [landcoverStyle.farmland];
+    if (landcoverClass === 'farmland' && zoom > 8) return [landcoverStyle.farmland];
+    if (landcoverClass === 'rock') return [landcoverStyle.rock];
+    if (landcoverClass === 'sand') return [landcoverStyle.sand];
     return [{
       fillColor: '#fdfdfd', // Default background 
       fillOpacity: 1,
@@ -182,7 +197,7 @@ const vectorTileStyling = {
     if (network && network.startsWith('us-') && zoom >= 6) return [transportationStyle.network_us];
     if (network && network === 'ca-transcanada' && zoom >= 6) return [transportationStyle.network_ca];
 
-    if (transportationClass === 'motorway' && zoom >= 8) return [transportationStyle.motorway];
+    if (transportationClass === 'motorway' && zoom >= 6) return [transportationStyle.motorway];
     if (transportationClass === 'trunk' && zoom >= 8) return [transportationStyle.trunk];
     if (transportationClass === 'secondary' && zoom >= 10) return [transportationStyle.secondary];
     if (transportationClass === 'tertiary' && zoom >= 13) return [transportationStyle.tertiary];
@@ -236,15 +251,15 @@ const vectorTileStyling = {
     const waterStyle = {
       ocean: {
         weight: 0.0,
-        color: '#96a2a6',
-        fillColor: '#96a2a6',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '#abbabe',
-        fillColor: '#abbabe',
+        color: '#d6e8ed',
+        fillColor: '#d6e8ed',
         fillOpacity: 1,
         fill: true,
       },
@@ -273,8 +288,8 @@ const vectorTileStyling = {
 
     const waterClass = properties.class;
     if (waterClass === 'ocean') return [waterStyle.ocean];
-    if (waterClass === 'river' && zoom >= 6) return [waterStyle.river];
-    if (waterClass === 'lake' && zoom >= 6) return [waterStyle.lake];
+    if (waterClass === 'river') return [waterStyle.river];
+    if (waterClass === 'lake') return [waterStyle.lake];
     if (waterClass === 'pond' && zoom >= 13) return [waterStyle.pond];
     if (waterClass === 'swimming_pool' && zoom > 14) return [waterStyle.swimming_pool];
 
