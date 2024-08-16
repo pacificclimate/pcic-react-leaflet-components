@@ -119,7 +119,7 @@ const vectorTileStyling = {
   },
 
   park: function (properties, zoom) {
-    if (zoom < 9 || zoom >= 14) return [];
+    if (zoom < 6 || zoom >= 14) return [];
     if (properties.rank) {
       return []; // Return an empty array for point features
     }
