@@ -59,8 +59,8 @@ const vectorTileStyling = {
     const landcoverStyle = {
       glacier: {
         weight: 0.0,
-        color: '#FFFFFF',
-        fillColor: '#FFFFFF',
+        color: '#fdfdfd',
+        fillColor: '#fdfdfd',
         fillOpacity: 1,
         fill: true,
       },
@@ -258,8 +258,8 @@ const vectorTileStyling = {
       },
       river: {
         weight: 0.0,
-        color: '#d6e8ed',
-        fillColor: '#d6e8ed',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
@@ -272,15 +272,15 @@ const vectorTileStyling = {
       },
       pond: {
         weight: 0.0,
-        color: '#d6e8ed',
-        fillColor: '#d6e8ed',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
       swimming_pool: {
         weight: 0.0,
-        color: '#d6e8ed',
-        fillColor: '#d6e8ed',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       }
@@ -302,8 +302,8 @@ const vectorTileStyling = {
     const waterwayStyle = {
       stream: {
         weight: 0.0,
-        color: '#d6e8ed',
-        fillColor: '#d6e8ed',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       },
@@ -316,8 +316,8 @@ const vectorTileStyling = {
       },
       canal: {
         weight: 0.0,
-        color: '#d6e8ed',
-        fillColor: '#d6e8ed',
+        color: '#c1d1d5',
+        fillColor: '#c1d1d5',
         fillOpacity: 1,
         fill: true,
       }
