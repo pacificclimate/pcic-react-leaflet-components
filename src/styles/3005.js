@@ -98,9 +98,10 @@ const vectorTileStyling = {
     const glacierClasses = ['snow', 'glacier', 'ice'];
     const forestClasses = ['tree', 'forest', 'wetland', 'grass', ' wood'];
     const landcoverSubClass = properties.subclass;
-    if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
+
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass)) return [landcoverStyle.forest];
     if (landcoverClass === 'farmland' && zoom > 8) return [landcoverStyle.farmland];
+    if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
     if (landcoverClass === 'rock') return [landcoverStyle.rock];
     if (landcoverClass === 'sand') return [landcoverStyle.sand];
     return [{
@@ -143,7 +144,7 @@ const vectorTileStyling = {
         weight: 0.0,
         color: '#a0cb7f',
         fillColor: '#a0cb7f',
-        fillOpacity: 0.5,
+        fillOpacity: 1,
         fill: true,
 
       }];
