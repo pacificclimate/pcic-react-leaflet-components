@@ -10385,6 +10385,9 @@ var GenericVectorBaseMap = function GenericVectorBaseMap(_ref3) {
 
   var crs = new L$1.Proj.CRS(projection.code, projection.proj4def, _objectSpread2(_objectSpread2({}, projCRSOptions(tileMatrix)), projection.options));
   return /*#__PURE__*/React.createElement(MapContainer, _extends({
+    style: {
+      backgroundColor: '#f5f5f5'
+    },
     crs: crs,
     minZoom: 0,
     maxZoom: tileMatrix.numResolutions,
@@ -10646,39 +10649,39 @@ var vectorTileStyling = {
     if (zoom < 6 || zoom > 14) return [];
     var transportationStyle = {
       motorway: {
-        weight: 2,
+        weight: zoom < 7 ? 0.8 : zoom < 8 ? 1.2 : 2,
         color: '#FD4F4F'
       },
       trunk: {
-        weight: 1.8,
+        weight: 1.6,
         color: '#FDE44F'
       },
       primary: {
-        weight: 1.6,
+        weight: 1.4,
         color: '#FDAF4F'
       },
       secondary: {
-        weight: 1.4,
-        color: '#ffffff'
-      },
-      tertiary: {
         weight: 1.2,
         color: '#ffffff'
       },
+      tertiary: {
+        weight: 1.0,
+        color: '#ffffff'
+      },
       minor: {
-        weight: 1,
+        weight: 0.8,
         color: '#ffffff'
       },
       path: {
-        weight: 0.8,
+        weight: 0.6,
         color: '#aaaaaa'
       },
       network_us: {
-        weight: 2.5,
+        weight: 2,
         color: '#FCA1FD'
       },
       network_ca: {
-        weight: 2.5,
+        weight: 2,
         color: '#FF7B9B'
       }
     };

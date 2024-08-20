@@ -155,39 +155,40 @@ const vectorTileStyling = {
 
     const transportationStyle = {
       motorway: {
-        weight: 2,
+        weight: zoom < 7 ? 0.8 :
+          (zoom < 8 ? 1.2 : 2),
         color: '#FD4F4F'
       },
       trunk: {
-        weight: 1.8,
+        weight: 1.6,
         color: '#FDE44F'
       },
       primary: {
-        weight: 1.6,
+        weight: 1.4,
         color: '#FDAF4F'
       },
       secondary: {
-        weight: 1.4,
-        color: '#ffffff'
-      },
-      tertiary: {
         weight: 1.2,
         color: '#ffffff'
       },
+      tertiary: {
+        weight: 1.0,
+        color: '#ffffff'
+      },
       minor: {
-        weight: 1,
+        weight: 0.8,
         color: '#ffffff'
       },
       path: {
-        weight: 0.8,
+        weight: 0.6,
         color: '#aaaaaa'
       },
       network_us: {
-        weight: 2.5,
+        weight: 2,
         color: '#FCA1FD'
       },
       network_ca: {
-        weight: 2.5,
+        weight: 2,
         color: '#FF7B9B'
       }
     };

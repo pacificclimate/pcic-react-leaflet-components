@@ -104,6 +104,7 @@ const GenericVectorBaseMap = ({
 
     return (
         <MapContainer
+            style={{ backgroundColor: '#f5f5f5' }}
             crs={crs}
             minZoom={0}
             maxZoom={tileMatrix.numResolutions}
