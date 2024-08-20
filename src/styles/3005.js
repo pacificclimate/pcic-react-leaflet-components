@@ -30,19 +30,11 @@ const vectorTileStyling = {
         dashArray: '3, 3',
         dashOffset: '0'
       },
-      Aboriginal_lands: {
-        weight: 0,
-        color: '#CFA6D3',
-        fillOpacity: 1,
-        fill: true,
-      }
     };
 
     const adminLevel = properties.admin_level;
     const isMaritime = properties.maritime;
     const isDisputed = properties.disputed;
-    const boundaryClass = properties.class;
-    if (boundaryClass == 'aboriginal_lands' && zoom >= 7) return [BoundaryStyle.Aboriginal_lands];
     if (adminLevel == 4) return [BoundaryStyle.Level_4];
     if (adminLevel == 6 && zoom >= 10) return [BoundaryStyle.Level_6];
     if (adminLevel >= 3 && !isMaritime) return [];
@@ -66,15 +58,15 @@ const vectorTileStyling = {
       },
       forest: {
         weight: 0.0,
-        color: '#7ab46f',
-        fillColor: '#7ab46f',
+        color: '##90b772',
+        fillColor: '##90b772',
         fillOpacity: 1,
         fill: true,
       },
       farmland: {
         weight: 0.0,
-        color: '#98cb7f',
-        fillColor: '#98cb7f',
+        color: '##b3d599',
+        fillColor: '##b3d599',
         fillOpacity: 1,
         fill: true,
       },
@@ -96,41 +88,61 @@ const vectorTileStyling = {
 
     const landcoverClass = properties.class;
     const glacierClasses = ['snow', 'glacier', 'ice'];
-    const forestClasses = ['tree', 'forest', 'wetland', 'grass', ' wood'];
+    const forestClasses = ['tree', 'forest', ' wood'];
+    const grassClasses = ['wetland', 'grass', 'farmland'];
     const landcoverSubClass = properties.subclass;
 
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass)) return [landcoverStyle.forest];
-    if (landcoverClass === 'farmland' && zoom > 8) return [landcoverStyle.farmland];
+    if (grassClasses.includes(landcoverClass) && zoom > 8) return [landcoverStyle.farmland];
     if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
     if (landcoverClass === 'rock') return [landcoverStyle.rock];
     if (landcoverClass === 'sand') return [landcoverStyle.sand];
-    return [{
-      fillColor: '#fdfdfd', // Default background 
-      fillOpacity: 1,
-      color: '#000000',
-      weight: 0,
-    }];
+
   },
 
   landuse: function (properties, zoom) {
     if (zoom < 10 || zoom > 13) return [];
 
-    const landuseStyle = {
-      residential: {
-        weight: 0.0,
+    
+    const groupStyles = {
+      residentialAndCommunity: {
+        weight: 0,
         color: '#bbbbbb',
-        fillColor: '#866759',
+        fillColor: '#F3BEA3',
         fillOpacity: 1,
         fill: true,
       },
-    }
+      commercialAndPublicServices: {
+        weight: 0,
+        color: '#bbbbbb',
+        fillColor: '#83C5BE',
+        fillOpacity: 1,
+        fill: true,
+      },
+      specialAndInfrastructure: {
+        weight: 0,
+        color: '#bbbbbb',
+        fillColor: '#FFDDD2',
+        fillOpacity: 1,
+        fill: true,
+      }
+    };
 
     const landuseClass = properties.class;
 
-    const residentialClasses = ['residential', 'suburb', 'neighbourhood', 'military', 'university', 'hospital'];
-    if (residentialClasses.includes(landuseClass)) return [landuseStyle.residential];
+    
+    const residentialClasses = ['residential', 'suburb', 'quarter', 'neighbourhood', 'kindergarten', 'school', 'university', 'college', 'playground'];
+    const commercialClasses = ['commercial', 'industrial', 'retail', 'bus_station', 'library', 'hospital', 'stadium', 'pitch', 'track', 'theme_park', 'zoo'];
+    const specialClasses = ['railway', 'cemetery', 'military', 'garages', 'dam', 'quarry'];
 
-
+    
+    if (residentialClasses.includes(landuseClass)) {
+      return [groupStyles.residentialAndCommunity];
+    } else if (commercialClasses.includes(landuseClass)) {
+      return [groupStyles.commercialAndPublicServices];
+    } else if (specialClasses.includes(landuseClass)) {
+      return [groupStyles.specialAndInfrastructure];
+    }
     return [];
   },
 
@@ -157,7 +169,7 @@ const vectorTileStyling = {
       motorway: {
         weight: zoom < 7 ? 0.8 :
           (zoom < 8 ? 1.2 : 2),
-        color: '#FD4F4F'
+        color: '#FE7474'
       },
       trunk: {
         weight: 1.6,
@@ -228,18 +240,25 @@ const vectorTileStyling = {
 
       runway: {
         weight: 1.6,
-        color: '#A9B0FF',
-        fillColor: '#A9B0FF',
+        color: '#dfcbfe',
+        fillColor: '#dfcbfe',
         fillOpacity: 1,
         fill: true,
       },
       taxiway: {
         weight: 1.4,
-        color: '#A9B0FF',
-        fillColor: '#A9B0FF',
+        color: '#dfcbfe',
+        fillColor: '#dfcbfe',
+        fillOpacity: 1,
+        fill: false,
+      },
+      aerodrome: {
+        weight: 0,
+        color: '#cbfee8',
+        fillColor: '#cbfee8',
         fillOpacity: 1,
         fill: true,
-      },
+      }
     };
 
     const aerowayClass = properties.class;
@@ -253,36 +272,36 @@ const vectorTileStyling = {
     const waterStyle = {
       ocean: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       lake: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       pond: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       swimming_pool: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       }
@@ -304,22 +323,22 @@ const vectorTileStyling = {
     const waterwayStyle = {
       stream: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       river: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       },
       canal: {
         weight: 0.0,
-        color: '#c1d1d5',
-        fillColor: '#c1d1d5',
+        color: '#abcdd7',
+        fillColor: '#abcdd7',
         fillOpacity: 1,
         fill: true,
       }
