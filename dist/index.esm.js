@@ -10563,15 +10563,15 @@ var vectorTileStyling = {
       },
       forest: {
         weight: 0.0,
-        color: '##90b772',
-        fillColor: '##90b772',
+        color: '#90b772',
+        fillColor: '#90b772',
         fillOpacity: 1,
         fill: true
       },
       farmland: {
         weight: 0.0,
-        color: '##b3d599',
-        fillColor: '##b3d599',
+        color: '#b3d599',
+        fillColor: '#b3d599',
         fillOpacity: 1,
         fill: true
       },
@@ -10592,7 +10592,7 @@ var vectorTileStyling = {
     };
     var landcoverClass = properties.class;
     var glacierClasses = ['snow', 'glacier', 'ice'];
-    var forestClasses = ['tree', 'forest', ' wood'];
+    var forestClasses = ['tree', 'forest', 'wood'];
     var grassClasses = ['wetland', 'grass', 'farmland'];
     var landcoverSubClass = properties.subclass;
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass)) return [landcoverStyle.forest];

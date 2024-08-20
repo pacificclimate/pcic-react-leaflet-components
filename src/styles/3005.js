@@ -58,15 +58,15 @@ const vectorTileStyling = {
       },
       forest: {
         weight: 0.0,
-        color: '##90b772',
-        fillColor: '##90b772',
+        color: '#90b772',
+        fillColor: '#90b772',
         fillOpacity: 1,
         fill: true,
       },
       farmland: {
         weight: 0.0,
-        color: '##b3d599',
-        fillColor: '##b3d599',
+        color: '#b3d599',
+        fillColor: '#b3d599',
         fillOpacity: 1,
         fill: true,
       },
@@ -88,7 +88,7 @@ const vectorTileStyling = {
 
     const landcoverClass = properties.class;
     const glacierClasses = ['snow', 'glacier', 'ice'];
-    const forestClasses = ['tree', 'forest', ' wood'];
+    const forestClasses = ['tree', 'forest', 'wood'];
     const grassClasses = ['wetland', 'grass', 'farmland'];
     const landcoverSubClass = properties.subclass;
 
@@ -103,7 +103,7 @@ const vectorTileStyling = {
   landuse: function (properties, zoom) {
     if (zoom < 10 || zoom > 13) return [];
 
-    
+
     const groupStyles = {
       residentialAndCommunity: {
         weight: 0,
@@ -130,12 +130,12 @@ const vectorTileStyling = {
 
     const landuseClass = properties.class;
 
-    
+
     const residentialClasses = ['residential', 'suburb', 'quarter', 'neighbourhood', 'kindergarten', 'school', 'university', 'college', 'playground'];
     const commercialClasses = ['commercial', 'industrial', 'retail', 'bus_station', 'library', 'hospital', 'stadium', 'pitch', 'track', 'theme_park', 'zoo'];
     const specialClasses = ['railway', 'cemetery', 'military', 'garages', 'dam', 'quarry'];
 
-    
+
     if (residentialClasses.includes(landuseClass)) {
       return [groupStyles.residentialAndCommunity];
     } else if (commercialClasses.includes(landuseClass)) {
