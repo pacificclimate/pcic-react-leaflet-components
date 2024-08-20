@@ -93,11 +93,12 @@ const vectorTileStyling = {
     const landcoverSubClass = properties.subclass;
 
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass)) return [landcoverStyle.forest];
-    if (grassClasses.includes(landcoverClass) && zoom > 8) return [landcoverStyle.farmland];
+    if (grassClasses.includes(landcoverClass)) return [landcoverStyle.farmland];
     if (glacierClasses.includes(landcoverClass)) return [landcoverStyle.glacier];
     if (landcoverClass === 'rock') return [landcoverStyle.rock];
     if (landcoverClass === 'sand') return [landcoverStyle.sand];
 
+    return [];
   },
 
   landuse: function (properties, zoom) {
