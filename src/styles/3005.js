@@ -151,7 +151,7 @@ const vectorTileStyling = {
   },
 
   transportation: function (properties, zoom) {
-    if (zoom < 11 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const transportationStyle = {
       motorway: {
