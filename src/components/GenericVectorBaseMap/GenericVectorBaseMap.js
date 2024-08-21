@@ -8,18 +8,25 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
-const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
+const LabelOverlay = ({ wmsUrl, wmsOptions, center, zoom, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        const wmsLayer = L.tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
+        const bounds = toLatLngBounds(center, zoom).toBBoxString();
+        const labelUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=image/svg+xml&TRANSPARENT=${wmsOptions.transparent}&WIDTH=256&HEIGHT=256&BBOX=${bounds}&CRS=${wmsOptions.crs.code}`;
+
+        const labelOverlay = L.imageOverlay(labelUrl, map.getBounds(), {
+
+        }).addTo(map);
+
         return () => {
-            map.removeLayer(wmsLayer);
+            map.removeLayer(labelOverlay);
         };
-    }, [map]);
+    }, [map, wmsUrl, wmsOptions, center, zoom, crs]);
 
     return null;
 };
+
 
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
 
@@ -123,7 +130,7 @@ const GenericVectorBaseMap = ({
                 wmsOptions={wmsLayerOptions}
                 {...rest}
             />
-            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
+            <LabelOverlay wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} center={center} zoom={zoom} crs={crs} />
             {children}
         </MapContainer>
     );
