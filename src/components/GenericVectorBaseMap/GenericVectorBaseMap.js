@@ -12,7 +12,7 @@ const LabelOverlay = ({ wmsUrl, wmsOptions, center, zoom, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        const bounds = map.getBounds().toBBoxString();
+        const bounds = toLatLngBounds(center, zoom).toBBoxString();
         const labelUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=image/svg+xml&TRANSPARENT=${wmsOptions.transparent}&WIDTH=256&HEIGHT=256&BBOX=${bounds}&CRS=${wmsOptions.crs.code}`;
 
         const labelOverlay = L.imageOverlay(labelUrl, map.getBounds(), {
