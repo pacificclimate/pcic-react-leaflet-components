@@ -8,12 +8,17 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
-const LabelOverlay = ({ wmsUrl, wmsOptions, center, zoom, crs }) => {
+const LabelOverlay = ({ wmsUrl, wmsOptions, center, zoom, crs, proj4def }) => {
     const map = useMap();
 
     useEffect(() => {
-        const bounds = map.getBounds().toBBoxString();
-        const labelUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=image/svg+xml&TRANSPARENT=${wmsOptions.transparent}&WIDTH=256&HEIGHT=256&BBOX=${bounds}&CRS=${wmsOptions.crs.code}`;
+        var latLngBounds = map.getBounds();
+        var ne = map.options.crs.project(latLngBounds.getNorthEast());
+        var sw = map.options.crs.project(latLngBounds.getSouthWest());
+
+        const transformedBBOX = `${sw.x},${sw.y},${ne.x},${ne.y}`;
+
+        const labelUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=image/svg+xml&TRANSPARENT=${wmsOptions.transparent}&WIDTH=256&HEIGHT=256&BBOX=${transformedBBOX}&CRS=${wmsOptions.crs.code}`;
 
         const labelOverlay = L.imageOverlay(labelUrl, map.getBounds(), {
 
@@ -130,7 +135,7 @@ const GenericVectorBaseMap = ({
                 wmsOptions={wmsLayerOptions}
                 {...rest}
             />
-            <LabelOverlay wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} center={center} zoom={zoom} crs={crs} />
+            <LabelOverlay wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} center={center} zoom={zoom} crs={crs} proj4def={projection.proj4def} />
             {children}
         </MapContainer>
     );
