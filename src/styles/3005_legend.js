@@ -26,23 +26,23 @@ export default {
   },
   Landcover: {
     glacier: "#fdfdfd",
-    forest: "#90b772",
-    farmland: "#b3d599",
+    forest: "#d3e2c7",
+    farmland: "#e1eed6",
     rock: "#9D9284",
     sand: "#f6dfa7"
   },
   Landuse: {
-    residentialAndCommunity: "#F3BEA3",
-    commercialAndPublicServices: "#83C5BE",
-    specialAndInfrastructure: "#FFDDD2"
+    residentialAndCommunity: "#f9dfd1",
+    commercialAndPublicServices: "#c1e2df",
+    specialAndInfrastructure: "#fbece3"
   },
   Park: {
-    default: "#a0cb7f"
+    default: "#d0e5bf"
   },
   Transportation: {
-    motorway: "#FE7474",
-    trunk: "#FDE44F",
-    primary: "#FDAF4F",
+    motorway: "#fe9e9e",
+    trunk: "#feef95",
+    primary: "#fec784",
     secondary: "#ffffff",
     tertiary: "#ffffff",
     minor: "#ffffff",
@@ -51,11 +51,11 @@ export default {
     network_ca: "#FF7B9B"
   },
   Aeroway: {
-    helipad: "#fff8a9",
-    gate: "#fff8a9",
-    runway: "#dfcbfe",
-    taxiway: "#dfcbfe",
-    aerodrome: "#cbfee8"
+    helipad: "#bbbbcc",
+    gate: "#bbbbcc",
+    runway: "#bbbbcc",
+    taxiway: "#bbbbcc",
+    aerodrome: "#e9e7e2"
   },
   Water: {
     ocean: "#abcdd7",
