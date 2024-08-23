@@ -25,6 +25,18 @@ export default class BCVectorBaseMap extends PureComponent {
         projection: {
             code: 'EPSG:3005',
             proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
+            options: {
+                transformation: new L.Transformation(1, 0, -1, 0),
+                project: function (latlng) {
+                    const { x, y } = proj4(this.proj4def).forward([latlng.lng, latlng.lat]);
+                    return new L.Point(x, y);
+                },
+                unproject: function (point) {
+                    const [lng, lat] = proj4(this.proj4def).inverse([point.x, point.y]);
+                    return new L.LatLng(lat, lng);
+                }
+            }
+
         },
         tileMatrix: {
             metersPerUnit: 1,
