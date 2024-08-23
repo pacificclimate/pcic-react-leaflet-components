@@ -8,73 +8,62 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
-const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
+const LabelsLayer = ({ wmsUrl, wmsOptions, crs, center, zoom }) => {
     const map = useMap();
 
     useEffect(() => {
-        const CustomWMSLayer = L.Layer.extend({
-            onAdd: function(map) {
-                this._map = map;
-                this._image = null;
-                this._update();
-                map.on('moveend', this._update, this);
-            },
+        let imageOverlay = null;
 
-            onRemove: function(map) {
-                map.off('moveend', this._update, this);
-                if (this._image && this._image.parentNode) {
-                    this._map.getPanes().overlayPane.removeChild(this._image);
-                }
-            },
+        const updateImageOverlay = () => {
+            const bounds = map.getBounds();
+            const size = map.getSize();
 
-            _update: function() {
-                if (this._image && this._image.parentNode) {
-                    this._map.getPanes().overlayPane.removeChild(this._image);
-                }
+            // Project the bounds to EPSG:3005
+            const sw = crs.project(bounds.getSouthWest());
+            const ne = crs.project(bounds.getNorthEast());
 
-                const bounds = this._map.getBounds();
-                const size = this._map.getSize();
-                const sw = crs.project(bounds.getSouthWest());
-                const ne = crs.project(bounds.getNorthEast());
-                const bbox = [sw.x, sw.y, ne.x, ne.y].join(',');
+            const bbox = [sw.x, sw.y, ne.x, ne.y].join(',');
 
-                const params = new URLSearchParams({
-                    service: 'WMS',
-                    request: 'GetMap',
-                    version: wmsOptions.version,
-                    layers: wmsOptions.layers,
-                    styles: '',
-                    format: wmsOptions.format,
-                    transparent: wmsOptions.transparent,
-                    width: size.x,
-                    height: size.y,
-                    srs: crs.code,
-                    bbox: bbox,
-                });
+            const params = new URLSearchParams({
+                service: 'WMS',
+                request: 'GetMap',
+                version: wmsOptions.version,
+                layers: wmsOptions.layers,
+                styles: '',
+                format: wmsOptions.format,
+                transparent: wmsOptions.transparent,
+                width: size.x,
+                height: size.y,
+                srs: 'EPSG:3005',
+                bbox: bbox,
+            });
 
-                const url = `${wmsUrl}?${params.toString()}`;
+            const url = `${wmsUrl}?${params.toString()}`;
+            const projectedBounds = L.bounds([sw.x, sw.y], [ne.x, ne.y]);
 
-                this._image = L.DomUtil.create('img', 'leaflet-image-layer');
-                this._image.src = url;
-
-                this._image.onload = () => {
-                    const topLeft = this._map.latLngToLayerPoint(bounds.getNorthWest());
-                    L.DomUtil.setPosition(this._image, topLeft);
-                    this._map.getPanes().overlayPane.appendChild(this._image);
-                };
+            if (imageOverlay) {
+                imageOverlay.setUrl(url);
+                imageOverlay.setBounds(projectedBounds);
+            } else {
+                imageOverlay = L.Proj.imageOverlay(url, projectedBounds, {
+                    opacity: 1,
+                    interactive: false,
+                    crs: crs
+                }).addTo(map);
             }
-        });
+        };
 
-        const customLayer = new CustomWMSLayer().addTo(map);
+        updateImageOverlay();
 
         return () => {
-            map.removeLayer(customLayer);
+            if (imageOverlay) {
+                map.removeLayer(imageOverlay);
+            }
         };
-    }, [map, wmsUrl, wmsOptions, crs]);
+    }, [map, wmsUrl, wmsOptions, crs, center, zoom]);
 
     return null;
 };
-
 
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
 
@@ -178,7 +167,7 @@ const GenericVectorBaseMap = ({
                 wmsOptions={wmsLayerOptions}
                 {...rest}
             />
-            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} crs={crs} {...rest} />
+            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} crs={crs} center={center} zoom={zoom} {...rest} />
             {children}
         </MapContainer>
     );
