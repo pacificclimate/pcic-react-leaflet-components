@@ -9,17 +9,21 @@ import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 import 'leaflet.nontiledlayer'
 
-const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
+const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        // Create the non-tiled WMS layer using the wmsOptions directly
-        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, wmsOptions).addTo(map);
+        const wmsRequestUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=${wmsOptions.format}&TRANSPARENT=${wmsOptions.transparent}&SRS=${crs.code}`;
+        const optionsWithCrs = {
+            ...wmsOptions,
+            crs: crs,
+        };
+        const nonTiledLayer = L.nonTiledLayer.wms(wmsRequestUrl, optionsWithCrs).addTo(map);
 
         return () => {
             map.removeLayer(nonTiledLayer);
         };
-    }, [map, wmsUrl, wmsOptions]);
+    }, [map, wmsUrl, wmsOptions, crs]);
 
     return null;
 };
@@ -126,7 +130,7 @@ const GenericVectorBaseMap = ({
                 wmsOptions={wmsLayerOptions}
                 {...rest}
             />
-            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
+            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} crs={crs} {...rest} />
             {children}
         </MapContainer>
     );
