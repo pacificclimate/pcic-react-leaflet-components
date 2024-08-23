@@ -7,18 +7,36 @@ import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
-import 'leaflet.nontiledlayer';
 
 const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, {
-            ...wmsOptions,
-            getImageUrlAsync: async (bounds) => {
-                const { x: width, y: height } = map.getSize();
-                const sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
-                const bbox = [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+        const CustomWMSLayer = L.Layer.extend({
+            onAdd: function(map) {
+                this._map = map;
+                this._image = null;
+                this._update();
+                map.on('moveend', this._update, this);
+            },
+
+            onRemove: function(map) {
+                map.off('moveend', this._update, this);
+                if (this._image && this._image.parentNode) {
+                    this._map.getPanes().overlayPane.removeChild(this._image);
+                }
+            },
+
+            _update: function() {
+                if (this._image && this._image.parentNode) {
+                    this._map.getPanes().overlayPane.removeChild(this._image);
+                }
+
+                const bounds = this._map.getBounds();
+                const size = this._map.getSize();
+                const sw = crs.project(bounds.getSouthWest());
+                const ne = crs.project(bounds.getNorthEast());
+                const bbox = [sw.x, sw.y, ne.x, ne.y].join(',');
 
                 const params = new URLSearchParams({
                     service: 'WMS',
@@ -28,23 +46,35 @@ const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
                     styles: '',
                     format: wmsOptions.format,
                     transparent: wmsOptions.transparent,
-                    width: width,
-                    height: height,
+                    width: size.x,
+                    height: size.y,
                     srs: crs.code,
                     bbox: bbox,
                 });
 
-                return `${wmsUrl}?${params.toString()}`;
-            },
-        }).addTo(map);
+                const url = `${wmsUrl}?${params.toString()}`;
+
+                this._image = L.DomUtil.create('img', 'leaflet-image-layer');
+                this._image.src = url;
+
+                this._image.onload = () => {
+                    const topLeft = this._map.latLngToLayerPoint(bounds.getNorthWest());
+                    L.DomUtil.setPosition(this._image, topLeft);
+                    this._map.getPanes().overlayPane.appendChild(this._image);
+                };
+            }
+        });
+
+        const customLayer = new CustomWMSLayer().addTo(map);
 
         return () => {
-            map.removeLayer(nonTiledLayer);
+            map.removeLayer(customLayer);
         };
     }, [map, wmsUrl, wmsOptions, crs]);
 
     return null;
 };
+
 
 const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
 
