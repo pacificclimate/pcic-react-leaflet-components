@@ -13,13 +13,12 @@ const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
     const map = useMap();
 
     useEffect(() => {
+        const wmsRequestUrl = `${wmsUrl}?SERVICE=WMS&VERSION=${wmsOptions.version}&REQUEST=GetMap&LAYERS=${wmsOptions.layers}&STYLES=&FORMAT=${wmsOptions.format}&TRANSPARENT=${wmsOptions.transparent}&SRS=${crs.code}`;
         const optionsWithCrs = {
             ...wmsOptions,
             crs: crs,
-            srs: crs.code
         };
-
-        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, optionsWithCrs).addTo(map);
+        const nonTiledLayer = L.nonTiledLayer.wms(wmsRequestUrl, optionsWithCrs).addTo(map);
 
         return () => {
             map.removeLayer(nonTiledLayer);
