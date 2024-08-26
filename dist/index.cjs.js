@@ -10878,21 +10878,15 @@ var _excluded$5 = ["tileset", "center", "zoom", "mapRef", "vectorTileStyling", "
 
 var LabelsLayer = function LabelsLayer(_ref) {
   var wmsUrl = _ref.wmsUrl,
-      wmsOptions = _ref.wmsOptions,
-      crs = _ref.crs;
+      wmsOptions = _ref.wmsOptions;
   var map = reactLeaflet.useMap();
   React.useEffect(function () {
-    var wmsRequestUrl = "".concat(wmsUrl, "?SERVICE=WMS&VERSION=").concat(wmsOptions.version, "&REQUEST=GetMap&LAYERS=").concat(wmsOptions.layers, "&STYLES=&FORMAT=").concat(wmsOptions.format, "&TRANSPARENT=").concat(wmsOptions.transparent, "&SRS=").concat(crs.code);
-
-    var optionsWithCrs = _objectSpread2(_objectSpread2({}, wmsOptions), {}, {
-      crs: crs
-    });
-
-    var nonTiledLayer = L__default["default"].nonTiledLayer.wms(wmsRequestUrl, optionsWithCrs).addTo(map);
+    // Create the non-tiled WMS layer using the wmsOptions directly
+    var nonTiledLayer = L__default["default"].nonTiledLayer.wms(wmsUrl, wmsOptions).addTo(map);
     return function () {
       map.removeLayer(nonTiledLayer);
     };
-  }, [map, wmsUrl, wmsOptions, crs]);
+  }, [map, wmsUrl, wmsOptions]);
   return null;
 };
 
@@ -11001,8 +10995,7 @@ var GenericVectorBaseMap = function GenericVectorBaseMap(_ref3) {
     wmsOptions: wmsLayerOptions
   }, rest)), /*#__PURE__*/React__default["default"].createElement(LabelsLayer, _extends({
     wmsUrl: wmsUrl,
-    wmsOptions: wmsLayerOptions,
-    crs: crs
+    wmsOptions: wmsLayerOptions
   }, rest)), children);
 };
 
@@ -11371,7 +11364,8 @@ var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
         //OpenMapTiles, North America, Text only, Zoom filtered, Layer group
         format: 'image/svg+xml',
         transparent: true,
-        version: '1.1.0'
+        version: '1.1.0',
+        crs: 'EPSG:3005'
       };
       return /*#__PURE__*/React__default["default"].createElement(GenericVectorBaseMap, _extends({
         tileset: BCVectorBaseMap.tileset,
@@ -11642,27 +11636,27 @@ function require_root () {
 	return _root;
 }
 
-var root$b = require_root();
+var root$9 = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$b.Symbol;
+var Symbol$5 = root$9.Symbol;
 
 var _Symbol = Symbol$5;
 
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$9 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$9.toString;
+var nativeObjectToString$1 = objectProto$8.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -11675,7 +11669,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$7.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -11698,14 +11692,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$8 = Object.prototype;
+var objectProto$7 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$8.toString;
+var nativeObjectToString = objectProto$7.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -11775,15 +11769,15 @@ var _baseGetTag = baseGetTag$5;
  * // => false
  */
 
-function isObject$6(value) {
+function isObject$5(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$6;
+var isObject_1 = isObject$5;
 
 var baseGetTag$4 = _baseGetTag,
-    isObject$5 = isObject_1;
+    isObject$4 = isObject_1;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -11808,8 +11802,8 @@ var asyncTag = '[object AsyncFunction]',
  * _.isFunction(/abc/);
  * // => false
  */
-function isFunction$1(value) {
-  if (!isObject$5(value)) {
+function isFunction(value) {
+  if (!isObject$4(value)) {
     return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -11818,42 +11812,58 @@ function isFunction$1(value) {
   return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
-var isFunction_1 = isFunction$1;
+var isFunction_1 = isFunction;
 
-var root$a = require_root();
+var _coreJsData;
+var hasRequired_coreJsData;
 
-/** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$a['__core-js_shared__'];
+function require_coreJsData () {
+	if (hasRequired_coreJsData) return _coreJsData;
+	hasRequired_coreJsData = 1;
+	var root = require_root();
 
-var _coreJsData = coreJsData$1;
+	/** Used to detect overreaching core-js shims. */
+	var coreJsData = root['__core-js_shared__'];
 
-var coreJsData = _coreJsData;
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-/**
- * Checks if `func` has its source masked.
- *
- * @private
- * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` is masked, else `false`.
- */
-function isMasked$1(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
+	_coreJsData = coreJsData;
+	return _coreJsData;
 }
 
-var _isMasked = isMasked$1;
+var _isMasked;
+var hasRequired_isMasked;
+
+function require_isMasked () {
+	if (hasRequired_isMasked) return _isMasked;
+	hasRequired_isMasked = 1;
+	var coreJsData = require_coreJsData();
+
+	/** Used to detect methods masquerading as native. */
+	var maskSrcKey = (function() {
+	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	  return uid ? ('Symbol(src)_1.' + uid) : '';
+	}());
+
+	/**
+	 * Checks if `func` has its source masked.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	 */
+	function isMasked(func) {
+	  return !!maskSrcKey && (maskSrcKey in func);
+	}
+
+	_isMasked = isMasked;
+	return _isMasked;
+}
 
 /** Used for built-in method references. */
 
-var funcProto$2 = Function.prototype;
+var funcProto$1 = Function.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString$2 = funcProto$2.toString;
+var funcToString$1 = funcProto$1.toString;
 
 /**
  * Converts `func` to its source code.
@@ -11862,10 +11872,10 @@ var funcToString$2 = funcProto$2.toString;
  * @param {Function} func The function to convert.
  * @returns {string} Returns the source code.
  */
-function toSource$2(func) {
+function toSource$1(func) {
   if (func != null) {
     try {
-      return funcToString$2.call(func);
+      return funcToString$1.call(func);
     } catch (e) {}
     try {
       return (func + '');
@@ -11874,55 +11884,63 @@ function toSource$2(func) {
   return '';
 }
 
-var _toSource = toSource$2;
+var _toSource = toSource$1;
 
-var isFunction = isFunction_1,
-    isMasked = _isMasked,
-    isObject$4 = isObject_1,
-    toSource$1 = _toSource;
+var _baseIsNative;
+var hasRequired_baseIsNative;
 
-/**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
- */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+function require_baseIsNative () {
+	if (hasRequired_baseIsNative) return _baseIsNative;
+	hasRequired_baseIsNative = 1;
+	var isFunction = isFunction_1,
+	    isMasked = require_isMasked(),
+	    isObject = isObject_1,
+	    toSource = _toSource;
 
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-/** Used for built-in method references. */
-var funcProto$1 = Function.prototype,
-    objectProto$7 = Object.prototype;
+	/** Used to detect host constructors (Safari). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-/** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
+	/** Used for built-in method references. */
+	var funcProto = Function.prototype,
+	    objectProto = Object.prototype;
 
-/** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = funcProto.toString;
 
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  funcToString$1.call(hasOwnProperty$6).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
 
-/**
- * The base implementation of `_.isNative` without bad shim checks.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function,
- *  else `false`.
- */
-function baseIsNative$1(value) {
-  if (!isObject$4(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource$1(value));
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * The base implementation of `_.isNative` without bad shim checks.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 */
+	function baseIsNative(value) {
+	  if (!isObject(value) || isMasked(value)) {
+	    return false;
+	  }
+	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+
+	_baseIsNative = baseIsNative;
+	return _baseIsNative;
 }
-
-var _baseIsNative = baseIsNative$1;
 
 /**
  * Gets the value at `key` of `object`.
@@ -11933,37 +11951,61 @@ var _baseIsNative = baseIsNative$1;
  * @returns {*} Returns the property value.
  */
 
-function getValue$1(object, key) {
-  return object == null ? undefined : object[key];
+var _getValue;
+var hasRequired_getValue;
+
+function require_getValue () {
+	if (hasRequired_getValue) return _getValue;
+	hasRequired_getValue = 1;
+	function getValue(object, key) {
+	  return object == null ? undefined : object[key];
+	}
+
+	_getValue = getValue;
+	return _getValue;
 }
 
-var _getValue = getValue$1;
+var _getNative;
+var hasRequired_getNative;
 
-var baseIsNative = _baseIsNative,
-    getValue = _getValue;
+function require_getNative () {
+	if (hasRequired_getNative) return _getNative;
+	hasRequired_getNative = 1;
+	var baseIsNative = require_baseIsNative(),
+	    getValue = require_getValue();
 
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative$6(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = getValue(object, key);
+	  return baseIsNative(value) ? value : undefined;
+	}
+
+	_getNative = getNative;
+	return _getNative;
 }
 
-var _getNative = getNative$6;
+var _WeakMap;
+var hasRequired_WeakMap;
 
-var getNative$5 = _getNative,
-    root$9 = require_root();
+function require_WeakMap () {
+	if (hasRequired_WeakMap) return _WeakMap;
+	hasRequired_WeakMap = 1;
+	var getNative = require_getNative(),
+	    root = require_root();
 
-/* Built-in method references that are verified to be native. */
-var WeakMap$1 = getNative$5(root$9, 'WeakMap');
+	/* Built-in method references that are verified to be native. */
+	var WeakMap = getNative(root, 'WeakMap');
 
-var _WeakMap = WeakMap$1;
+	_WeakMap = WeakMap;
+	return _WeakMap;
+}
 
 var _metaMap;
 var hasRequired_metaMap;
@@ -11971,7 +12013,7 @@ var hasRequired_metaMap;
 function require_metaMap () {
 	if (hasRequired_metaMap) return _metaMap;
 	hasRequired_metaMap = 1;
-	var WeakMap = _WeakMap;
+	var WeakMap = require_WeakMap();
 
 	/** Used to store function metadata. */
 	var metaMap = WeakMap && new WeakMap;
@@ -12903,7 +12945,7 @@ var hasRequired_defineProperty;
 function require_defineProperty () {
 	if (hasRequired_defineProperty) return _defineProperty;
 	hasRequired_defineProperty = 1;
-	var getNative = _getNative;
+	var getNative = require_getNative();
 
 	var defineProperty = (function() {
 	  try {
@@ -15004,7 +15046,7 @@ function stackHas$1(key) {
 
 var _stackHas = stackHas$1;
 
-var getNative$4 = _getNative,
+var getNative$4 = require_getNative(),
     root$4 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -15012,7 +15054,7 @@ var Map$3 = getNative$4(root$4, 'Map');
 
 var _Map = Map$3;
 
-var getNative$3 = _getNative;
+var getNative$3 = require_getNative();
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate$4 = getNative$3(Object, 'create');
@@ -15779,7 +15821,7 @@ function getAllKeysIn$1(object) {
 
 var _getAllKeysIn = getAllKeysIn$1;
 
-var getNative$2 = _getNative,
+var getNative$2 = require_getNative(),
     root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -15787,7 +15829,7 @@ var DataView$2 = getNative$2(root$3, 'DataView');
 
 var _DataView = DataView$2;
 
-var getNative$1 = _getNative,
+var getNative$1 = require_getNative(),
     root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -15795,7 +15837,7 @@ var Promise$2 = getNative$1(root$2, 'Promise');
 
 var _Promise = Promise$2;
 
-var getNative = _getNative,
+var getNative = require_getNative(),
     root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -15807,7 +15849,7 @@ var DataView$1 = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = _WeakMap,
+    WeakMap = require_WeakMap(),
     baseGetTag$2 = _baseGetTag,
     toSource = _toSource;
 
