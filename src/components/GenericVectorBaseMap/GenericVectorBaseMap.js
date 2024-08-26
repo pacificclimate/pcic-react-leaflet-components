@@ -7,19 +7,16 @@ import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
-import 'leaflet.nontiledlayer'
 
 const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
     const map = useMap();
 
     useEffect(() => {
-        // Create the non-tiled WMS layer using the wmsOptions directly
-        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, wmsOptions).addTo(map);
-
+        const wmsLayer = L.tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
         return () => {
-            map.removeLayer(nonTiledLayer);
+            map.removeLayer(wmsLayer);
         };
-    }, [map, wmsUrl, wmsOptions]);
+    }, [map]);
 
     return null;
 };
