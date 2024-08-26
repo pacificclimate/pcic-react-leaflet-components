@@ -13,9 +13,9 @@ const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, {
+        const nonTiledLayer = new L.nonTiledLayer.WMS(wmsUrl, {
             ...wmsOptions,
-            getImageUrlAsync: async (bounds) => {
+            getImageUrl: (bounds) => {
                 const { x: width, y: height } = map.getSize();
                 const sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
                 const bbox = [sw.lng, sw.lat, ne.lng, ne.lat].join(',');

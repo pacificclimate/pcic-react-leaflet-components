@@ -46,387 +46,6 @@ function _objectSpread2(target) {
   return target;
 }
 
-function _regeneratorRuntime() {
-  /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
-
-  _regeneratorRuntime = function () {
-    return exports;
-  };
-
-  var exports = {},
-      Op = Object.prototype,
-      hasOwn = Op.hasOwnProperty,
-      $Symbol = "function" == typeof Symbol ? Symbol : {},
-      iteratorSymbol = $Symbol.iterator || "@@iterator",
-      asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator",
-      toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
-
-  function define(obj, key, value) {
-    return Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: !0,
-      configurable: !0,
-      writable: !0
-    }), obj[key];
-  }
-
-  try {
-    define({}, "");
-  } catch (err) {
-    define = function (obj, key, value) {
-      return obj[key] = value;
-    };
-  }
-
-  function wrap(innerFn, outerFn, self, tryLocsList) {
-    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator,
-        generator = Object.create(protoGenerator.prototype),
-        context = new Context(tryLocsList || []);
-    return generator._invoke = function (innerFn, self, context) {
-      var state = "suspendedStart";
-      return function (method, arg) {
-        if ("executing" === state) throw new Error("Generator is already running");
-
-        if ("completed" === state) {
-          if ("throw" === method) throw arg;
-          return doneResult();
-        }
-
-        for (context.method = method, context.arg = arg;;) {
-          var delegate = context.delegate;
-
-          if (delegate) {
-            var delegateResult = maybeInvokeDelegate(delegate, context);
-
-            if (delegateResult) {
-              if (delegateResult === ContinueSentinel) continue;
-              return delegateResult;
-            }
-          }
-
-          if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) {
-            if ("suspendedStart" === state) throw state = "completed", context.arg;
-            context.dispatchException(context.arg);
-          } else "return" === context.method && context.abrupt("return", context.arg);
-          state = "executing";
-          var record = tryCatch(innerFn, self, context);
-
-          if ("normal" === record.type) {
-            if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue;
-            return {
-              value: record.arg,
-              done: context.done
-            };
-          }
-
-          "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg);
-        }
-      };
-    }(innerFn, self, context), generator;
-  }
-
-  function tryCatch(fn, obj, arg) {
-    try {
-      return {
-        type: "normal",
-        arg: fn.call(obj, arg)
-      };
-    } catch (err) {
-      return {
-        type: "throw",
-        arg: err
-      };
-    }
-  }
-
-  exports.wrap = wrap;
-  var ContinueSentinel = {};
-
-  function Generator() {}
-
-  function GeneratorFunction() {}
-
-  function GeneratorFunctionPrototype() {}
-
-  var IteratorPrototype = {};
-  define(IteratorPrototype, iteratorSymbol, function () {
-    return this;
-  });
-  var getProto = Object.getPrototypeOf,
-      NativeIteratorPrototype = getProto && getProto(getProto(values([])));
-  NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype);
-  var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype);
-
-  function defineIteratorMethods(prototype) {
-    ["next", "throw", "return"].forEach(function (method) {
-      define(prototype, method, function (arg) {
-        return this._invoke(method, arg);
-      });
-    });
-  }
-
-  function AsyncIterator(generator, PromiseImpl) {
-    function invoke(method, arg, resolve, reject) {
-      var record = tryCatch(generator[method], generator, arg);
-
-      if ("throw" !== record.type) {
-        var result = record.arg,
-            value = result.value;
-        return value && "object" == typeof value && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) {
-          invoke("next", value, resolve, reject);
-        }, function (err) {
-          invoke("throw", err, resolve, reject);
-        }) : PromiseImpl.resolve(value).then(function (unwrapped) {
-          result.value = unwrapped, resolve(result);
-        }, function (error) {
-          return invoke("throw", error, resolve, reject);
-        });
-      }
-
-      reject(record.arg);
-    }
-
-    var previousPromise;
-
-    this._invoke = function (method, arg) {
-      function callInvokeWithMethodAndArg() {
-        return new PromiseImpl(function (resolve, reject) {
-          invoke(method, arg, resolve, reject);
-        });
-      }
-
-      return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg();
-    };
-  }
-
-  function maybeInvokeDelegate(delegate, context) {
-    var method = delegate.iterator[context.method];
-
-    if (undefined === method) {
-      if (context.delegate = null, "throw" === context.method) {
-        if (delegate.iterator.return && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method)) return ContinueSentinel;
-        context.method = "throw", context.arg = new TypeError("The iterator does not provide a 'throw' method");
-      }
-
-      return ContinueSentinel;
-    }
-
-    var record = tryCatch(method, delegate.iterator, context.arg);
-    if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel;
-    var info = record.arg;
-    return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel);
-  }
-
-  function pushTryEntry(locs) {
-    var entry = {
-      tryLoc: locs[0]
-    };
-    1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry);
-  }
-
-  function resetTryEntry(entry) {
-    var record = entry.completion || {};
-    record.type = "normal", delete record.arg, entry.completion = record;
-  }
-
-  function Context(tryLocsList) {
-    this.tryEntries = [{
-      tryLoc: "root"
-    }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0);
-  }
-
-  function values(iterable) {
-    if (iterable) {
-      var iteratorMethod = iterable[iteratorSymbol];
-      if (iteratorMethod) return iteratorMethod.call(iterable);
-      if ("function" == typeof iterable.next) return iterable;
-
-      if (!isNaN(iterable.length)) {
-        var i = -1,
-            next = function next() {
-          for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next;
-
-          return next.value = undefined, next.done = !0, next;
-        };
-
-        return next.next = next;
-      }
-    }
-
-    return {
-      next: doneResult
-    };
-  }
-
-  function doneResult() {
-    return {
-      value: undefined,
-      done: !0
-    };
-  }
-
-  return GeneratorFunction.prototype = GeneratorFunctionPrototype, define(Gp, "constructor", GeneratorFunctionPrototype), define(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) {
-    var ctor = "function" == typeof genFun && genFun.constructor;
-    return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name));
-  }, exports.mark = function (genFun) {
-    return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun;
-  }, exports.awrap = function (arg) {
-    return {
-      __await: arg
-    };
-  }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () {
-    return this;
-  }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) {
-    void 0 === PromiseImpl && (PromiseImpl = Promise);
-    var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl);
-    return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) {
-      return result.done ? result.value : iter.next();
-    });
-  }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () {
-    return this;
-  }), define(Gp, "toString", function () {
-    return "[object Generator]";
-  }), exports.keys = function (object) {
-    var keys = [];
-
-    for (var key in object) keys.push(key);
-
-    return keys.reverse(), function next() {
-      for (; keys.length;) {
-        var key = keys.pop();
-        if (key in object) return next.value = key, next.done = !1, next;
-      }
-
-      return next.done = !0, next;
-    };
-  }, exports.values = values, Context.prototype = {
-    constructor: Context,
-    reset: function (skipTempReset) {
-      if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined);
-    },
-    stop: function () {
-      this.done = !0;
-      var rootRecord = this.tryEntries[0].completion;
-      if ("throw" === rootRecord.type) throw rootRecord.arg;
-      return this.rval;
-    },
-    dispatchException: function (exception) {
-      if (this.done) throw exception;
-      var context = this;
-
-      function handle(loc, caught) {
-        return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught;
-      }
-
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i],
-            record = entry.completion;
-        if ("root" === entry.tryLoc) return handle("end");
-
-        if (entry.tryLoc <= this.prev) {
-          var hasCatch = hasOwn.call(entry, "catchLoc"),
-              hasFinally = hasOwn.call(entry, "finallyLoc");
-
-          if (hasCatch && hasFinally) {
-            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-          } else if (hasCatch) {
-            if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0);
-          } else {
-            if (!hasFinally) throw new Error("try statement without catch or finally");
-            if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc);
-          }
-        }
-      }
-    },
-    abrupt: function (type, arg) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) {
-          var finallyEntry = entry;
-          break;
-        }
-      }
-
-      finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null);
-      var record = finallyEntry ? finallyEntry.completion : {};
-      return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record);
-    },
-    complete: function (record, afterLoc) {
-      if ("throw" === record.type) throw record.arg;
-      return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel;
-    },
-    finish: function (finallyLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-        if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel;
-      }
-    },
-    catch: function (tryLoc) {
-      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
-        var entry = this.tryEntries[i];
-
-        if (entry.tryLoc === tryLoc) {
-          var record = entry.completion;
-
-          if ("throw" === record.type) {
-            var thrown = record.arg;
-            resetTryEntry(entry);
-          }
-
-          return thrown;
-        }
-      }
-
-      throw new Error("illegal catch attempt");
-    },
-    delegateYield: function (iterable, resultName, nextLoc) {
-      return this.delegate = {
-        iterator: values(iterable),
-        resultName: resultName,
-        nextLoc: nextLoc
-      }, "next" === this.method && (this.arg = undefined), ContinueSentinel;
-    }
-  }, exports;
-}
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
-  try {
-    var info = gen[key](arg);
-    var value = info.value;
-  } catch (error) {
-    reject(error);
-    return;
-  }
-
-  if (info.done) {
-    resolve(value);
-  } else {
-    Promise.resolve(value).then(_next, _throw);
-  }
-}
-
-function _asyncToGenerator(fn) {
-  return function () {
-    var self = this,
-        args = arguments;
-    return new Promise(function (resolve, reject) {
-      var gen = fn.apply(self, args);
-
-      function _next(value) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
-      }
-
-      function _throw(err) {
-        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
-      }
-
-      _next(undefined);
-    });
-  };
-}
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -11254,47 +10873,30 @@ var LabelsLayer = function LabelsLayer(_ref) {
       crs = _ref.crs;
   var map = useMap();
   useEffect(function () {
-    var nonTiledLayer = L$1.nonTiledLayer.wms(wmsUrl, _objectSpread2(_objectSpread2({}, wmsOptions), {}, {
-      getImageUrlAsync: function () {
-        var _getImageUrlAsync = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(bounds) {
-          var _map$getSize, width, height, sw, ne, bbox, params;
+    var nonTiledLayer = new L$1.nonTiledLayer.WMS(wmsUrl, _objectSpread2(_objectSpread2({}, wmsOptions), {}, {
+      getImageUrl: function getImageUrl(bounds) {
+        var _map$getSize = map.getSize(),
+            width = _map$getSize.x,
+            height = _map$getSize.y;
 
-          return _regeneratorRuntime().wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _map$getSize = map.getSize(), width = _map$getSize.x, height = _map$getSize.y;
-                  sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
-                  bbox = [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
-                  params = new URLSearchParams({
-                    service: 'WMS',
-                    request: 'GetMap',
-                    version: wmsOptions.version,
-                    layers: wmsOptions.layers,
-                    styles: '',
-                    format: wmsOptions.format,
-                    transparent: wmsOptions.transparent,
-                    width: width,
-                    height: height,
-                    srs: crs.code,
-                    bbox: bbox
-                  });
-                  return _context.abrupt("return", "".concat(wmsUrl, "?").concat(params.toString()));
-
-                case 5:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-
-        function getImageUrlAsync(_x) {
-          return _getImageUrlAsync.apply(this, arguments);
-        }
-
-        return getImageUrlAsync;
-      }()
+        var sw = bounds.getSouthWest(),
+            ne = bounds.getNorthEast();
+        var bbox = [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+        var params = new URLSearchParams({
+          service: 'WMS',
+          request: 'GetMap',
+          version: wmsOptions.version,
+          layers: wmsOptions.layers,
+          styles: '',
+          format: wmsOptions.format,
+          transparent: wmsOptions.transparent,
+          width: width,
+          height: height,
+          srs: crs.code,
+          bbox: bbox
+        });
+        return "".concat(wmsUrl, "?").concat(params.toString());
+      }
     })).addTo(map);
     return function () {
       map.removeLayer(nonTiledLayer);
@@ -12068,27 +11670,27 @@ function require_root () {
 	return _root;
 }
 
-var root$a = require_root();
+var root$8 = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$a.Symbol;
+var Symbol$5 = root$8.Symbol;
 
 var _Symbol = Symbol$5;
 
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$7 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$5 = objectProto$7.hasOwnProperty;
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$7.toString;
+var nativeObjectToString$1 = objectProto$8.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -12101,7 +11703,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$5.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -12124,14 +11726,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$6 = Object.prototype;
+var objectProto$7 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$6.toString;
+var nativeObjectToString = objectProto$7.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -12201,15 +11803,15 @@ var _baseGetTag = baseGetTag$5;
  * // => false
  */
 
-function isObject$6(value) {
+function isObject$5(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$6;
+var isObject_1 = isObject$5;
 
 var baseGetTag$4 = _baseGetTag,
-    isObject$5 = isObject_1;
+    isObject$4 = isObject_1;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -12234,8 +11836,8 @@ var asyncTag = '[object AsyncFunction]',
  * _.isFunction(/abc/);
  * // => false
  */
-function isFunction$1(value) {
-  if (!isObject$5(value)) {
+function isFunction(value) {
+  if (!isObject$4(value)) {
     return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -12244,42 +11846,58 @@ function isFunction$1(value) {
   return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
-var isFunction_1 = isFunction$1;
+var isFunction_1 = isFunction;
 
-var root$9 = require_root();
+var _coreJsData;
+var hasRequired_coreJsData;
 
-/** Used to detect overreaching core-js shims. */
-var coreJsData$1 = root$9['__core-js_shared__'];
+function require_coreJsData () {
+	if (hasRequired_coreJsData) return _coreJsData;
+	hasRequired_coreJsData = 1;
+	var root = require_root();
 
-var _coreJsData = coreJsData$1;
+	/** Used to detect overreaching core-js shims. */
+	var coreJsData = root['__core-js_shared__'];
 
-var coreJsData = _coreJsData;
-
-/** Used to detect methods masquerading as native. */
-var maskSrcKey = (function() {
-  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-  return uid ? ('Symbol(src)_1.' + uid) : '';
-}());
-
-/**
- * Checks if `func` has its source masked.
- *
- * @private
- * @param {Function} func The function to check.
- * @returns {boolean} Returns `true` if `func` is masked, else `false`.
- */
-function isMasked$1(func) {
-  return !!maskSrcKey && (maskSrcKey in func);
+	_coreJsData = coreJsData;
+	return _coreJsData;
 }
 
-var _isMasked = isMasked$1;
+var _isMasked;
+var hasRequired_isMasked;
+
+function require_isMasked () {
+	if (hasRequired_isMasked) return _isMasked;
+	hasRequired_isMasked = 1;
+	var coreJsData = require_coreJsData();
+
+	/** Used to detect methods masquerading as native. */
+	var maskSrcKey = (function() {
+	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+	  return uid ? ('Symbol(src)_1.' + uid) : '';
+	}());
+
+	/**
+	 * Checks if `func` has its source masked.
+	 *
+	 * @private
+	 * @param {Function} func The function to check.
+	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+	 */
+	function isMasked(func) {
+	  return !!maskSrcKey && (maskSrcKey in func);
+	}
+
+	_isMasked = isMasked;
+	return _isMasked;
+}
 
 /** Used for built-in method references. */
 
-var funcProto$2 = Function.prototype;
+var funcProto$1 = Function.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString$2 = funcProto$2.toString;
+var funcToString$1 = funcProto$1.toString;
 
 /**
  * Converts `func` to its source code.
@@ -12288,10 +11906,10 @@ var funcToString$2 = funcProto$2.toString;
  * @param {Function} func The function to convert.
  * @returns {string} Returns the source code.
  */
-function toSource$2(func) {
+function toSource$1(func) {
   if (func != null) {
     try {
-      return funcToString$2.call(func);
+      return funcToString$1.call(func);
     } catch (e) {}
     try {
       return (func + '');
@@ -12300,55 +11918,63 @@ function toSource$2(func) {
   return '';
 }
 
-var _toSource = toSource$2;
+var _toSource = toSource$1;
 
-var isFunction = isFunction_1,
-    isMasked = _isMasked,
-    isObject$4 = isObject_1,
-    toSource$1 = _toSource;
+var _baseIsNative;
+var hasRequired_baseIsNative;
 
-/**
- * Used to match `RegExp`
- * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
- */
-var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+function require_baseIsNative () {
+	if (hasRequired_baseIsNative) return _baseIsNative;
+	hasRequired_baseIsNative = 1;
+	var isFunction = isFunction_1,
+	    isMasked = require_isMasked(),
+	    isObject = isObject_1,
+	    toSource = _toSource;
 
-/** Used to detect host constructors (Safari). */
-var reIsHostCtor = /^\[object .+?Constructor\]$/;
+	/**
+	 * Used to match `RegExp`
+	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+	 */
+	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-/** Used for built-in method references. */
-var funcProto$1 = Function.prototype,
-    objectProto$5 = Object.prototype;
+	/** Used to detect host constructors (Safari). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-/** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
+	/** Used for built-in method references. */
+	var funcProto = Function.prototype,
+	    objectProto = Object.prototype;
 
-/** Used to check objects for own properties. */
-var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
+	/** Used to resolve the decompiled source of functions. */
+	var funcToString = funcProto.toString;
 
-/** Used to detect if a method is native. */
-var reIsNative = RegExp('^' +
-  funcToString$1.call(hasOwnProperty$4).replace(reRegExpChar, '\\$&')
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-);
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
 
-/**
- * The base implementation of `_.isNative` without bad shim checks.
- *
- * @private
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is a native function,
- *  else `false`.
- */
-function baseIsNative$1(value) {
-  if (!isObject$4(value) || isMasked(value)) {
-    return false;
-  }
-  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-  return pattern.test(toSource$1(value));
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/**
+	 * The base implementation of `_.isNative` without bad shim checks.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function,
+	 *  else `false`.
+	 */
+	function baseIsNative(value) {
+	  if (!isObject(value) || isMasked(value)) {
+	    return false;
+	  }
+	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+	  return pattern.test(toSource(value));
+	}
+
+	_baseIsNative = baseIsNative;
+	return _baseIsNative;
 }
-
-var _baseIsNative = baseIsNative$1;
 
 /**
  * Gets the value at `key` of `object`.
@@ -12359,37 +11985,61 @@ var _baseIsNative = baseIsNative$1;
  * @returns {*} Returns the property value.
  */
 
-function getValue$1(object, key) {
-  return object == null ? undefined : object[key];
+var _getValue;
+var hasRequired_getValue;
+
+function require_getValue () {
+	if (hasRequired_getValue) return _getValue;
+	hasRequired_getValue = 1;
+	function getValue(object, key) {
+	  return object == null ? undefined : object[key];
+	}
+
+	_getValue = getValue;
+	return _getValue;
 }
 
-var _getValue = getValue$1;
+var _getNative;
+var hasRequired_getNative;
 
-var baseIsNative = _baseIsNative,
-    getValue = _getValue;
+function require_getNative () {
+	if (hasRequired_getNative) return _getNative;
+	hasRequired_getNative = 1;
+	var baseIsNative = require_baseIsNative(),
+	    getValue = require_getValue();
 
-/**
- * Gets the native function at `key` of `object`.
- *
- * @private
- * @param {Object} object The object to query.
- * @param {string} key The key of the method to get.
- * @returns {*} Returns the function if it's native, else `undefined`.
- */
-function getNative$6(object, key) {
-  var value = getValue(object, key);
-  return baseIsNative(value) ? value : undefined;
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = getValue(object, key);
+	  return baseIsNative(value) ? value : undefined;
+	}
+
+	_getNative = getNative;
+	return _getNative;
 }
 
-var _getNative = getNative$6;
+var _WeakMap;
+var hasRequired_WeakMap;
 
-var getNative$5 = _getNative,
-    root$8 = require_root();
+function require_WeakMap () {
+	if (hasRequired_WeakMap) return _WeakMap;
+	hasRequired_WeakMap = 1;
+	var getNative = require_getNative(),
+	    root = require_root();
 
-/* Built-in method references that are verified to be native. */
-var WeakMap$1 = getNative$5(root$8, 'WeakMap');
+	/* Built-in method references that are verified to be native. */
+	var WeakMap = getNative(root, 'WeakMap');
 
-var _WeakMap = WeakMap$1;
+	_WeakMap = WeakMap;
+	return _WeakMap;
+}
 
 var _metaMap;
 var hasRequired_metaMap;
@@ -12397,7 +12047,7 @@ var hasRequired_metaMap;
 function require_metaMap () {
 	if (hasRequired_metaMap) return _metaMap;
 	hasRequired_metaMap = 1;
-	var WeakMap = _WeakMap;
+	var WeakMap = require_WeakMap();
 
 	/** Used to store function metadata. */
 	var metaMap = WeakMap && new WeakMap;
@@ -13323,17 +12973,25 @@ function requireConstant () {
 	return constant_1;
 }
 
-var getNative$4 = _getNative;
+var _defineProperty;
+var hasRequired_defineProperty;
 
-var defineProperty$1 = (function() {
-  try {
-    var func = getNative$4(Object, 'defineProperty');
-    func({}, '', {});
-    return func;
-  } catch (e) {}
-}());
+function require_defineProperty () {
+	if (hasRequired_defineProperty) return _defineProperty;
+	hasRequired_defineProperty = 1;
+	var getNative = require_getNative();
 
-var _defineProperty = defineProperty$1;
+	var defineProperty = (function() {
+	  try {
+	    var func = getNative(Object, 'defineProperty');
+	    func({}, '', {});
+	    return func;
+	  } catch (e) {}
+	}());
+
+	_defineProperty = defineProperty;
+	return _defineProperty;
+}
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -13342,7 +13000,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = _defineProperty,
+	    defineProperty = require_defineProperty(),
 	    identity = requireIdentity();
 
 	/**
@@ -14382,7 +14040,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = _defineProperty;
+var defineProperty = require_defineProperty();
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -14441,20 +14099,20 @@ var _baseAssignValue = baseAssignValue$2;
  * // => true
  */
 
-function eq$1(value, other) {
+function eq$2(value, other) {
   return value === other || (value !== value && other !== other);
 }
 
-var eq_1 = eq$1;
+var eq_1 = eq$2;
 
 var baseAssignValue$1 = _baseAssignValue,
-    eq = eq_1;
+    eq$1 = eq_1;
 
 /** Used for built-in method references. */
-var objectProto$4 = Object.prototype;
+var objectProto$6 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
+var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
 
 /**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent
@@ -14468,7 +14126,7 @@ var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
  */
 function assignValue$2(object, key, value) {
   var objValue = object[key];
-  if (!(hasOwnProperty$3.call(object, key) && eq(objValue, value)) ||
+  if (!(hasOwnProperty$5.call(object, key) && eq$1(objValue, value)) ||
       (value === undefined && !(key in object))) {
     baseAssignValue$1(object, key, value);
   }
@@ -15192,247 +14850,183 @@ var _baseAssign = baseAssign$1;
  * @memberOf ListCache
  */
 
-var _listCacheClear;
-var hasRequired_listCacheClear;
-
-function require_listCacheClear () {
-	if (hasRequired_listCacheClear) return _listCacheClear;
-	hasRequired_listCacheClear = 1;
-	function listCacheClear() {
-	  this.__data__ = [];
-	  this.size = 0;
-	}
-
-	_listCacheClear = listCacheClear;
-	return _listCacheClear;
+function listCacheClear$1() {
+  this.__data__ = [];
+  this.size = 0;
 }
 
-var _assocIndexOf;
-var hasRequired_assocIndexOf;
+var _listCacheClear = listCacheClear$1;
 
-function require_assocIndexOf () {
-	if (hasRequired_assocIndexOf) return _assocIndexOf;
-	hasRequired_assocIndexOf = 1;
-	var eq = eq_1;
+var eq = eq_1;
 
-	/**
-	 * Gets the index at which the `key` is found in `array` of key-value pairs.
-	 *
-	 * @private
-	 * @param {Array} array The array to inspect.
-	 * @param {*} key The key to search for.
-	 * @returns {number} Returns the index of the matched value, else `-1`.
-	 */
-	function assocIndexOf(array, key) {
-	  var length = array.length;
-	  while (length--) {
-	    if (eq(array[length][0], key)) {
-	      return length;
-	    }
-	  }
-	  return -1;
-	}
-
-	_assocIndexOf = assocIndexOf;
-	return _assocIndexOf;
+/**
+ * Gets the index at which the `key` is found in `array` of key-value pairs.
+ *
+ * @private
+ * @param {Array} array The array to inspect.
+ * @param {*} key The key to search for.
+ * @returns {number} Returns the index of the matched value, else `-1`.
+ */
+function assocIndexOf$4(array, key) {
+  var length = array.length;
+  while (length--) {
+    if (eq(array[length][0], key)) {
+      return length;
+    }
+  }
+  return -1;
 }
 
-var _listCacheDelete;
-var hasRequired_listCacheDelete;
+var _assocIndexOf = assocIndexOf$4;
 
-function require_listCacheDelete () {
-	if (hasRequired_listCacheDelete) return _listCacheDelete;
-	hasRequired_listCacheDelete = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$3 = _assocIndexOf;
 
-	/** Used for built-in method references. */
-	var arrayProto = Array.prototype;
+/** Used for built-in method references. */
+var arrayProto = Array.prototype;
 
-	/** Built-in value references. */
-	var splice = arrayProto.splice;
+/** Built-in value references. */
+var splice = arrayProto.splice;
 
-	/**
-	 * Removes `key` and its value from the list cache.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function listCacheDelete(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Removes `key` and its value from the list cache.
+ *
+ * @private
+ * @name delete
+ * @memberOf ListCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function listCacheDelete$1(key) {
+  var data = this.__data__,
+      index = assocIndexOf$3(data, key);
 
-	  if (index < 0) {
-	    return false;
-	  }
-	  var lastIndex = data.length - 1;
-	  if (index == lastIndex) {
-	    data.pop();
-	  } else {
-	    splice.call(data, index, 1);
-	  }
-	  --this.size;
-	  return true;
-	}
-
-	_listCacheDelete = listCacheDelete;
-	return _listCacheDelete;
+  if (index < 0) {
+    return false;
+  }
+  var lastIndex = data.length - 1;
+  if (index == lastIndex) {
+    data.pop();
+  } else {
+    splice.call(data, index, 1);
+  }
+  --this.size;
+  return true;
 }
 
-var _listCacheGet;
-var hasRequired_listCacheGet;
+var _listCacheDelete = listCacheDelete$1;
 
-function require_listCacheGet () {
-	if (hasRequired_listCacheGet) return _listCacheGet;
-	hasRequired_listCacheGet = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$2 = _assocIndexOf;
 
-	/**
-	 * Gets the list cache value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function listCacheGet(key) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Gets the list cache value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf ListCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function listCacheGet$1(key) {
+  var data = this.__data__,
+      index = assocIndexOf$2(data, key);
 
-	  return index < 0 ? undefined : data[index][1];
-	}
-
-	_listCacheGet = listCacheGet;
-	return _listCacheGet;
+  return index < 0 ? undefined : data[index][1];
 }
 
-var _listCacheHas;
-var hasRequired_listCacheHas;
+var _listCacheGet = listCacheGet$1;
 
-function require_listCacheHas () {
-	if (hasRequired_listCacheHas) return _listCacheHas;
-	hasRequired_listCacheHas = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf$1 = _assocIndexOf;
 
-	/**
-	 * Checks if a list cache value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf ListCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function listCacheHas(key) {
-	  return assocIndexOf(this.__data__, key) > -1;
-	}
-
-	_listCacheHas = listCacheHas;
-	return _listCacheHas;
+/**
+ * Checks if a list cache value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf ListCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function listCacheHas$1(key) {
+  return assocIndexOf$1(this.__data__, key) > -1;
 }
 
-var _listCacheSet;
-var hasRequired_listCacheSet;
+var _listCacheHas = listCacheHas$1;
 
-function require_listCacheSet () {
-	if (hasRequired_listCacheSet) return _listCacheSet;
-	hasRequired_listCacheSet = 1;
-	var assocIndexOf = require_assocIndexOf();
+var assocIndexOf = _assocIndexOf;
 
-	/**
-	 * Sets the list cache `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf ListCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the list cache instance.
-	 */
-	function listCacheSet(key, value) {
-	  var data = this.__data__,
-	      index = assocIndexOf(data, key);
+/**
+ * Sets the list cache `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf ListCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the list cache instance.
+ */
+function listCacheSet$1(key, value) {
+  var data = this.__data__,
+      index = assocIndexOf(data, key);
 
-	  if (index < 0) {
-	    ++this.size;
-	    data.push([key, value]);
-	  } else {
-	    data[index][1] = value;
-	  }
-	  return this;
-	}
-
-	_listCacheSet = listCacheSet;
-	return _listCacheSet;
+  if (index < 0) {
+    ++this.size;
+    data.push([key, value]);
+  } else {
+    data[index][1] = value;
+  }
+  return this;
 }
 
-var _ListCache;
-var hasRequired_ListCache;
+var _listCacheSet = listCacheSet$1;
 
-function require_ListCache () {
-	if (hasRequired_ListCache) return _ListCache;
-	hasRequired_ListCache = 1;
-	var listCacheClear = require_listCacheClear(),
-	    listCacheDelete = require_listCacheDelete(),
-	    listCacheGet = require_listCacheGet(),
-	    listCacheHas = require_listCacheHas(),
-	    listCacheSet = require_listCacheSet();
+var listCacheClear = _listCacheClear,
+    listCacheDelete = _listCacheDelete,
+    listCacheGet = _listCacheGet,
+    listCacheHas = _listCacheHas,
+    listCacheSet = _listCacheSet;
 
-	/**
-	 * Creates an list cache object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function ListCache(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates an list cache object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function ListCache$4(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `ListCache`.
-	ListCache.prototype.clear = listCacheClear;
-	ListCache.prototype['delete'] = listCacheDelete;
-	ListCache.prototype.get = listCacheGet;
-	ListCache.prototype.has = listCacheHas;
-	ListCache.prototype.set = listCacheSet;
-
-	_ListCache = ListCache;
-	return _ListCache;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _stackClear;
-var hasRequired_stackClear;
+// Add methods to `ListCache`.
+ListCache$4.prototype.clear = listCacheClear;
+ListCache$4.prototype['delete'] = listCacheDelete;
+ListCache$4.prototype.get = listCacheGet;
+ListCache$4.prototype.has = listCacheHas;
+ListCache$4.prototype.set = listCacheSet;
 
-function require_stackClear () {
-	if (hasRequired_stackClear) return _stackClear;
-	hasRequired_stackClear = 1;
-	var ListCache = require_ListCache();
+var _ListCache = ListCache$4;
 
-	/**
-	 * Removes all key-value entries from the stack.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Stack
-	 */
-	function stackClear() {
-	  this.__data__ = new ListCache;
-	  this.size = 0;
-	}
+var ListCache$3 = _ListCache;
 
-	_stackClear = stackClear;
-	return _stackClear;
+/**
+ * Removes all key-value entries from the stack.
+ *
+ * @private
+ * @name clear
+ * @memberOf Stack
+ */
+function stackClear$1() {
+  this.__data__ = new ListCache$3;
+  this.size = 0;
 }
+
+var _stackClear = stackClear$1;
 
 /**
  * Removes `key` and its value from the stack.
@@ -15444,23 +15038,15 @@ function require_stackClear () {
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
  */
 
-var _stackDelete;
-var hasRequired_stackDelete;
+function stackDelete$1(key) {
+  var data = this.__data__,
+      result = data['delete'](key);
 
-function require_stackDelete () {
-	if (hasRequired_stackDelete) return _stackDelete;
-	hasRequired_stackDelete = 1;
-	function stackDelete(key) {
-	  var data = this.__data__,
-	      result = data['delete'](key);
-
-	  this.size = data.size;
-	  return result;
-	}
-
-	_stackDelete = stackDelete;
-	return _stackDelete;
+  this.size = data.size;
+  return result;
 }
+
+var _stackDelete = stackDelete$1;
 
 /**
  * Gets the stack value for `key`.
@@ -15472,19 +15058,11 @@ function require_stackDelete () {
  * @returns {*} Returns the entry value.
  */
 
-var _stackGet;
-var hasRequired_stackGet;
-
-function require_stackGet () {
-	if (hasRequired_stackGet) return _stackGet;
-	hasRequired_stackGet = 1;
-	function stackGet(key) {
-	  return this.__data__.get(key);
-	}
-
-	_stackGet = stackGet;
-	return _stackGet;
+function stackGet$1(key) {
+  return this.__data__.get(key);
 }
+
+var _stackGet = stackGet$1;
 
 /**
  * Checks if a stack value for `key` exists.
@@ -15496,66 +15074,42 @@ function require_stackGet () {
  * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
  */
 
-var _stackHas;
-var hasRequired_stackHas;
-
-function require_stackHas () {
-	if (hasRequired_stackHas) return _stackHas;
-	hasRequired_stackHas = 1;
-	function stackHas(key) {
-	  return this.__data__.has(key);
-	}
-
-	_stackHas = stackHas;
-	return _stackHas;
+function stackHas$1(key) {
+  return this.__data__.has(key);
 }
 
-var getNative$3 = _getNative,
+var _stackHas = stackHas$1;
+
+var getNative$4 = require_getNative(),
     root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$1 = getNative$3(root$3, 'Map');
+var Map$3 = getNative$4(root$3, 'Map');
 
-var _Map = Map$1;
+var _Map = Map$3;
 
-var _nativeCreate;
-var hasRequired_nativeCreate;
+var getNative$3 = require_getNative();
 
-function require_nativeCreate () {
-	if (hasRequired_nativeCreate) return _nativeCreate;
-	hasRequired_nativeCreate = 1;
-	var getNative = _getNative;
+/* Built-in method references that are verified to be native. */
+var nativeCreate$4 = getNative$3(Object, 'create');
 
-	/* Built-in method references that are verified to be native. */
-	var nativeCreate = getNative(Object, 'create');
+var _nativeCreate = nativeCreate$4;
 
-	_nativeCreate = nativeCreate;
-	return _nativeCreate;
+var nativeCreate$3 = _nativeCreate;
+
+/**
+ * Removes all key-value entries from the hash.
+ *
+ * @private
+ * @name clear
+ * @memberOf Hash
+ */
+function hashClear$1() {
+  this.__data__ = nativeCreate$3 ? nativeCreate$3(null) : {};
+  this.size = 0;
 }
 
-var _hashClear;
-var hasRequired_hashClear;
-
-function require_hashClear () {
-	if (hasRequired_hashClear) return _hashClear;
-	hasRequired_hashClear = 1;
-	var nativeCreate = require_nativeCreate();
-
-	/**
-	 * Removes all key-value entries from the hash.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf Hash
-	 */
-	function hashClear() {
-	  this.__data__ = nativeCreate ? nativeCreate(null) : {};
-	  this.size = 0;
-	}
-
-	_hashClear = hashClear;
-	return _hashClear;
-}
+var _hashClear = hashClear$1;
 
 /**
  * Removes `key` and its value from the hash.
@@ -15568,195 +15122,147 @@ function require_hashClear () {
  * @returns {boolean} Returns `true` if the entry was removed, else `false`.
  */
 
-var _hashDelete;
-var hasRequired_hashDelete;
-
-function require_hashDelete () {
-	if (hasRequired_hashDelete) return _hashDelete;
-	hasRequired_hashDelete = 1;
-	function hashDelete(key) {
-	  var result = this.has(key) && delete this.__data__[key];
-	  this.size -= result ? 1 : 0;
-	  return result;
-	}
-
-	_hashDelete = hashDelete;
-	return _hashDelete;
+function hashDelete$1(key) {
+  var result = this.has(key) && delete this.__data__[key];
+  this.size -= result ? 1 : 0;
+  return result;
 }
 
-var _hashGet;
-var hasRequired_hashGet;
+var _hashDelete = hashDelete$1;
 
-function require_hashGet () {
-	if (hasRequired_hashGet) return _hashGet;
-	hasRequired_hashGet = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate$2 = _nativeCreate;
 
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED$1 = '__lodash_hash_undefined__';
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto$5 = Object.prototype;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to check objects for own properties. */
+var hasOwnProperty$4 = objectProto$5.hasOwnProperty;
 
-	/**
-	 * Gets the hash value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function hashGet(key) {
-	  var data = this.__data__;
-	  if (nativeCreate) {
-	    var result = data[key];
-	    return result === HASH_UNDEFINED ? undefined : result;
-	  }
-	  return hasOwnProperty.call(data, key) ? data[key] : undefined;
-	}
-
-	_hashGet = hashGet;
-	return _hashGet;
+/**
+ * Gets the hash value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf Hash
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function hashGet$1(key) {
+  var data = this.__data__;
+  if (nativeCreate$2) {
+    var result = data[key];
+    return result === HASH_UNDEFINED$1 ? undefined : result;
+  }
+  return hasOwnProperty$4.call(data, key) ? data[key] : undefined;
 }
 
-var _hashHas;
-var hasRequired_hashHas;
+var _hashGet = hashGet$1;
 
-function require_hashHas () {
-	if (hasRequired_hashHas) return _hashHas;
-	hasRequired_hashHas = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate$1 = _nativeCreate;
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+/** Used for built-in method references. */
+var objectProto$4 = Object.prototype;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to check objects for own properties. */
+var hasOwnProperty$3 = objectProto$4.hasOwnProperty;
 
-	/**
-	 * Checks if a hash value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf Hash
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function hashHas(key) {
-	  var data = this.__data__;
-	  return nativeCreate ? (data[key] !== undefined) : hasOwnProperty.call(data, key);
-	}
-
-	_hashHas = hashHas;
-	return _hashHas;
+/**
+ * Checks if a hash value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf Hash
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function hashHas$1(key) {
+  var data = this.__data__;
+  return nativeCreate$1 ? (data[key] !== undefined) : hasOwnProperty$3.call(data, key);
 }
 
-var _hashSet;
-var hasRequired_hashSet;
+var _hashHas = hashHas$1;
 
-function require_hashSet () {
-	if (hasRequired_hashSet) return _hashSet;
-	hasRequired_hashSet = 1;
-	var nativeCreate = require_nativeCreate();
+var nativeCreate = _nativeCreate;
 
-	/** Used to stand-in for `undefined` hash values. */
-	var HASH_UNDEFINED = '__lodash_hash_undefined__';
+/** Used to stand-in for `undefined` hash values. */
+var HASH_UNDEFINED = '__lodash_hash_undefined__';
 
-	/**
-	 * Sets the hash `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Hash
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the hash instance.
-	 */
-	function hashSet(key, value) {
-	  var data = this.__data__;
-	  this.size += this.has(key) ? 0 : 1;
-	  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
-	  return this;
-	}
-
-	_hashSet = hashSet;
-	return _hashSet;
+/**
+ * Sets the hash `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Hash
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the hash instance.
+ */
+function hashSet$1(key, value) {
+  var data = this.__data__;
+  this.size += this.has(key) ? 0 : 1;
+  data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
+  return this;
 }
 
-var _Hash;
-var hasRequired_Hash;
+var _hashSet = hashSet$1;
 
-function require_Hash () {
-	if (hasRequired_Hash) return _Hash;
-	hasRequired_Hash = 1;
-	var hashClear = require_hashClear(),
-	    hashDelete = require_hashDelete(),
-	    hashGet = require_hashGet(),
-	    hashHas = require_hashHas(),
-	    hashSet = require_hashSet();
+var hashClear = _hashClear,
+    hashDelete = _hashDelete,
+    hashGet = _hashGet,
+    hashHas = _hashHas,
+    hashSet = _hashSet;
 
-	/**
-	 * Creates a hash object.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function Hash(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates a hash object.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Hash$1(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `Hash`.
-	Hash.prototype.clear = hashClear;
-	Hash.prototype['delete'] = hashDelete;
-	Hash.prototype.get = hashGet;
-	Hash.prototype.has = hashHas;
-	Hash.prototype.set = hashSet;
-
-	_Hash = Hash;
-	return _Hash;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _mapCacheClear;
-var hasRequired_mapCacheClear;
+// Add methods to `Hash`.
+Hash$1.prototype.clear = hashClear;
+Hash$1.prototype['delete'] = hashDelete;
+Hash$1.prototype.get = hashGet;
+Hash$1.prototype.has = hashHas;
+Hash$1.prototype.set = hashSet;
 
-function require_mapCacheClear () {
-	if (hasRequired_mapCacheClear) return _mapCacheClear;
-	hasRequired_mapCacheClear = 1;
-	var Hash = require_Hash(),
-	    ListCache = require_ListCache(),
-	    Map = _Map;
+var _Hash = Hash$1;
 
-	/**
-	 * Removes all key-value entries from the map.
-	 *
-	 * @private
-	 * @name clear
-	 * @memberOf MapCache
-	 */
-	function mapCacheClear() {
-	  this.size = 0;
-	  this.__data__ = {
-	    'hash': new Hash,
-	    'map': new (Map || ListCache),
-	    'string': new Hash
-	  };
-	}
+var Hash = _Hash,
+    ListCache$2 = _ListCache,
+    Map$2 = _Map;
 
-	_mapCacheClear = mapCacheClear;
-	return _mapCacheClear;
+/**
+ * Removes all key-value entries from the map.
+ *
+ * @private
+ * @name clear
+ * @memberOf MapCache
+ */
+function mapCacheClear$1() {
+  this.size = 0;
+  this.__data__ = {
+    'hash': new Hash,
+    'map': new (Map$2 || ListCache$2),
+    'string': new Hash
+  };
 }
+
+var _mapCacheClear = mapCacheClear$1;
 
 /**
  * Checks if `value` is suitable for use as unique object key.
@@ -15766,277 +15272,205 @@ function require_mapCacheClear () {
  * @returns {boolean} Returns `true` if `value` is suitable, else `false`.
  */
 
-var _isKeyable;
-var hasRequired_isKeyable;
-
-function require_isKeyable () {
-	if (hasRequired_isKeyable) return _isKeyable;
-	hasRequired_isKeyable = 1;
-	function isKeyable(value) {
-	  var type = typeof value;
-	  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
-	    ? (value !== '__proto__')
-	    : (value === null);
-	}
-
-	_isKeyable = isKeyable;
-	return _isKeyable;
+function isKeyable$1(value) {
+  var type = typeof value;
+  return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
+    ? (value !== '__proto__')
+    : (value === null);
 }
 
-var _getMapData;
-var hasRequired_getMapData;
+var _isKeyable = isKeyable$1;
 
-function require_getMapData () {
-	if (hasRequired_getMapData) return _getMapData;
-	hasRequired_getMapData = 1;
-	var isKeyable = require_isKeyable();
+var isKeyable = _isKeyable;
 
-	/**
-	 * Gets the data for `map`.
-	 *
-	 * @private
-	 * @param {Object} map The map to query.
-	 * @param {string} key The reference key.
-	 * @returns {*} Returns the map data.
-	 */
-	function getMapData(map, key) {
-	  var data = map.__data__;
-	  return isKeyable(key)
-	    ? data[typeof key == 'string' ? 'string' : 'hash']
-	    : data.map;
-	}
-
-	_getMapData = getMapData;
-	return _getMapData;
+/**
+ * Gets the data for `map`.
+ *
+ * @private
+ * @param {Object} map The map to query.
+ * @param {string} key The reference key.
+ * @returns {*} Returns the map data.
+ */
+function getMapData$4(map, key) {
+  var data = map.__data__;
+  return isKeyable(key)
+    ? data[typeof key == 'string' ? 'string' : 'hash']
+    : data.map;
 }
 
-var _mapCacheDelete;
-var hasRequired_mapCacheDelete;
+var _getMapData = getMapData$4;
 
-function require_mapCacheDelete () {
-	if (hasRequired_mapCacheDelete) return _mapCacheDelete;
-	hasRequired_mapCacheDelete = 1;
-	var getMapData = require_getMapData();
+var getMapData$3 = _getMapData;
 
-	/**
-	 * Removes `key` and its value from the map.
-	 *
-	 * @private
-	 * @name delete
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to remove.
-	 * @returns {boolean} Returns `true` if the entry was removed, else `false`.
-	 */
-	function mapCacheDelete(key) {
-	  var result = getMapData(this, key)['delete'](key);
-	  this.size -= result ? 1 : 0;
-	  return result;
-	}
-
-	_mapCacheDelete = mapCacheDelete;
-	return _mapCacheDelete;
+/**
+ * Removes `key` and its value from the map.
+ *
+ * @private
+ * @name delete
+ * @memberOf MapCache
+ * @param {string} key The key of the value to remove.
+ * @returns {boolean} Returns `true` if the entry was removed, else `false`.
+ */
+function mapCacheDelete$1(key) {
+  var result = getMapData$3(this, key)['delete'](key);
+  this.size -= result ? 1 : 0;
+  return result;
 }
 
-var _mapCacheGet;
-var hasRequired_mapCacheGet;
+var _mapCacheDelete = mapCacheDelete$1;
 
-function require_mapCacheGet () {
-	if (hasRequired_mapCacheGet) return _mapCacheGet;
-	hasRequired_mapCacheGet = 1;
-	var getMapData = require_getMapData();
+var getMapData$2 = _getMapData;
 
-	/**
-	 * Gets the map value for `key`.
-	 *
-	 * @private
-	 * @name get
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to get.
-	 * @returns {*} Returns the entry value.
-	 */
-	function mapCacheGet(key) {
-	  return getMapData(this, key).get(key);
-	}
-
-	_mapCacheGet = mapCacheGet;
-	return _mapCacheGet;
+/**
+ * Gets the map value for `key`.
+ *
+ * @private
+ * @name get
+ * @memberOf MapCache
+ * @param {string} key The key of the value to get.
+ * @returns {*} Returns the entry value.
+ */
+function mapCacheGet$1(key) {
+  return getMapData$2(this, key).get(key);
 }
 
-var _mapCacheHas;
-var hasRequired_mapCacheHas;
+var _mapCacheGet = mapCacheGet$1;
 
-function require_mapCacheHas () {
-	if (hasRequired_mapCacheHas) return _mapCacheHas;
-	hasRequired_mapCacheHas = 1;
-	var getMapData = require_getMapData();
+var getMapData$1 = _getMapData;
 
-	/**
-	 * Checks if a map value for `key` exists.
-	 *
-	 * @private
-	 * @name has
-	 * @memberOf MapCache
-	 * @param {string} key The key of the entry to check.
-	 * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
-	 */
-	function mapCacheHas(key) {
-	  return getMapData(this, key).has(key);
-	}
-
-	_mapCacheHas = mapCacheHas;
-	return _mapCacheHas;
+/**
+ * Checks if a map value for `key` exists.
+ *
+ * @private
+ * @name has
+ * @memberOf MapCache
+ * @param {string} key The key of the entry to check.
+ * @returns {boolean} Returns `true` if an entry for `key` exists, else `false`.
+ */
+function mapCacheHas$1(key) {
+  return getMapData$1(this, key).has(key);
 }
 
-var _mapCacheSet;
-var hasRequired_mapCacheSet;
+var _mapCacheHas = mapCacheHas$1;
 
-function require_mapCacheSet () {
-	if (hasRequired_mapCacheSet) return _mapCacheSet;
-	hasRequired_mapCacheSet = 1;
-	var getMapData = require_getMapData();
+var getMapData = _getMapData;
 
-	/**
-	 * Sets the map `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf MapCache
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the map cache instance.
-	 */
-	function mapCacheSet(key, value) {
-	  var data = getMapData(this, key),
-	      size = data.size;
+/**
+ * Sets the map `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf MapCache
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the map cache instance.
+ */
+function mapCacheSet$1(key, value) {
+  var data = getMapData(this, key),
+      size = data.size;
 
-	  data.set(key, value);
-	  this.size += data.size == size ? 0 : 1;
-	  return this;
-	}
-
-	_mapCacheSet = mapCacheSet;
-	return _mapCacheSet;
+  data.set(key, value);
+  this.size += data.size == size ? 0 : 1;
+  return this;
 }
 
-var _MapCache;
-var hasRequired_MapCache;
+var _mapCacheSet = mapCacheSet$1;
 
-function require_MapCache () {
-	if (hasRequired_MapCache) return _MapCache;
-	hasRequired_MapCache = 1;
-	var mapCacheClear = require_mapCacheClear(),
-	    mapCacheDelete = require_mapCacheDelete(),
-	    mapCacheGet = require_mapCacheGet(),
-	    mapCacheHas = require_mapCacheHas(),
-	    mapCacheSet = require_mapCacheSet();
+var mapCacheClear = _mapCacheClear,
+    mapCacheDelete = _mapCacheDelete,
+    mapCacheGet = _mapCacheGet,
+    mapCacheHas = _mapCacheHas,
+    mapCacheSet = _mapCacheSet;
 
-	/**
-	 * Creates a map cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function MapCache(entries) {
-	  var index = -1,
-	      length = entries == null ? 0 : entries.length;
+/**
+ * Creates a map cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function MapCache$2(entries) {
+  var index = -1,
+      length = entries == null ? 0 : entries.length;
 
-	  this.clear();
-	  while (++index < length) {
-	    var entry = entries[index];
-	    this.set(entry[0], entry[1]);
-	  }
-	}
-
-	// Add methods to `MapCache`.
-	MapCache.prototype.clear = mapCacheClear;
-	MapCache.prototype['delete'] = mapCacheDelete;
-	MapCache.prototype.get = mapCacheGet;
-	MapCache.prototype.has = mapCacheHas;
-	MapCache.prototype.set = mapCacheSet;
-
-	_MapCache = MapCache;
-	return _MapCache;
+  this.clear();
+  while (++index < length) {
+    var entry = entries[index];
+    this.set(entry[0], entry[1]);
+  }
 }
 
-var _stackSet;
-var hasRequired_stackSet;
+// Add methods to `MapCache`.
+MapCache$2.prototype.clear = mapCacheClear;
+MapCache$2.prototype['delete'] = mapCacheDelete;
+MapCache$2.prototype.get = mapCacheGet;
+MapCache$2.prototype.has = mapCacheHas;
+MapCache$2.prototype.set = mapCacheSet;
 
-function require_stackSet () {
-	if (hasRequired_stackSet) return _stackSet;
-	hasRequired_stackSet = 1;
-	var ListCache = require_ListCache(),
-	    Map = _Map,
-	    MapCache = require_MapCache();
+var _MapCache = MapCache$2;
 
-	/** Used as the size to enable large array optimizations. */
-	var LARGE_ARRAY_SIZE = 200;
+var ListCache$1 = _ListCache,
+    Map$1 = _Map,
+    MapCache$1 = _MapCache;
 
-	/**
-	 * Sets the stack `key` to `value`.
-	 *
-	 * @private
-	 * @name set
-	 * @memberOf Stack
-	 * @param {string} key The key of the value to set.
-	 * @param {*} value The value to set.
-	 * @returns {Object} Returns the stack cache instance.
-	 */
-	function stackSet(key, value) {
-	  var data = this.__data__;
-	  if (data instanceof ListCache) {
-	    var pairs = data.__data__;
-	    if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
-	      pairs.push([key, value]);
-	      this.size = ++data.size;
-	      return this;
-	    }
-	    data = this.__data__ = new MapCache(pairs);
-	  }
-	  data.set(key, value);
-	  this.size = data.size;
-	  return this;
-	}
+/** Used as the size to enable large array optimizations. */
+var LARGE_ARRAY_SIZE = 200;
 
-	_stackSet = stackSet;
-	return _stackSet;
+/**
+ * Sets the stack `key` to `value`.
+ *
+ * @private
+ * @name set
+ * @memberOf Stack
+ * @param {string} key The key of the value to set.
+ * @param {*} value The value to set.
+ * @returns {Object} Returns the stack cache instance.
+ */
+function stackSet$1(key, value) {
+  var data = this.__data__;
+  if (data instanceof ListCache$1) {
+    var pairs = data.__data__;
+    if (!Map$1 || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
+      pairs.push([key, value]);
+      this.size = ++data.size;
+      return this;
+    }
+    data = this.__data__ = new MapCache$1(pairs);
+  }
+  data.set(key, value);
+  this.size = data.size;
+  return this;
 }
 
-var _Stack;
-var hasRequired_Stack;
+var _stackSet = stackSet$1;
 
-function require_Stack () {
-	if (hasRequired_Stack) return _Stack;
-	hasRequired_Stack = 1;
-	var ListCache = require_ListCache(),
-	    stackClear = require_stackClear(),
-	    stackDelete = require_stackDelete(),
-	    stackGet = require_stackGet(),
-	    stackHas = require_stackHas(),
-	    stackSet = require_stackSet();
+var ListCache = _ListCache,
+    stackClear = _stackClear,
+    stackDelete = _stackDelete,
+    stackGet = _stackGet,
+    stackHas = _stackHas,
+    stackSet = _stackSet;
 
-	/**
-	 * Creates a stack cache object to store key-value pairs.
-	 *
-	 * @private
-	 * @constructor
-	 * @param {Array} [entries] The key-value pairs to cache.
-	 */
-	function Stack(entries) {
-	  var data = this.__data__ = new ListCache(entries);
-	  this.size = data.size;
-	}
-
-	// Add methods to `Stack`.
-	Stack.prototype.clear = stackClear;
-	Stack.prototype['delete'] = stackDelete;
-	Stack.prototype.get = stackGet;
-	Stack.prototype.has = stackHas;
-	Stack.prototype.set = stackSet;
-
-	_Stack = Stack;
-	return _Stack;
+/**
+ * Creates a stack cache object to store key-value pairs.
+ *
+ * @private
+ * @constructor
+ * @param {Array} [entries] The key-value pairs to cache.
+ */
+function Stack$1(entries) {
+  var data = this.__data__ = new ListCache(entries);
+  this.size = data.size;
 }
+
+// Add methods to `Stack`.
+Stack$1.prototype.clear = stackClear;
+Stack$1.prototype['delete'] = stackDelete;
+Stack$1.prototype.get = stackGet;
+Stack$1.prototype.has = stackHas;
+Stack$1.prototype.set = stackSet;
+
+var _Stack = Stack$1;
 
 /**
  * This function is like
@@ -16421,7 +15855,7 @@ function getAllKeysIn$1(object) {
 
 var _getAllKeysIn = getAllKeysIn$1;
 
-var getNative$2 = _getNative,
+var getNative$2 = require_getNative(),
     root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -16429,7 +15863,7 @@ var DataView$2 = getNative$2(root$2, 'DataView');
 
 var _DataView = DataView$2;
 
-var getNative$1 = _getNative,
+var getNative$1 = require_getNative(),
     root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -16437,7 +15871,7 @@ var Promise$2 = getNative$1(root$1, 'Promise');
 
 var _Promise = Promise$2;
 
-var getNative = _getNative,
+var getNative = require_getNative(),
     root = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -16449,7 +15883,7 @@ var DataView$1 = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = _WeakMap,
+    WeakMap = require_WeakMap(),
     baseGetTag$2 = _baseGetTag,
     toSource = _toSource;
 
@@ -16827,7 +16261,7 @@ var isSet$1 = nodeIsSet ? baseUnary(nodeIsSet) : baseIsSet;
 
 var isSet_1 = isSet$1;
 
-var Stack = require_Stack(),
+var Stack = _Stack,
     arrayEach = _arrayEach,
     assignValue = _assignValue,
     baseAssign = _baseAssign,
@@ -17277,7 +16711,7 @@ var hasRequired_SetCache;
 function require_SetCache () {
 	if (hasRequired_SetCache) return _SetCache;
 	hasRequired_SetCache = 1;
-	var MapCache = require_MapCache(),
+	var MapCache = _MapCache,
 	    setCacheAdd = require_setCacheAdd(),
 	    setCacheHas = require_setCacheHas();
 
@@ -17738,7 +17172,7 @@ var hasRequired_baseIsEqualDeep;
 function require_baseIsEqualDeep () {
 	if (hasRequired_baseIsEqualDeep) return _baseIsEqualDeep;
 	hasRequired_baseIsEqualDeep = 1;
-	var Stack = require_Stack(),
+	var Stack = _Stack,
 	    equalArrays = require_equalArrays(),
 	    equalByTag = require_equalByTag(),
 	    equalObjects = require_equalObjects(),
@@ -17867,7 +17301,7 @@ var hasRequired_baseIsMatch;
 function require_baseIsMatch () {
 	if (hasRequired_baseIsMatch) return _baseIsMatch;
 	hasRequired_baseIsMatch = 1;
-	var Stack = require_Stack(),
+	var Stack = _Stack,
 	    baseIsEqual = require_baseIsEqual();
 
 	/** Used to compose bitmasks for value comparisons. */
@@ -18088,7 +17522,7 @@ function require_isKey () {
 	return _isKey;
 }
 
-var MapCache = require_MapCache();
+var MapCache = _MapCache;
 
 /** Error message constants. */
 var FUNC_ERROR_TEXT = 'Expected a function';
