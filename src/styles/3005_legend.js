@@ -33,7 +33,7 @@ export default {
   },
   Landuse: {
     residentialAndCommunity: "#f9dfd1",
-    commercialAndPublicServices: "#dfddce",
+    commercialAndPublicServices: "#c1e2df",
     specialAndInfrastructure: "#fbece3"
   },
   Park: {

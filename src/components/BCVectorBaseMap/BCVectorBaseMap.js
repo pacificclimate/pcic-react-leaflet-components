@@ -65,7 +65,6 @@ export default class BCVectorBaseMap extends PureComponent {
             format: 'image/svg+xml',
             transparent: true,
             version: '1.1.0',
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         };
         return (
             <GenericVectorBaseMap

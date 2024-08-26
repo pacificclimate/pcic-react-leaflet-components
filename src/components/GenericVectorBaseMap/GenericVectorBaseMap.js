@@ -7,36 +7,19 @@ import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
-import 'leaflet.nontiledlayer';
+import 'leaflet.nontiledlayer'
 
 const LabelsLayer = ({ wmsUrl, wmsOptions, crs }) => {
     const map = useMap();
 
     useEffect(() => {
-        const nonTiledLayer = new L.nonTiledLayer.WMS(wmsUrl, {
+        const optionsWithCrs = {
             ...wmsOptions,
-            getImageUrl: (bounds) => {
-                const { x: width, y: height } = map.getSize();
-                const sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
-                const bbox = [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+            crs: crs,
+            srs: crs.code
+        };
 
-                const params = new URLSearchParams({
-                    service: 'WMS',
-                    request: 'GetMap',
-                    version: wmsOptions.version,
-                    layers: wmsOptions.layers,
-                    styles: '',
-                    format: wmsOptions.format,
-                    transparent: wmsOptions.transparent,
-                    width: width,
-                    height: height,
-                    srs: crs.code,
-                    bbox: bbox,
-                });
-
-                return `${wmsUrl}?${params.toString()}`;
-            },
-        }).addTo(map);
+        const nonTiledLayer = L.nonTiledLayer.wms(wmsUrl, optionsWithCrs).addTo(map);
 
         return () => {
             map.removeLayer(nonTiledLayer);
