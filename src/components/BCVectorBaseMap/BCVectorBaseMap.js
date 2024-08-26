@@ -49,13 +49,15 @@ export default class BCVectorBaseMap extends PureComponent {
     render() {
         const { children, ...rest } = this.props;
         const wmsLayerOptions = {
+            service: "WMS",
             layers: 'OMT-NA-TEXT-ZF-LG', //OpenMapTiles, North America, Text only, Zoom filtered, Layer group
             format: 'image/png',
             transparent: true,
             version: '1.1.0',
             crs: L.CRS.EPSG3005,
             tiled: true,
-            buffer: 256 // 1 tile buffer
+            buffer: 2,
+            formatOptions: 'dpi:300;antialiasing:text',
         };
         return (
             <GenericVectorBaseMap
