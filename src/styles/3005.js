@@ -29,13 +29,13 @@ const vectorTileStyling = {
 
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass))
       return [{ color: legend.Landcover.forest, fill: true, fillOpacity: 1, weight: 0 }];
-    if (grassClasses.includes(landcoverClass) && zoom >= 8)
+    if (grassClasses.includes(landcoverClass))
       return [{ color: legend.Landcover.farmland, fill: true, fillOpacity: 1, weight: 0 }];
     if (glacierClasses.includes(landcoverClass))
       return [{ color: legend.Landcover.glacier, fill: true, fillOpacity: 1, weight: 0 }];
-    if (landcoverClass === 'rock' && zoom >= 10)
+    if (landcoverClass === 'rock')
       return [{ color: legend.Landcover.rock, fill: true, fillOpacity: 1, weight: 0 }];
-    if (landcoverClass === 'sand' && zoom >= 10)
+    if (landcoverClass === 'sand')
       return [{ color: legend.Landcover.sand, fill: true, fillOpacity: 1, weight: 0 }];
 
     return [];
@@ -126,7 +126,7 @@ const vectorTileStyling = {
   },
 
   waterway: function (properties, zoom) {
-    if (zoom < 8 || zoom > 14) return [];
+    if (zoom < 6 || zoom > 14) return [];
 
     const waterwayClass = properties.class;
 
