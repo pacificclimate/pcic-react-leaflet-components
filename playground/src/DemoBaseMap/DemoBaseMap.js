@@ -11,7 +11,7 @@ import { callbackOnMapEvents, SetView } from 'pcic-react-leaflet-components';
 import './DemoBaseMap.css';
 
 
-function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
+function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps, baseMapTilesUrl}) {
   // Manage view state as a single immutable composite value.
   // Managing it as a set of 3 separate values (lat, lng, zoom) introduces
   // problems due to 3 separate component updates when the view changes.
@@ -50,6 +50,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps}) {
                 id={`map-${i}`}
                 zoom={initialViewport.zoom}
                 center={initialViewport.center}
+                baseMapTilesUrl={baseMapTilesUrl}
               >
                 <SetView view={view} debug={true}/>
                 <UpdateViewState/>

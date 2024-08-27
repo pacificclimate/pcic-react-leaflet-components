@@ -26,14 +26,16 @@ export default class YNWTBaseMap extends PureComponent {
     mapRef: PropTypes.func,
     // Callback to which a ref to the Map component is passed.
     // Allows parent components to diddle with the map established here.
+
+    baseMapTilesUrl: PropTypes.string,
   };
 
   static defaultProps = {
     mapRef: (() => null),
+    baseMapTilesUrl: "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png",
   };
 
   static tileset = {
-    url: process.env.REACT_APP_YNWT_BASE_MAP_TILES_URL,
     projection: {
       code: 'EPSG:3578',
       proj4def: '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -63,6 +65,7 @@ export default class YNWTBaseMap extends PureComponent {
 
   render() {
     const { children, ...rest } = this.props;
+    YNWTBaseMap.tileset.url = this.props.baseMapTilesUrl || YNWTBaseMap.tileset.url;
     return (
       <GenericBaseMap tileset={YNWTBaseMap.tileset} {...rest}>
         {children}
