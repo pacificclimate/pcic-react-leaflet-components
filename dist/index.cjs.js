@@ -2452,14 +2452,14 @@ function init$u() {
   //no-op for longlat
 }
 
-function identity$1(pt) {
+function identity$2(pt) {
   return pt;
 }
 var names$v = ["longlat", "identity"];
 var longlat = {
   init: init$u,
-  forward: identity$1,
-  inverse: identity$1,
+  forward: identity$2,
+  inverse: identity$2,
   names: names$v
 };
 
@@ -10311,6 +10311,7 @@ var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
           children = _this$props.children,
           rest = _objectWithoutProperties(_this$props, _excluded$3);
 
+      BCBaseMap.tileset.url = this.props.baseMapTilesUrl || BCBaseMap.tileset.url;
       return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
         tileset: BCBaseMap.tileset
       }, rest), children);
@@ -10323,19 +10324,20 @@ var BCBaseMap = /*#__PURE__*/function (_PureComponent) {
 _defineProperty$1(BCBaseMap, "propTypes", {
   // Only props added by this component are defined here.
   // All other valid props for Map component are passed through to it.
-  mapRef: propTypes.exports.func // Callback to which a ref to the Map component is passed.
+  mapRef: propTypes.exports.func,
+  // Callback to which a ref to the Map component is passed.
   // Allows parent components to diddle with the map established here.
-
+  baseMapTilesUrl: propTypes.exports.string
 });
 
 _defineProperty$1(BCBaseMap, "defaultProps", {
   mapRef: function mapRef() {
     return null;
-  }
+  },
+  baseMapTilesUrl: 'https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png'
 });
 
 _defineProperty$1(BCBaseMap, "tileset", {
-  url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
   projection: {
     code: 'EPSG:3005',
     proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
@@ -10383,6 +10385,7 @@ var YNWTBaseMap = /*#__PURE__*/function (_PureComponent) {
           children = _this$props.children,
           rest = _objectWithoutProperties(_this$props, _excluded$2);
 
+      YNWTBaseMap.tileset.url = this.props.baseMapTilesUrl || YNWTBaseMap.tileset.url;
       return /*#__PURE__*/React__default["default"].createElement(GenericBaseMap, _extends({
         tileset: YNWTBaseMap.tileset
       }, rest), children);
@@ -10395,19 +10398,20 @@ var YNWTBaseMap = /*#__PURE__*/function (_PureComponent) {
 _defineProperty$1(YNWTBaseMap, "propTypes", {
   // Only props added by this component are defined here.
   // All other valid props for Map component are passed through to it.
-  mapRef: propTypes.exports.func // Callback to which a ref to the Map component is passed.
+  mapRef: propTypes.exports.func,
+  // Callback to which a ref to the Map component is passed.
   // Allows parent components to diddle with the map established here.
-
+  baseMapTilesUrl: propTypes.exports.string
 });
 
 _defineProperty$1(YNWTBaseMap, "defaultProps", {
   mapRef: function mapRef() {
     return null;
-  }
+  },
+  baseMapTilesUrl: "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png"
 });
 
 _defineProperty$1(YNWTBaseMap, "tileset", {
-  url: process.env.REACT_APP_YNWT_BASE_MAP_TILES_URL,
   projection: {
     code: 'EPSG:3578',
     proj4def: '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
@@ -10577,27 +10581,27 @@ function require_root () {
 	return _root;
 }
 
-var root$9 = require_root();
+var root$b = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$9.Symbol;
+var Symbol$5 = root$b.Symbol;
 
 var _Symbol = Symbol$5;
 
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$8 = Object.prototype;
+var objectProto$c = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+var hasOwnProperty$9 = objectProto$c.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$8.toString;
+var nativeObjectToString$1 = objectProto$c.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -10610,7 +10614,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$9.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -10633,14 +10637,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$7 = Object.prototype;
+var objectProto$b = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$7.toString;
+var nativeObjectToString = objectProto$b.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -10710,15 +10714,15 @@ var _baseGetTag = baseGetTag$5;
  * // => false
  */
 
-function isObject$5(value) {
+function isObject$6(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$5;
+var isObject_1 = isObject$6;
 
 var baseGetTag$4 = _baseGetTag,
-    isObject$4 = isObject_1;
+    isObject$5 = isObject_1;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -10743,8 +10747,8 @@ var asyncTag = '[object AsyncFunction]',
  * _.isFunction(/abc/);
  * // => false
  */
-function isFunction(value) {
-  if (!isObject$4(value)) {
+function isFunction$1(value) {
+  if (!isObject$5(value)) {
     return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -10753,58 +10757,42 @@ function isFunction(value) {
   return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
-var isFunction_1 = isFunction;
+var isFunction_1 = isFunction$1;
 
-var _coreJsData;
-var hasRequired_coreJsData;
+var root$a = require_root();
 
-function require_coreJsData () {
-	if (hasRequired_coreJsData) return _coreJsData;
-	hasRequired_coreJsData = 1;
-	var root = require_root();
+/** Used to detect overreaching core-js shims. */
+var coreJsData$1 = root$a['__core-js_shared__'];
 
-	/** Used to detect overreaching core-js shims. */
-	var coreJsData = root['__core-js_shared__'];
+var _coreJsData = coreJsData$1;
 
-	_coreJsData = coreJsData;
-	return _coreJsData;
+var coreJsData = _coreJsData;
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked$1(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
 }
 
-var _isMasked;
-var hasRequired_isMasked;
-
-function require_isMasked () {
-	if (hasRequired_isMasked) return _isMasked;
-	hasRequired_isMasked = 1;
-	var coreJsData = require_coreJsData();
-
-	/** Used to detect methods masquerading as native. */
-	var maskSrcKey = (function() {
-	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-	  return uid ? ('Symbol(src)_1.' + uid) : '';
-	}());
-
-	/**
-	 * Checks if `func` has its source masked.
-	 *
-	 * @private
-	 * @param {Function} func The function to check.
-	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
-	 */
-	function isMasked(func) {
-	  return !!maskSrcKey && (maskSrcKey in func);
-	}
-
-	_isMasked = isMasked;
-	return _isMasked;
-}
+var _isMasked = isMasked$1;
 
 /** Used for built-in method references. */
 
-var funcProto$1 = Function.prototype;
+var funcProto$2 = Function.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
+var funcToString$2 = funcProto$2.toString;
 
 /**
  * Converts `func` to its source code.
@@ -10813,10 +10801,10 @@ var funcToString$1 = funcProto$1.toString;
  * @param {Function} func The function to convert.
  * @returns {string} Returns the source code.
  */
-function toSource$1(func) {
+function toSource$2(func) {
   if (func != null) {
     try {
-      return funcToString$1.call(func);
+      return funcToString$2.call(func);
     } catch (e) {}
     try {
       return (func + '');
@@ -10825,63 +10813,55 @@ function toSource$1(func) {
   return '';
 }
 
-var _toSource = toSource$1;
+var _toSource = toSource$2;
 
-var _baseIsNative;
-var hasRequired_baseIsNative;
+var isFunction = isFunction_1,
+    isMasked = _isMasked,
+    isObject$4 = isObject_1,
+    toSource$1 = _toSource;
 
-function require_baseIsNative () {
-	if (hasRequired_baseIsNative) return _baseIsNative;
-	hasRequired_baseIsNative = 1;
-	var isFunction = isFunction_1,
-	    isMasked = require_isMasked(),
-	    isObject = isObject_1,
-	    toSource = _toSource;
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-	/**
-	 * Used to match `RegExp`
-	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
-	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-	/** Used to detect host constructors (Safari). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+/** Used for built-in method references. */
+var funcProto$1 = Function.prototype,
+    objectProto$a = Object.prototype;
 
-	/** Used for built-in method references. */
-	var funcProto = Function.prototype,
-	    objectProto = Object.prototype;
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
 
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = funcProto.toString;
+/** Used to check objects for own properties. */
+var hasOwnProperty$8 = objectProto$a.hasOwnProperty;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString$1.call(hasOwnProperty$8).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
 
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-
-	/**
-	 * The base implementation of `_.isNative` without bad shim checks.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function,
-	 *  else `false`.
-	 */
-	function baseIsNative(value) {
-	  if (!isObject(value) || isMasked(value)) {
-	    return false;
-	  }
-	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-	  return pattern.test(toSource(value));
-	}
-
-	_baseIsNative = baseIsNative;
-	return _baseIsNative;
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative$1(value) {
+  if (!isObject$4(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource$1(value));
 }
+
+var _baseIsNative = baseIsNative$1;
 
 /**
  * Gets the value at `key` of `object`.
@@ -10892,79 +10872,47 @@ function require_baseIsNative () {
  * @returns {*} Returns the property value.
  */
 
-var _getValue;
-var hasRequired_getValue;
-
-function require_getValue () {
-	if (hasRequired_getValue) return _getValue;
-	hasRequired_getValue = 1;
-	function getValue(object, key) {
-	  return object == null ? undefined : object[key];
-	}
-
-	_getValue = getValue;
-	return _getValue;
+function getValue$1(object, key) {
+  return object == null ? undefined : object[key];
 }
 
-var _getNative;
-var hasRequired_getNative;
+var _getValue = getValue$1;
 
-function require_getNative () {
-	if (hasRequired_getNative) return _getNative;
-	hasRequired_getNative = 1;
-	var baseIsNative = require_baseIsNative(),
-	    getValue = require_getValue();
+var baseIsNative = _baseIsNative,
+    getValue = _getValue;
 
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = getValue(object, key);
-	  return baseIsNative(value) ? value : undefined;
-	}
-
-	_getNative = getNative;
-	return _getNative;
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative$7(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
 }
 
-var _WeakMap;
-var hasRequired_WeakMap;
+var _getNative = getNative$7;
 
-function require_WeakMap () {
-	if (hasRequired_WeakMap) return _WeakMap;
-	hasRequired_WeakMap = 1;
-	var getNative = require_getNative(),
-	    root = require_root();
+var getNative$6 = _getNative,
+    root$9 = require_root();
 
-	/* Built-in method references that are verified to be native. */
-	var WeakMap = getNative(root, 'WeakMap');
+/* Built-in method references that are verified to be native. */
+var WeakMap$2 = getNative$6(root$9, 'WeakMap');
 
-	_WeakMap = WeakMap;
-	return _WeakMap;
-}
+var _WeakMap = WeakMap$2;
 
-var _metaMap;
-var hasRequired_metaMap;
+var WeakMap$1 = _WeakMap;
 
-function require_metaMap () {
-	if (hasRequired_metaMap) return _metaMap;
-	hasRequired_metaMap = 1;
-	var WeakMap = require_WeakMap();
+/** Used to store function metadata. */
+var metaMap$2 = WeakMap$1 && new WeakMap$1;
 
-	/** Used to store function metadata. */
-	var metaMap = WeakMap && new WeakMap;
+var _metaMap = metaMap$2;
 
-	_metaMap = metaMap;
-	return _metaMap;
-}
-
-var identity = requireIdentity(),
-    metaMap = require_metaMap();
+var identity$1 = requireIdentity(),
+    metaMap$1 = _metaMap;
 
 /**
  * The base implementation of `setData` without support for hot loop shorting.
@@ -10974,8 +10922,8 @@ var identity = requireIdentity(),
  * @param {*} data The metadata.
  * @returns {Function} Returns `func`.
  */
-var baseSetData$2 = !metaMap ? identity : function(func, data) {
-  metaMap.set(func, data);
+var baseSetData$2 = !metaMap$1 ? identity$1 : function(func, data) {
+  metaMap$1.set(func, data);
   return func;
 };
 
@@ -11309,29 +11257,21 @@ function requireNoop () {
 	return noop_1;
 }
 
-var _getData;
-var hasRequired_getData;
+var metaMap = _metaMap,
+    noop = requireNoop();
 
-function require_getData () {
-	if (hasRequired_getData) return _getData;
-	hasRequired_getData = 1;
-	var metaMap = require_metaMap(),
-	    noop = requireNoop();
+/**
+ * Gets metadata for `func`.
+ *
+ * @private
+ * @param {Function} func The function to query.
+ * @returns {*} Returns the metadata for `func`.
+ */
+var getData$2 = !metaMap ? noop : function(func) {
+  return metaMap.get(func);
+};
 
-	/**
-	 * Gets metadata for `func`.
-	 *
-	 * @private
-	 * @param {Function} func The function to query.
-	 * @returns {*} Returns the metadata for `func`.
-	 */
-	var getData = !metaMap ? noop : function(func) {
-	  return metaMap.get(func);
-	};
-
-	_getData = getData;
-	return _getData;
-}
+var _getData = getData$2;
 
 /** Used to lookup unminified function names. */
 
@@ -11442,17 +11382,9 @@ function require_LodashWrapper () {
  * // => false
  */
 
-var isArray_1;
-var hasRequiredIsArray;
+var isArray$6 = Array.isArray;
 
-function requireIsArray () {
-	if (hasRequiredIsArray) return isArray_1;
-	hasRequiredIsArray = 1;
-	var isArray = Array.isArray;
-
-	isArray_1 = isArray;
-	return isArray_1;
-}
+var isArray_1 = isArray$6;
 
 /**
  * Checks if `value` is object-like. A value is object-like if it's not `null`
@@ -11548,7 +11480,7 @@ function requireWrapperLodash () {
 	var LazyWrapper = require_LazyWrapper(),
 	    LodashWrapper = require_LodashWrapper(),
 	    baseLodash = require_baseLodash(),
-	    isArray = requireIsArray(),
+	    isArray = isArray_1,
 	    isObjectLike = isObjectLike_1,
 	    wrapperClone = require_wrapperClone();
 
@@ -11695,42 +11627,34 @@ function requireWrapperLodash () {
 	return wrapperLodash;
 }
 
-var _isLaziable;
-var hasRequired_isLaziable;
+var LazyWrapper = require_LazyWrapper(),
+    getData$1 = _getData,
+    getFuncName = require_getFuncName(),
+    lodash = requireWrapperLodash();
 
-function require_isLaziable () {
-	if (hasRequired_isLaziable) return _isLaziable;
-	hasRequired_isLaziable = 1;
-	var LazyWrapper = require_LazyWrapper(),
-	    getData = require_getData(),
-	    getFuncName = require_getFuncName(),
-	    lodash = requireWrapperLodash();
+/**
+ * Checks if `func` has a lazy counterpart.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
+ *  else `false`.
+ */
+function isLaziable$1(func) {
+  var funcName = getFuncName(func),
+      other = lodash[funcName];
 
-	/**
-	 * Checks if `func` has a lazy counterpart.
-	 *
-	 * @private
-	 * @param {Function} func The function to check.
-	 * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
-	 *  else `false`.
-	 */
-	function isLaziable(func) {
-	  var funcName = getFuncName(func),
-	      other = lodash[funcName];
-
-	  if (typeof other != 'function' || !(funcName in LazyWrapper.prototype)) {
-	    return false;
-	  }
-	  if (func === other) {
-	    return true;
-	  }
-	  var data = getData(other);
-	  return !!data && func === data[0];
-	}
-
-	_isLaziable = isLaziable;
-	return _isLaziable;
+  if (typeof other != 'function' || !(funcName in LazyWrapper.prototype)) {
+    return false;
+  }
+  if (func === other) {
+    return true;
+  }
+  var data = getData$1(other);
+  return !!data && func === data[0];
 }
+
+var _isLaziable = isLaziable$1;
 
 /** Used to detect hot functions by number of calls within a span of milliseconds. */
 
@@ -11780,7 +11704,7 @@ function require_shortOut () {
 }
 
 var baseSetData$1 = _baseSetData,
-    shortOut = require_shortOut();
+    shortOut$1 = require_shortOut();
 
 /**
  * Sets metadata for `func`.
@@ -11796,7 +11720,7 @@ var baseSetData$1 = _baseSetData,
  * @param {*} data The metadata.
  * @returns {Function} Returns `func`.
  */
-var setData$2 = shortOut(baseSetData$1);
+var setData$2 = shortOut$1(baseSetData$1);
 
 var _setData = setData$2;
 
@@ -11880,25 +11804,17 @@ function requireConstant () {
 	return constant_1;
 }
 
-var _defineProperty;
-var hasRequired_defineProperty;
+var getNative$5 = _getNative;
 
-function require_defineProperty () {
-	if (hasRequired_defineProperty) return _defineProperty;
-	hasRequired_defineProperty = 1;
-	var getNative = require_getNative();
+var defineProperty$1 = (function() {
+  try {
+    var func = getNative$5(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
 
-	var defineProperty = (function() {
-	  try {
-	    var func = getNative(Object, 'defineProperty');
-	    func({}, '', {});
-	    return func;
-	  } catch (e) {}
-	}());
-
-	_defineProperty = defineProperty;
-	return _defineProperty;
-}
+var _defineProperty = defineProperty$1;
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -11907,7 +11823,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = require_defineProperty(),
+	    defineProperty = _defineProperty,
 	    identity = requireIdentity();
 
 	/**
@@ -11931,28 +11847,20 @@ function require_baseSetToString () {
 	return _baseSetToString;
 }
 
-var _setToString;
-var hasRequired_setToString;
+var baseSetToString = require_baseSetToString(),
+    shortOut = require_shortOut();
 
-function require_setToString () {
-	if (hasRequired_setToString) return _setToString;
-	hasRequired_setToString = 1;
-	var baseSetToString = require_baseSetToString(),
-	    shortOut = require_shortOut();
+/**
+ * Sets the `toString` method of `func` to return `string`.
+ *
+ * @private
+ * @param {Function} func The function to modify.
+ * @param {Function} string The `toString` result.
+ * @returns {Function} Returns `func`.
+ */
+var setToString$2 = shortOut(baseSetToString);
 
-	/**
-	 * Sets the `toString` method of `func` to return `string`.
-	 *
-	 * @private
-	 * @param {Function} func The function to modify.
-	 * @param {Function} string The `toString` result.
-	 * @returns {Function} Returns `func`.
-	 */
-	var setToString = shortOut(baseSetToString);
-
-	_setToString = setToString;
-	return _setToString;
-}
+var _setToString = setToString$2;
 
 /**
  * A specialized version of `_.forEach` for arrays without support for
@@ -12131,7 +12039,7 @@ var _updateWrapDetails = updateWrapDetails$1;
 
 var getWrapDetails = _getWrapDetails,
     insertWrapDetails = _insertWrapDetails,
-    setToString = require_setToString(),
+    setToString$1 = _setToString,
     updateWrapDetails = _updateWrapDetails;
 
 /**
@@ -12146,12 +12054,12 @@ var getWrapDetails = _getWrapDetails,
  */
 function setWrapToString$2(wrapper, reference, bitmask) {
   var source = (reference + '');
-  return setToString(wrapper, insertWrapDetails(source, updateWrapDetails(getWrapDetails(source), bitmask)));
+  return setToString$1(wrapper, insertWrapDetails(source, updateWrapDetails(getWrapDetails(source), bitmask)));
 }
 
 var _setWrapToString = setWrapToString$2;
 
-var isLaziable = require_isLaziable(),
+var isLaziable = _isLaziable,
     setData$1 = _setData,
     setWrapToString$1 = _setWrapToString;
 
@@ -12259,7 +12167,7 @@ function require_isIndex () {
 }
 
 var copyArray$2 = _copyArray,
-    isIndex = require_isIndex();
+    isIndex$1 = require_isIndex();
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeMin$1 = Math.min;
@@ -12281,7 +12189,7 @@ function reorder$1(array, indexes) {
 
   while (length--) {
     var index = indexes[length];
-    array[length] = isIndex(index, arrLength) ? oldArray[index] : undefined;
+    array[length] = isIndex$1(index, arrLength) ? oldArray[index] : undefined;
   }
   return array;
 }
@@ -12815,7 +12723,7 @@ var baseSetData = _baseSetData,
     createCurry = _createCurry,
     createHybrid = _createHybrid,
     createPartial = _createPartial,
-    getData = require_getData(),
+    getData = _getData,
     mergeData = _mergeData,
     setData = _setData,
     setWrapToString = _setWrapToString,
@@ -12947,7 +12855,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = require_defineProperty();
+var defineProperty = _defineProperty;
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -13016,10 +12924,10 @@ var baseAssignValue$1 = _baseAssignValue,
     eq$1 = eq_1;
 
 /** Used for built-in method references. */
-var objectProto$6 = Object.prototype;
+var objectProto$9 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
 
 /**
  * Assigns `value` to `key` of `object` if the existing value is not equivalent
@@ -13033,7 +12941,7 @@ var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
  */
 function assignValue$2(object, key, value) {
   var objValue = object[key];
-  if (!(hasOwnProperty$5.call(object, key) && eq$1(objValue, value)) ||
+  if (!(hasOwnProperty$7.call(object, key) && eq$1(objValue, value)) ||
       (value === undefined && !(key in object))) {
     baseAssignValue$1(object, key, value);
   }
@@ -13184,7 +13092,7 @@ function requireIsArguments () {
 	return isArguments_1;
 }
 
-var isBuffer$1 = {exports: {}};
+var isBuffer$2 = {exports: {}};
 
 /**
  * This method returns `false`.
@@ -13217,7 +13125,7 @@ function requireStubFalse () {
 var hasRequiredIsBuffer;
 
 function requireIsBuffer () {
-	if (hasRequiredIsBuffer) return isBuffer$1.exports;
+	if (hasRequiredIsBuffer) return isBuffer$2.exports;
 	hasRequiredIsBuffer = 1;
 	(function (module, exports) {
 		var root = require_root(),
@@ -13258,8 +13166,8 @@ function requireIsBuffer () {
 		var isBuffer = nativeIsBuffer || stubFalse;
 
 		module.exports = isBuffer;
-} (isBuffer$1, isBuffer$1.exports));
-	return isBuffer$1.exports;
+} (isBuffer$2, isBuffer$2.exports));
+	return isBuffer$2.exports;
 }
 
 /** Used as references for various `Number` constants. */
@@ -13478,91 +13386,75 @@ function requireIsTypedArray () {
 	return isTypedArray_1;
 }
 
-var _arrayLikeKeys;
-var hasRequired_arrayLikeKeys;
+var baseTimes = require_baseTimes(),
+    isArguments = requireIsArguments(),
+    isArray$5 = isArray_1,
+    isBuffer$1 = requireIsBuffer(),
+    isIndex = require_isIndex(),
+    isTypedArray = requireIsTypedArray();
 
-function require_arrayLikeKeys () {
-	if (hasRequired_arrayLikeKeys) return _arrayLikeKeys;
-	hasRequired_arrayLikeKeys = 1;
-	var baseTimes = require_baseTimes(),
-	    isArguments = requireIsArguments(),
-	    isArray = requireIsArray(),
-	    isBuffer = requireIsBuffer(),
-	    isIndex = require_isIndex(),
-	    isTypedArray = requireIsTypedArray();
+/** Used for built-in method references. */
+var objectProto$8 = Object.prototype;
 
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
+/** Used to check objects for own properties. */
+var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/**
+ * Creates an array of the enumerable property names of the array-like `value`.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @param {boolean} inherited Specify returning inherited property names.
+ * @returns {Array} Returns the array of property names.
+ */
+function arrayLikeKeys$2(value, inherited) {
+  var isArr = isArray$5(value),
+      isArg = !isArr && isArguments(value),
+      isBuff = !isArr && !isArg && isBuffer$1(value),
+      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+      skipIndexes = isArr || isArg || isBuff || isType,
+      result = skipIndexes ? baseTimes(value.length, String) : [],
+      length = result.length;
 
-	/**
-	 * Creates an array of the enumerable property names of the array-like `value`.
-	 *
-	 * @private
-	 * @param {*} value The value to query.
-	 * @param {boolean} inherited Specify returning inherited property names.
-	 * @returns {Array} Returns the array of property names.
-	 */
-	function arrayLikeKeys(value, inherited) {
-	  var isArr = isArray(value),
-	      isArg = !isArr && isArguments(value),
-	      isBuff = !isArr && !isArg && isBuffer(value),
-	      isType = !isArr && !isArg && !isBuff && isTypedArray(value),
-	      skipIndexes = isArr || isArg || isBuff || isType,
-	      result = skipIndexes ? baseTimes(value.length, String) : [],
-	      length = result.length;
-
-	  for (var key in value) {
-	    if ((inherited || hasOwnProperty.call(value, key)) &&
-	        !(skipIndexes && (
-	           // Safari 9 has enumerable `arguments.length` in strict mode.
-	           key == 'length' ||
-	           // Node.js 0.10 has enumerable non-index properties on buffers.
-	           (isBuff && (key == 'offset' || key == 'parent')) ||
-	           // PhantomJS 2 has enumerable non-index properties on typed arrays.
-	           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
-	           // Skip index properties.
-	           isIndex(key, length)
-	        ))) {
-	      result.push(key);
-	    }
-	  }
-	  return result;
-	}
-
-	_arrayLikeKeys = arrayLikeKeys;
-	return _arrayLikeKeys;
+  for (var key in value) {
+    if ((inherited || hasOwnProperty$6.call(value, key)) &&
+        !(skipIndexes && (
+           // Safari 9 has enumerable `arguments.length` in strict mode.
+           key == 'length' ||
+           // Node.js 0.10 has enumerable non-index properties on buffers.
+           (isBuff && (key == 'offset' || key == 'parent')) ||
+           // PhantomJS 2 has enumerable non-index properties on typed arrays.
+           (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+           // Skip index properties.
+           isIndex(key, length)
+        ))) {
+      result.push(key);
+    }
+  }
+  return result;
 }
+
+var _arrayLikeKeys = arrayLikeKeys$2;
 
 /** Used for built-in method references. */
 
-var _isPrototype;
-var hasRequired_isPrototype;
+var objectProto$7 = Object.prototype;
 
-function require_isPrototype () {
-	if (hasRequired_isPrototype) return _isPrototype;
-	hasRequired_isPrototype = 1;
-	var objectProto = Object.prototype;
+/**
+ * Checks if `value` is likely a prototype object.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
+ */
+function isPrototype$3(value) {
+  var Ctor = value && value.constructor,
+      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto$7;
 
-	/**
-	 * Checks if `value` is likely a prototype object.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a prototype, else `false`.
-	 */
-	function isPrototype(value) {
-	  var Ctor = value && value.constructor,
-	      proto = (typeof Ctor == 'function' && Ctor.prototype) || objectProto;
-
-	  return value === proto;
-	}
-
-	_isPrototype = isPrototype;
-	return _isPrototype;
+  return value === proto;
 }
+
+var _isPrototype = isPrototype$3;
 
 /**
  * Creates a unary function that invokes `func` with its argument transformed.
@@ -13573,75 +13465,51 @@ function require_isPrototype () {
  * @returns {Function} Returns the new function.
  */
 
-var _overArg;
-var hasRequired_overArg;
-
-function require_overArg () {
-	if (hasRequired_overArg) return _overArg;
-	hasRequired_overArg = 1;
-	function overArg(func, transform) {
-	  return function(arg) {
-	    return func(transform(arg));
-	  };
-	}
-
-	_overArg = overArg;
-	return _overArg;
+function overArg$2(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
 }
 
-var _nativeKeys;
-var hasRequired_nativeKeys;
+var _overArg = overArg$2;
 
-function require_nativeKeys () {
-	if (hasRequired_nativeKeys) return _nativeKeys;
-	hasRequired_nativeKeys = 1;
-	var overArg = require_overArg();
+var overArg$1 = _overArg;
 
-	/* Built-in method references for those with the same name as other `lodash` methods. */
-	var nativeKeys = overArg(Object.keys, Object);
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeKeys$1 = overArg$1(Object.keys, Object);
 
-	_nativeKeys = nativeKeys;
-	return _nativeKeys;
+var _nativeKeys = nativeKeys$1;
+
+var isPrototype$2 = _isPrototype,
+    nativeKeys = _nativeKeys;
+
+/** Used for built-in method references. */
+var objectProto$6 = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty$5 = objectProto$6.hasOwnProperty;
+
+/**
+ * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ */
+function baseKeys$1(object) {
+  if (!isPrototype$2(object)) {
+    return nativeKeys(object);
+  }
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty$5.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result;
 }
 
-var _baseKeys;
-var hasRequired_baseKeys;
-
-function require_baseKeys () {
-	if (hasRequired_baseKeys) return _baseKeys;
-	hasRequired_baseKeys = 1;
-	var isPrototype = require_isPrototype(),
-	    nativeKeys = require_nativeKeys();
-
-	/** Used for built-in method references. */
-	var objectProto = Object.prototype;
-
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
-
-	/**
-	 * The base implementation of `_.keys` which doesn't treat sparse arrays as dense.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 */
-	function baseKeys(object) {
-	  if (!isPrototype(object)) {
-	    return nativeKeys(object);
-	  }
-	  var result = [];
-	  for (var key in Object(object)) {
-	    if (hasOwnProperty.call(object, key) && key != 'constructor') {
-	      result.push(key);
-	    }
-	  }
-	  return result;
-	}
-
-	_baseKeys = baseKeys;
-	return _baseKeys;
-}
+var _baseKeys = baseKeys$1;
 
 var isArrayLike_1;
 var hasRequiredIsArrayLike;
@@ -13685,54 +13553,46 @@ function requireIsArrayLike () {
 	return isArrayLike_1;
 }
 
-var keys_1;
-var hasRequiredKeys;
+var arrayLikeKeys$1 = _arrayLikeKeys,
+    baseKeys = _baseKeys,
+    isArrayLike$1 = requireIsArrayLike();
 
-function requireKeys () {
-	if (hasRequiredKeys) return keys_1;
-	hasRequiredKeys = 1;
-	var arrayLikeKeys = require_arrayLikeKeys(),
-	    baseKeys = require_baseKeys(),
-	    isArrayLike = requireIsArrayLike();
-
-	/**
-	 * Creates an array of the own enumerable property names of `object`.
-	 *
-	 * **Note:** Non-object values are coerced to objects. See the
-	 * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
-	 * for more details.
-	 *
-	 * @static
-	 * @since 0.1.0
-	 * @memberOf _
-	 * @category Object
-	 * @param {Object} object The object to query.
-	 * @returns {Array} Returns the array of property names.
-	 * @example
-	 *
-	 * function Foo() {
-	 *   this.a = 1;
-	 *   this.b = 2;
-	 * }
-	 *
-	 * Foo.prototype.c = 3;
-	 *
-	 * _.keys(new Foo);
-	 * // => ['a', 'b'] (iteration order is not guaranteed)
-	 *
-	 * _.keys('hi');
-	 * // => ['0', '1']
-	 */
-	function keys(object) {
-	  return isArrayLike(object) ? arrayLikeKeys(object) : baseKeys(object);
-	}
-
-	keys_1 = keys;
-	return keys_1;
+/**
+ * Creates an array of the own enumerable property names of `object`.
+ *
+ * **Note:** Non-object values are coerced to objects. See the
+ * [ES spec](http://ecma-international.org/ecma-262/7.0/#sec-object.keys)
+ * for more details.
+ *
+ * @static
+ * @since 0.1.0
+ * @memberOf _
+ * @category Object
+ * @param {Object} object The object to query.
+ * @returns {Array} Returns the array of property names.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ *   this.b = 2;
+ * }
+ *
+ * Foo.prototype.c = 3;
+ *
+ * _.keys(new Foo);
+ * // => ['a', 'b'] (iteration order is not guaranteed)
+ *
+ * _.keys('hi');
+ * // => ['0', '1']
+ */
+function keys$4(object) {
+  return isArrayLike$1(object) ? arrayLikeKeys$1(object) : baseKeys(object);
 }
 
+var keys_1 = keys$4;
+
 var copyObject$3 = _copyObject,
-    keys$3 = requireKeys();
+    keys$3 = keys_1;
 
 /**
  * The base implementation of `_.assign` without support for multiple sources
@@ -13987,7 +13847,7 @@ function stackHas$1(key) {
 
 var _stackHas = stackHas$1;
 
-var getNative$4 = require_getNative(),
+var getNative$4 = _getNative,
     root$4 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -13995,7 +13855,7 @@ var Map$3 = getNative$4(root$4, 'Map');
 
 var _Map = Map$3;
 
-var getNative$3 = require_getNative();
+var getNative$3 = _getNative;
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate$4 = getNative$3(Object, 'create');
@@ -14402,7 +14262,7 @@ function nativeKeysIn$1(object) {
 var _nativeKeysIn = nativeKeysIn$1;
 
 var isObject$1 = isObject_1,
-    isPrototype$1 = require_isPrototype(),
+    isPrototype$1 = _isPrototype,
     nativeKeysIn = _nativeKeysIn;
 
 /** Used for built-in method references. */
@@ -14435,7 +14295,7 @@ function baseKeysIn$1(object) {
 
 var _baseKeysIn = baseKeysIn$1;
 
-var arrayLikeKeys = require_arrayLikeKeys(),
+var arrayLikeKeys = _arrayLikeKeys,
     baseKeysIn = _baseKeysIn,
     isArrayLike = requireIsArrayLike();
 
@@ -14656,7 +14516,7 @@ function require_arrayPush () {
 	return _arrayPush;
 }
 
-var overArg = require_overArg();
+var overArg = _overArg;
 
 /** Built-in value references. */
 var getPrototype$3 = overArg(Object.getPrototypeOf, Object);
@@ -14707,7 +14567,7 @@ function copySymbolsIn$1(source, object) {
 var _copySymbolsIn = copySymbolsIn$1;
 
 var arrayPush = require_arrayPush(),
-    isArray$3 = requireIsArray();
+    isArray$4 = isArray_1;
 
 /**
  * The base implementation of `getAllKeys` and `getAllKeysIn` which uses
@@ -14722,14 +14582,14 @@ var arrayPush = require_arrayPush(),
  */
 function baseGetAllKeys$2(object, keysFunc, symbolsFunc) {
   var result = keysFunc(object);
-  return isArray$3(object) ? result : arrayPush(result, symbolsFunc(object));
+  return isArray$4(object) ? result : arrayPush(result, symbolsFunc(object));
 }
 
 var _baseGetAllKeys = baseGetAllKeys$2;
 
 var baseGetAllKeys$1 = _baseGetAllKeys,
     getSymbols = _getSymbols,
-    keys$2 = requireKeys();
+    keys$2 = keys_1;
 
 /**
  * Creates an array of own enumerable property names and symbols of `object`.
@@ -14762,7 +14622,7 @@ function getAllKeysIn$1(object) {
 
 var _getAllKeysIn = getAllKeysIn$1;
 
-var getNative$2 = require_getNative(),
+var getNative$2 = _getNative,
     root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -14770,7 +14630,7 @@ var DataView$2 = getNative$2(root$3, 'DataView');
 
 var _DataView = DataView$2;
 
-var getNative$1 = require_getNative(),
+var getNative$1 = _getNative,
     root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -14778,7 +14638,7 @@ var Promise$2 = getNative$1(root$2, 'Promise');
 
 var _Promise = Promise$2;
 
-var getNative = require_getNative(),
+var getNative = _getNative,
     root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
@@ -14790,7 +14650,7 @@ var DataView$1 = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = require_WeakMap(),
+    WeakMap = _WeakMap,
     baseGetTag$2 = _baseGetTag,
     toSource = _toSource;
 
@@ -15049,7 +14909,7 @@ var _initCloneByTag = initCloneByTag$1;
 
 var baseCreate = require_baseCreate(),
     getPrototype$1 = _getPrototype,
-    isPrototype = require_isPrototype();
+    isPrototype = _isPrototype;
 
 /**
  * Initializes an object clone.
@@ -15175,12 +15035,12 @@ var Stack = _Stack,
     initCloneArray = _initCloneArray,
     initCloneByTag = _initCloneByTag,
     initCloneObject = _initCloneObject,
-    isArray$2 = requireIsArray(),
+    isArray$3 = isArray_1,
     isBuffer = requireIsBuffer(),
     isMap = isMap_1,
     isObject = isObject_1,
     isSet = isSet_1,
-    keys$1 = requireKeys(),
+    keys$1 = keys_1,
     keysIn = keysIn_1;
 
 /** Used to compose bitmasks for cloning. */
@@ -15264,7 +15124,7 @@ function baseClone$2(value, bitmask, customizer, key, object, stack) {
   if (!isObject(value)) {
     return value;
   }
-  var isArr = isArray$2(value);
+  var isArr = isArray$3(value);
   if (isArr) {
     result = initCloneArray(value);
     if (!isDeep) {
@@ -16076,7 +15936,7 @@ function require_baseIsEqualDeep () {
 	    equalByTag = require_equalByTag(),
 	    equalObjects = require_equalObjects(),
 	    getTag = _getTag,
-	    isArray = requireIsArray(),
+	    isArray = isArray_1,
 	    isBuffer = requireIsBuffer(),
 	    isTypedArray = requireIsTypedArray();
 
@@ -16296,7 +16156,7 @@ function require_getMatchData () {
 	if (hasRequired_getMatchData) return _getMatchData;
 	hasRequired_getMatchData = 1;
 	var isStrictComparable = require_isStrictComparable(),
-	    keys = requireKeys();
+	    keys = keys_1;
 
 	/**
 	 * Gets the property names, values, and compare flags of `object`.
@@ -16389,7 +16249,7 @@ var hasRequired_isKey;
 function require_isKey () {
 	if (hasRequired_isKey) return _isKey;
 	hasRequired_isKey = 1;
-	var isArray = requireIsArray(),
+	var isArray = isArray_1,
 	    isSymbol = isSymbol_1;
 
 	/** Used to match property names within property paths. */
@@ -16583,7 +16443,7 @@ function require_arrayMap () {
 
 var Symbol$1 = _Symbol,
     arrayMap$1 = require_arrayMap(),
-    isArray$1 = requireIsArray(),
+    isArray$2 = isArray_1,
     isSymbol$2 = isSymbol_1;
 
 /** Used as references for various `Number` constants. */
@@ -16606,7 +16466,7 @@ function baseToString$1(value) {
   if (typeof value == 'string') {
     return value;
   }
-  if (isArray$1(value)) {
+  if (isArray$2(value)) {
     // Recursively convert values (susceptible to call stack limits).
     return arrayMap$1(value, baseToString$1) + '';
   }
@@ -16654,7 +16514,7 @@ var hasRequired_castPath;
 function require_castPath () {
 	if (hasRequired_castPath) return _castPath;
 	hasRequired_castPath = 1;
-	var isArray = requireIsArray(),
+	var isArray = isArray_1,
 	    isKey = require_isKey(),
 	    stringToPath = _stringToPath,
 	    toString = toString_1;
@@ -16806,7 +16666,7 @@ function require_hasPath () {
 	hasRequired_hasPath = 1;
 	var castPath = require_castPath(),
 	    isArguments = requireIsArguments(),
-	    isArray = requireIsArray(),
+	    isArray = isArray_1,
 	    isIndex = require_isIndex(),
 	    isLength = requireIsLength(),
 	    toKey = _toKey;
@@ -17021,48 +16881,40 @@ function requireProperty () {
 	return property_1;
 }
 
-var _baseIteratee;
-var hasRequired_baseIteratee;
+var baseMatches = require_baseMatches(),
+    baseMatchesProperty = require_baseMatchesProperty(),
+    identity = requireIdentity(),
+    isArray$1 = isArray_1,
+    property = requireProperty();
 
-function require_baseIteratee () {
-	if (hasRequired_baseIteratee) return _baseIteratee;
-	hasRequired_baseIteratee = 1;
-	var baseMatches = require_baseMatches(),
-	    baseMatchesProperty = require_baseMatchesProperty(),
-	    identity = requireIdentity(),
-	    isArray = requireIsArray(),
-	    property = requireProperty();
-
-	/**
-	 * The base implementation of `_.iteratee`.
-	 *
-	 * @private
-	 * @param {*} [value=_.identity] The value to convert to an iteratee.
-	 * @returns {Function} Returns the iteratee.
-	 */
-	function baseIteratee(value) {
-	  // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
-	  // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
-	  if (typeof value == 'function') {
-	    return value;
-	  }
-	  if (value == null) {
-	    return identity;
-	  }
-	  if (typeof value == 'object') {
-	    return isArray(value)
-	      ? baseMatchesProperty(value[0], value[1])
-	      : baseMatches(value);
-	  }
-	  return property(value);
-	}
-
-	_baseIteratee = baseIteratee;
-	return _baseIteratee;
+/**
+ * The base implementation of `_.iteratee`.
+ *
+ * @private
+ * @param {*} [value=_.identity] The value to convert to an iteratee.
+ * @returns {Function} Returns the iteratee.
+ */
+function baseIteratee$1(value) {
+  // Don't store the `typeof` result in a variable to avoid a JIT bug in Safari 9.
+  // See https://bugs.webkit.org/show_bug.cgi?id=156034 for more details.
+  if (typeof value == 'function') {
+    return value;
+  }
+  if (value == null) {
+    return identity;
+  }
+  if (typeof value == 'object') {
+    return isArray$1(value)
+      ? baseMatchesProperty(value[0], value[1])
+      : baseMatches(value);
+  }
+  return property(value);
 }
 
+var _baseIteratee = baseIteratee$1;
+
 var baseClone = _baseClone,
-    baseIteratee = require_baseIteratee();
+    baseIteratee = _baseIteratee;
 
 /** Used to compose bitmasks for cloning. */
 var CLONE_DEEP_FLAG = 1;
@@ -17123,7 +16975,7 @@ function require_isFlattenable () {
 	hasRequired_isFlattenable = 1;
 	var Symbol = _Symbol,
 	    isArguments = requireIsArguments(),
-	    isArray = requireIsArray();
+	    isArray = isArray_1;
 
 	/** Built-in value references. */
 	var spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
@@ -17267,33 +17119,25 @@ function require_overRest () {
 	return _overRest;
 }
 
-var _flatRest;
-var hasRequired_flatRest;
+var flatten = requireFlatten(),
+    overRest = require_overRest(),
+    setToString = _setToString;
 
-function require_flatRest () {
-	if (hasRequired_flatRest) return _flatRest;
-	hasRequired_flatRest = 1;
-	var flatten = requireFlatten(),
-	    overRest = require_overRest(),
-	    setToString = require_setToString();
-
-	/**
-	 * A specialized version of `baseRest` which flattens the rest array.
-	 *
-	 * @private
-	 * @param {Function} func The function to apply a rest parameter to.
-	 * @returns {Function} Returns the new function.
-	 */
-	function flatRest(func) {
-	  return setToString(overRest(func, undefined, flatten), func + '');
-	}
-
-	_flatRest = flatRest;
-	return _flatRest;
+/**
+ * A specialized version of `baseRest` which flattens the rest array.
+ *
+ * @private
+ * @param {Function} func The function to apply a rest parameter to.
+ * @returns {Function} Returns the new function.
+ */
+function flatRest$1(func) {
+  return setToString(overRest(func, undefined, flatten), func + '');
 }
 
+var _flatRest = flatRest$1;
+
 var createWrap = _createWrap,
-    flatRest = require_flatRest();
+    flatRest = _flatRest;
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_REARG_FLAG = 256;
@@ -17328,7 +17172,7 @@ var rearg_1 = rearg;
 
 var arrayMap = require_arrayMap(),
     copyArray = _copyArray,
-    isArray = requireIsArray(),
+    isArray = isArray_1,
     isSymbol = isSymbol_1,
     stringToPath = _stringToPath,
     toKey = _toKey,
@@ -17366,12 +17210,12 @@ var _util = {
   'clone': clone_1,
   'curry': curry_1,
   'forEach': _arrayEach,
-  'isArray': requireIsArray(),
+  'isArray': isArray_1,
   'isError': isError_1,
   'isFunction': isFunction_1,
   'isWeakMap': isWeakMap_1,
   'iteratee': iteratee_1,
-  'keys': require_baseKeys(),
+  'keys': _baseKeys,
   'rearg': rearg_1,
   'toInteger': toInteger_1,
   'toPath': toPath_1
@@ -17413,7 +17257,7 @@ function require_falseOptions () {
 }
 
 var convert$3 = convert_1,
-    func$3 = convert$3('keys', requireKeys(), require_falseOptions());
+    func$3 = convert$3('keys', keys_1, require_falseOptions());
 
 func$3.placeholder = requirePlaceholder();
 var keys = func$3;
@@ -17474,11 +17318,11 @@ function require_createFlow () {
 	if (hasRequired_createFlow) return _createFlow;
 	hasRequired_createFlow = 1;
 	var LodashWrapper = require_LodashWrapper(),
-	    flatRest = require_flatRest(),
-	    getData = require_getData(),
+	    flatRest = _flatRest,
+	    getData = _getData,
 	    getFuncName = require_getFuncName(),
-	    isArray = requireIsArray(),
-	    isLaziable = require_isLaziable();
+	    isArray = isArray_1,
+	    isLaziable = _isLaziable;
 
 	/** Error message constants. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -17663,7 +17507,7 @@ function require_baseForOwn () {
 	if (hasRequired_baseForOwn) return _baseForOwn;
 	hasRequired_baseForOwn = 1;
 	var baseFor = require_baseFor(),
-	    keys = requireKeys();
+	    keys = keys_1;
 
 	/**
 	 * The base implementation of `_.forOwn` without support for iteratee shorthands.
@@ -17783,9 +17627,9 @@ function requireMap () {
 	if (hasRequiredMap) return map_1;
 	hasRequiredMap = 1;
 	var arrayMap = require_arrayMap(),
-	    baseIteratee = require_baseIteratee(),
+	    baseIteratee = _baseIteratee,
 	    baseMap = require_baseMap(),
-	    isArray = requireIsArray();
+	    isArray = isArray_1;
 
 	/**
 	 * Creates an array of values by running each element in `collection` thru
@@ -17831,7 +17675,7 @@ function requireMap () {
 	 */
 	function map(collection, iteratee) {
 	  var func = isArray(collection) ? arrayMap : baseMap;
-	  return func(collection, baseIteratee(iteratee, 3));
+	  return func(collection, baseIteratee(iteratee));
 	}
 
 	map_1 = map;
