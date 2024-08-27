@@ -32,7 +32,6 @@ export default class YNWTBaseMap extends PureComponent {
 
   static defaultProps = {
     mapRef: (() => null),
-    baseMapTilesUrl: "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png",
   };
 
   static tileset = {
@@ -64,8 +63,8 @@ export default class YNWTBaseMap extends PureComponent {
   };
 
   render() {
-    const { children, ...rest } = this.props;
-    YNWTBaseMap.tileset.url = this.props.baseMapTilesUrl || YNWTBaseMap.tileset.url;
+    const { children, baseMapTilesUrl, ...rest } = this.props;
+    YNWTBaseMap.tileset.url = baseMapTilesUrl || YNWTBaseMap.tileset.url || "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png";
     return (
       <GenericBaseMap tileset={YNWTBaseMap.tileset} {...rest}>
         {children}

@@ -32,10 +32,10 @@ export default class BCBaseMap extends PureComponent {
 
   static defaultProps = {
     mapRef: (() => null),
-    baseMapTilesUrl: 'https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png',
   };
 
   static tileset = {
+    url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
     projection: {
       code: 'EPSG:3005',
       proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
@@ -64,8 +64,8 @@ export default class BCBaseMap extends PureComponent {
   };
 
   render() {
-    const { children, ...rest } = this.props;
-    BCBaseMap.tileset.url = this.props.baseMapTilesUrl || BCBaseMap.tileset.url;
+    const { children, baseMapTilesUrl, ...rest } = this.props;
+    BCBaseMap.tileset.url = baseMapTilesUrl || BCBaseMap.tileset.url || 'https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png';
     return (
       <GenericBaseMap tileset={BCBaseMap.tileset} {...rest}>
         {children}
