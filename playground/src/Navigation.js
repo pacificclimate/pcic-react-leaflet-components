@@ -14,7 +14,7 @@ function Navigation({ spec }) {
       <Nav variant={"pills"} activeKey={match?.params.path}>
         {
           spec.map(({label, path}) => (
-            <Nav.Item>
+            <Nav.Item key={label}>
               <Nav.Link eventKey={path} href={path}>
                 {label}
               </Nav.Link>

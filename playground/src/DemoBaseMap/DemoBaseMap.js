@@ -82,7 +82,7 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps, baseMapTilesU
 }
 
 DemoBaseMap.propTypes = {
-  BaseMap: PropTypes.element.isRequired,
+  BaseMap: PropTypes.func.isRequired,
   initialViewport: PropTypes.object.isRequired,
   markers: PropTypes.array,
   numMaps: PropTypes.number,

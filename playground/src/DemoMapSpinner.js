@@ -33,7 +33,7 @@ function DemoMapSpinner() {
               <Form.Select value={spinner} onChange={handleChange(setSpinner)}>
                 {
                   keys(SVGLoaders).map(
-                    name => (<option value={name}>{name}</option>)
+                    name => (<option key={name} value={name}>{name}</option>)
                   )
                 }
               </Form.Select>
