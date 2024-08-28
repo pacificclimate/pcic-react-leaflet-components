@@ -1,4 +1,4 @@
-import legend from './3005_legend.js';
+import legend from './legends.js';
 
 const vectorTileStyling = {
   boundary: function (properties, zoom) {

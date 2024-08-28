@@ -10518,7 +10518,80 @@ _defineProperty$1(BCBaseMap, "initialViewport", {
   zoom: 6
 });
 
-var legend = {
+var legendAchromatic = {
+  Boundary: {
+    Level_2: {
+      color: "#a3a3a3",
+      weight: 2,
+      fill: false
+    },
+    Level_2_disputed: {
+      color: "#a3a3a3",
+      weight: 2,
+      fill: false,
+      dashArray: "5, 5"
+    },
+    Level_4: {
+      color: "#8c8c8c",
+      weight: 1.6,
+      fill: false,
+      dashArray: "5, 5"
+    },
+    Level_6: {
+      color: "#8c8c8c",
+      weight: 1,
+      fill: false,
+      dashArray: "3, 3"
+    }
+  },
+  Landcover: {
+    glacier: "#fdfdfd",
+    forest: "#d9d9d9",
+    farmland: "#e6e6e6",
+    rock: "#8f8f8f",
+    sand: "#e6e6e6"
+  },
+  Landuse: {
+    residentialAndCommunity: "#e6e6e6",
+    commercialAndPublicServices: "#d9d9d9",
+    specialAndInfrastructure: "#f0f0f0"
+  },
+  Park: {
+    default: "#d9d9d9"
+  },
+  Transportation: {
+    motorway: "#b3b3b3",
+    trunk: "#e6e6e6",
+    primary: "#d9d9d9",
+    secondary: "#ffffff",
+    tertiary: "#ffffff",
+    minor: "#ffffff",
+    path: "#aaaaaa",
+    network_us: "#d9d9d9",
+    network_ca: "#b3b3b3"
+  },
+  Aeroway: {
+    helipad: "#bbbbbb",
+    gate: "#bbbbbb",
+    runway: "#bbbbbb",
+    taxiway: "#bbbbbb",
+    aerodrome: "#e6e6e6"
+  },
+  Water: {
+    ocean: "#c9c9c9",
+    river: "#c9c9c9",
+    lake: "#c9c9c9",
+    pond: "#c9c9c9",
+    swimming_pool: "#c9c9c9"
+  },
+  Waterway: {
+    stream: "#c9c9c9",
+    river: "#c9c9c9",
+    canal: "#c9c9c9"
+  }
+};
+
+var legend3005 = {
   Boundary: {
     Level_2: {
       color: "#a3a3a3",
@@ -10590,6 +10663,21 @@ var legend = {
     canal: "#abcdd7"
   }
 };
+
+function selectLegend() {
+  var legendName = process.env.REACT_APP_LEGEND_FILE;
+
+  switch (legendName) {
+    case '3005_legend':
+      return legend3005;
+
+    case 'achromatic_legend':
+    default:
+      return legendAchromatic;
+  }
+}
+
+var legend = selectLegend();
 
 var vectorTileStyling = {
   boundary: function boundary(properties, zoom) {
@@ -11059,27 +11147,27 @@ function require_root () {
 	return _root;
 }
 
-var root$9 = require_root();
+var root$a = require_root();
 
 /** Built-in value references. */
-var Symbol$5 = root$9.Symbol;
+var Symbol$5 = root$a.Symbol;
 
 var _Symbol = Symbol$5;
 
 var Symbol$4 = _Symbol;
 
 /** Used for built-in method references. */
-var objectProto$8 = Object.prototype;
+var objectProto$9 = Object.prototype;
 
 /** Used to check objects for own properties. */
-var hasOwnProperty$6 = objectProto$8.hasOwnProperty;
+var hasOwnProperty$7 = objectProto$9.hasOwnProperty;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString$1 = objectProto$8.toString;
+var nativeObjectToString$1 = objectProto$9.toString;
 
 /** Built-in value references. */
 var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
@@ -11092,7 +11180,7 @@ var symToStringTag$1 = Symbol$4 ? Symbol$4.toStringTag : undefined;
  * @returns {string} Returns the raw `toStringTag`.
  */
 function getRawTag$1(value) {
-  var isOwn = hasOwnProperty$6.call(value, symToStringTag$1),
+  var isOwn = hasOwnProperty$7.call(value, symToStringTag$1),
       tag = value[symToStringTag$1];
 
   try {
@@ -11115,14 +11203,14 @@ var _getRawTag = getRawTag$1;
 
 /** Used for built-in method references. */
 
-var objectProto$7 = Object.prototype;
+var objectProto$8 = Object.prototype;
 
 /**
  * Used to resolve the
  * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
  * of values.
  */
-var nativeObjectToString = objectProto$7.toString;
+var nativeObjectToString = objectProto$8.toString;
 
 /**
  * Converts `value` to a string using `Object.prototype.toString`.
@@ -11192,15 +11280,15 @@ var _baseGetTag = baseGetTag$5;
  * // => false
  */
 
-function isObject$5(value) {
+function isObject$6(value) {
   var type = typeof value;
   return value != null && (type == 'object' || type == 'function');
 }
 
-var isObject_1 = isObject$5;
+var isObject_1 = isObject$6;
 
 var baseGetTag$4 = _baseGetTag,
-    isObject$4 = isObject_1;
+    isObject$5 = isObject_1;
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -11225,8 +11313,8 @@ var asyncTag = '[object AsyncFunction]',
  * _.isFunction(/abc/);
  * // => false
  */
-function isFunction(value) {
-  if (!isObject$4(value)) {
+function isFunction$1(value) {
+  if (!isObject$5(value)) {
     return false;
   }
   // The use of `Object#toString` avoids issues with the `typeof` operator
@@ -11235,58 +11323,42 @@ function isFunction(value) {
   return tag == funcTag$1 || tag == genTag$1 || tag == asyncTag || tag == proxyTag;
 }
 
-var isFunction_1 = isFunction;
+var isFunction_1 = isFunction$1;
 
-var _coreJsData;
-var hasRequired_coreJsData;
+var root$9 = require_root();
 
-function require_coreJsData () {
-	if (hasRequired_coreJsData) return _coreJsData;
-	hasRequired_coreJsData = 1;
-	var root = require_root();
+/** Used to detect overreaching core-js shims. */
+var coreJsData$1 = root$9['__core-js_shared__'];
 
-	/** Used to detect overreaching core-js shims. */
-	var coreJsData = root['__core-js_shared__'];
+var _coreJsData = coreJsData$1;
 
-	_coreJsData = coreJsData;
-	return _coreJsData;
+var coreJsData = _coreJsData;
+
+/** Used to detect methods masquerading as native. */
+var maskSrcKey = (function() {
+  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
+  return uid ? ('Symbol(src)_1.' + uid) : '';
+}());
+
+/**
+ * Checks if `func` has its source masked.
+ *
+ * @private
+ * @param {Function} func The function to check.
+ * @returns {boolean} Returns `true` if `func` is masked, else `false`.
+ */
+function isMasked$1(func) {
+  return !!maskSrcKey && (maskSrcKey in func);
 }
 
-var _isMasked;
-var hasRequired_isMasked;
-
-function require_isMasked () {
-	if (hasRequired_isMasked) return _isMasked;
-	hasRequired_isMasked = 1;
-	var coreJsData = require_coreJsData();
-
-	/** Used to detect methods masquerading as native. */
-	var maskSrcKey = (function() {
-	  var uid = /[^.]+$/.exec(coreJsData && coreJsData.keys && coreJsData.keys.IE_PROTO || '');
-	  return uid ? ('Symbol(src)_1.' + uid) : '';
-	}());
-
-	/**
-	 * Checks if `func` has its source masked.
-	 *
-	 * @private
-	 * @param {Function} func The function to check.
-	 * @returns {boolean} Returns `true` if `func` is masked, else `false`.
-	 */
-	function isMasked(func) {
-	  return !!maskSrcKey && (maskSrcKey in func);
-	}
-
-	_isMasked = isMasked;
-	return _isMasked;
-}
+var _isMasked = isMasked$1;
 
 /** Used for built-in method references. */
 
-var funcProto$1 = Function.prototype;
+var funcProto$2 = Function.prototype;
 
 /** Used to resolve the decompiled source of functions. */
-var funcToString$1 = funcProto$1.toString;
+var funcToString$2 = funcProto$2.toString;
 
 /**
  * Converts `func` to its source code.
@@ -11295,10 +11367,10 @@ var funcToString$1 = funcProto$1.toString;
  * @param {Function} func The function to convert.
  * @returns {string} Returns the source code.
  */
-function toSource$1(func) {
+function toSource$2(func) {
   if (func != null) {
     try {
-      return funcToString$1.call(func);
+      return funcToString$2.call(func);
     } catch (e) {}
     try {
       return (func + '');
@@ -11307,63 +11379,55 @@ function toSource$1(func) {
   return '';
 }
 
-var _toSource = toSource$1;
+var _toSource = toSource$2;
 
-var _baseIsNative;
-var hasRequired_baseIsNative;
+var isFunction = isFunction_1,
+    isMasked = _isMasked,
+    isObject$4 = isObject_1,
+    toSource$1 = _toSource;
 
-function require_baseIsNative () {
-	if (hasRequired_baseIsNative) return _baseIsNative;
-	hasRequired_baseIsNative = 1;
-	var isFunction = isFunction_1,
-	    isMasked = require_isMasked(),
-	    isObject = isObject_1,
-	    toSource = _toSource;
+/**
+ * Used to match `RegExp`
+ * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
+ */
+var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
 
-	/**
-	 * Used to match `RegExp`
-	 * [syntax characters](http://ecma-international.org/ecma-262/7.0/#sec-patterns).
-	 */
-	var reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
+/** Used to detect host constructors (Safari). */
+var reIsHostCtor = /^\[object .+?Constructor\]$/;
 
-	/** Used to detect host constructors (Safari). */
-	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+/** Used for built-in method references. */
+var funcProto$1 = Function.prototype,
+    objectProto$7 = Object.prototype;
 
-	/** Used for built-in method references. */
-	var funcProto = Function.prototype,
-	    objectProto = Object.prototype;
+/** Used to resolve the decompiled source of functions. */
+var funcToString$1 = funcProto$1.toString;
 
-	/** Used to resolve the decompiled source of functions. */
-	var funcToString = funcProto.toString;
+/** Used to check objects for own properties. */
+var hasOwnProperty$6 = objectProto$7.hasOwnProperty;
 
-	/** Used to check objects for own properties. */
-	var hasOwnProperty = objectProto.hasOwnProperty;
+/** Used to detect if a method is native. */
+var reIsNative = RegExp('^' +
+  funcToString$1.call(hasOwnProperty$6).replace(reRegExpChar, '\\$&')
+  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+);
 
-	/** Used to detect if a method is native. */
-	var reIsNative = RegExp('^' +
-	  funcToString.call(hasOwnProperty).replace(reRegExpChar, '\\$&')
-	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
-	);
-
-	/**
-	 * The base implementation of `_.isNative` without bad shim checks.
-	 *
-	 * @private
-	 * @param {*} value The value to check.
-	 * @returns {boolean} Returns `true` if `value` is a native function,
-	 *  else `false`.
-	 */
-	function baseIsNative(value) {
-	  if (!isObject(value) || isMasked(value)) {
-	    return false;
-	  }
-	  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
-	  return pattern.test(toSource(value));
-	}
-
-	_baseIsNative = baseIsNative;
-	return _baseIsNative;
+/**
+ * The base implementation of `_.isNative` without bad shim checks.
+ *
+ * @private
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a native function,
+ *  else `false`.
+ */
+function baseIsNative$1(value) {
+  if (!isObject$4(value) || isMasked(value)) {
+    return false;
+  }
+  var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
+  return pattern.test(toSource$1(value));
 }
+
+var _baseIsNative = baseIsNative$1;
 
 /**
  * Gets the value at `key` of `object`.
@@ -11374,61 +11438,37 @@ function require_baseIsNative () {
  * @returns {*} Returns the property value.
  */
 
-var _getValue;
-var hasRequired_getValue;
-
-function require_getValue () {
-	if (hasRequired_getValue) return _getValue;
-	hasRequired_getValue = 1;
-	function getValue(object, key) {
-	  return object == null ? undefined : object[key];
-	}
-
-	_getValue = getValue;
-	return _getValue;
+function getValue$1(object, key) {
+  return object == null ? undefined : object[key];
 }
 
-var _getNative;
-var hasRequired_getNative;
+var _getValue = getValue$1;
 
-function require_getNative () {
-	if (hasRequired_getNative) return _getNative;
-	hasRequired_getNative = 1;
-	var baseIsNative = require_baseIsNative(),
-	    getValue = require_getValue();
+var baseIsNative = _baseIsNative,
+    getValue = _getValue;
 
-	/**
-	 * Gets the native function at `key` of `object`.
-	 *
-	 * @private
-	 * @param {Object} object The object to query.
-	 * @param {string} key The key of the method to get.
-	 * @returns {*} Returns the function if it's native, else `undefined`.
-	 */
-	function getNative(object, key) {
-	  var value = getValue(object, key);
-	  return baseIsNative(value) ? value : undefined;
-	}
-
-	_getNative = getNative;
-	return _getNative;
+/**
+ * Gets the native function at `key` of `object`.
+ *
+ * @private
+ * @param {Object} object The object to query.
+ * @param {string} key The key of the method to get.
+ * @returns {*} Returns the function if it's native, else `undefined`.
+ */
+function getNative$7(object, key) {
+  var value = getValue(object, key);
+  return baseIsNative(value) ? value : undefined;
 }
 
-var _WeakMap;
-var hasRequired_WeakMap;
+var _getNative = getNative$7;
 
-function require_WeakMap () {
-	if (hasRequired_WeakMap) return _WeakMap;
-	hasRequired_WeakMap = 1;
-	var getNative = require_getNative(),
-	    root = require_root();
+var getNative$6 = _getNative,
+    root$8 = require_root();
 
-	/* Built-in method references that are verified to be native. */
-	var WeakMap = getNative(root, 'WeakMap');
+/* Built-in method references that are verified to be native. */
+var WeakMap$1 = getNative$6(root$8, 'WeakMap');
 
-	_WeakMap = WeakMap;
-	return _WeakMap;
-}
+var _WeakMap = WeakMap$1;
 
 var _metaMap;
 var hasRequired_metaMap;
@@ -11436,7 +11476,7 @@ var hasRequired_metaMap;
 function require_metaMap () {
 	if (hasRequired_metaMap) return _metaMap;
 	hasRequired_metaMap = 1;
-	var WeakMap = require_WeakMap();
+	var WeakMap = _WeakMap;
 
 	/** Used to store function metadata. */
 	var metaMap = WeakMap && new WeakMap;
@@ -11541,7 +11581,7 @@ function createCtor$4(Ctor) {
 var _createCtor = createCtor$4;
 
 var createCtor$3 = _createCtor,
-    root$8 = require_root();
+    root$7 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$6 = 1;
@@ -11561,7 +11601,7 @@ function createBind$1(func, bitmask, thisArg) {
       Ctor = createCtor$3(func);
 
   function wrapper() {
-    var fn = (this && this !== root$8 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$7 && this instanceof wrapper) ? Ctor : func;
     return fn.apply(isBind ? thisArg : this, arguments);
   }
   return wrapper;
@@ -11961,19 +12001,11 @@ function requireIsArray () {
  * // => false
  */
 
-var isObjectLike_1;
-var hasRequiredIsObjectLike;
-
-function requireIsObjectLike () {
-	if (hasRequiredIsObjectLike) return isObjectLike_1;
-	hasRequiredIsObjectLike = 1;
-	function isObjectLike(value) {
-	  return value != null && typeof value == 'object';
-	}
-
-	isObjectLike_1 = isObjectLike;
-	return isObjectLike_1;
+function isObjectLike$6(value) {
+  return value != null && typeof value == 'object';
 }
+
+var isObjectLike_1 = isObjectLike$6;
 
 /**
  * Copies the values of `source` to `array`.
@@ -12039,7 +12071,7 @@ function requireWrapperLodash () {
 	    LodashWrapper = require_LodashWrapper(),
 	    baseLodash = require_baseLodash(),
 	    isArray = requireIsArray(),
-	    isObjectLike = requireIsObjectLike(),
+	    isObjectLike = isObjectLike_1,
 	    wrapperClone = require_wrapperClone();
 
 	/** Used for built-in method references. */
@@ -12370,25 +12402,17 @@ function requireConstant () {
 	return constant_1;
 }
 
-var _defineProperty;
-var hasRequired_defineProperty;
+var getNative$5 = _getNative;
 
-function require_defineProperty () {
-	if (hasRequired_defineProperty) return _defineProperty;
-	hasRequired_defineProperty = 1;
-	var getNative = require_getNative();
+var defineProperty$1 = (function() {
+  try {
+    var func = getNative$5(Object, 'defineProperty');
+    func({}, '', {});
+    return func;
+  } catch (e) {}
+}());
 
-	var defineProperty = (function() {
-	  try {
-	    var func = getNative(Object, 'defineProperty');
-	    func({}, '', {});
-	    return func;
-	  } catch (e) {}
-	}());
-
-	_defineProperty = defineProperty;
-	return _defineProperty;
-}
+var _defineProperty = defineProperty$1;
 
 var _baseSetToString;
 var hasRequired_baseSetToString;
@@ -12397,7 +12421,7 @@ function require_baseSetToString () {
 	if (hasRequired_baseSetToString) return _baseSetToString;
 	hasRequired_baseSetToString = 1;
 	var constant = requireConstant(),
-	    defineProperty = require_defineProperty(),
+	    defineProperty = _defineProperty,
 	    identity = requireIdentity();
 
 	/**
@@ -12817,7 +12841,7 @@ var composeArgs$1 = _composeArgs,
     getHolder$1 = _getHolder,
     reorder = _reorder,
     replaceHolders$2 = _replaceHolders,
-    root$7 = require_root();
+    root$6 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$3 = 1,
@@ -12892,7 +12916,7 @@ function createHybrid$2(func, bitmask, thisArg, partials, holders, partialsRight
     if (isAry && ary < length) {
       args.length = ary;
     }
-    if (this && this !== root$7 && this instanceof wrapper) {
+    if (this && this !== root$6 && this instanceof wrapper) {
       fn = Ctor || createCtor$2(fn);
     }
     return fn.apply(thisBinding, args);
@@ -12908,7 +12932,7 @@ var apply$1 = require_apply(),
     createRecurry = _createRecurry,
     getHolder = _getHolder,
     replaceHolders$1 = _replaceHolders,
-    root$6 = require_root();
+    root$5 = require_root();
 
 /**
  * Creates a function that wraps `func` to enable currying.
@@ -12941,7 +12965,7 @@ function createCurry$1(func, bitmask, arity) {
         func, bitmask, createHybrid$1, wrapper.placeholder, undefined,
         args, holders, undefined, undefined, arity - length);
     }
-    var fn = (this && this !== root$6 && this instanceof wrapper) ? Ctor : func;
+    var fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
     return apply$1(fn, this, args);
   }
   return wrapper;
@@ -12951,7 +12975,7 @@ var _createCurry = createCurry$1;
 
 var apply = require_apply(),
     createCtor = _createCtor,
-    root$5 = require_root();
+    root$4 = require_root();
 
 /** Used to compose bitmasks for function metadata. */
 var WRAP_BIND_FLAG$2 = 1;
@@ -12978,7 +13002,7 @@ function createPartial$1(func, bitmask, thisArg, partials) {
         leftIndex = -1,
         leftLength = partials.length,
         args = Array(leftLength + argsLength),
-        fn = (this && this !== root$5 && this instanceof wrapper) ? Ctor : func;
+        fn = (this && this !== root$4 && this instanceof wrapper) ? Ctor : func;
 
     while (++leftIndex < leftLength) {
       args[leftIndex] = partials[leftIndex];
@@ -13126,7 +13150,7 @@ function baseTrim$1(string) {
 var _baseTrim = baseTrim$1;
 
 var baseGetTag$3 = _baseGetTag,
-    isObjectLike$5 = requireIsObjectLike();
+    isObjectLike$5 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var symbolTag$2 = '[object Symbol]';
@@ -13437,7 +13461,7 @@ function ary(func, n, guard) {
 
 var ary_1 = ary;
 
-var defineProperty = require_defineProperty();
+var defineProperty = _defineProperty;
 
 /**
  * The base implementation of `assignValue` and `assignMergeValue` without
@@ -13609,7 +13633,7 @@ function require_baseIsArguments () {
 	if (hasRequired_baseIsArguments) return _baseIsArguments;
 	hasRequired_baseIsArguments = 1;
 	var baseGetTag = _baseGetTag,
-	    isObjectLike = requireIsObjectLike();
+	    isObjectLike = isObjectLike_1;
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -13636,7 +13660,7 @@ function requireIsArguments () {
 	if (hasRequiredIsArguments) return isArguments_1;
 	hasRequiredIsArguments = 1;
 	var baseIsArguments = require_baseIsArguments(),
-	    isObjectLike = requireIsObjectLike();
+	    isObjectLike = isObjectLike_1;
 
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -13805,7 +13829,7 @@ function require_baseIsTypedArray () {
 	hasRequired_baseIsTypedArray = 1;
 	var baseGetTag = _baseGetTag,
 	    isLength = requireIsLength(),
-	    isObjectLike = requireIsObjectLike();
+	    isObjectLike = isObjectLike_1;
 
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -14477,15 +14501,15 @@ function stackHas$1(key) {
 
 var _stackHas = stackHas$1;
 
-var getNative$4 = require_getNative(),
-    root$4 = require_root();
+var getNative$4 = _getNative,
+    root$3 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Map$3 = getNative$4(root$4, 'Map');
+var Map$3 = getNative$4(root$3, 'Map');
 
 var _Map = Map$3;
 
-var getNative$3 = require_getNative();
+var getNative$3 = _getNative;
 
 /* Built-in method references that are verified to be native. */
 var nativeCreate$4 = getNative$3(Object, 'create');
@@ -15252,27 +15276,27 @@ function getAllKeysIn$1(object) {
 
 var _getAllKeysIn = getAllKeysIn$1;
 
-var getNative$2 = require_getNative(),
-    root$3 = require_root();
-
-/* Built-in method references that are verified to be native. */
-var DataView$2 = getNative$2(root$3, 'DataView');
-
-var _DataView = DataView$2;
-
-var getNative$1 = require_getNative(),
+var getNative$2 = _getNative,
     root$2 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Promise$2 = getNative$1(root$2, 'Promise');
+var DataView$2 = getNative$2(root$2, 'DataView');
 
-var _Promise = Promise$2;
+var _DataView = DataView$2;
 
-var getNative = require_getNative(),
+var getNative$1 = _getNative,
     root$1 = require_root();
 
 /* Built-in method references that are verified to be native. */
-var Set$1 = getNative(root$1, 'Set');
+var Promise$2 = getNative$1(root$1, 'Promise');
+
+var _Promise = Promise$2;
+
+var getNative = _getNative,
+    root = require_root();
+
+/* Built-in method references that are verified to be native. */
+var Set$1 = getNative(root, 'Set');
 
 var _Set = Set$1;
 
@@ -15280,7 +15304,7 @@ var DataView$1 = _DataView,
     Map = _Map,
     Promise$1 = _Promise,
     Set = _Set,
-    WeakMap = require_WeakMap(),
+    WeakMap = _WeakMap,
     baseGetTag$2 = _baseGetTag,
     toSource = _toSource;
 
@@ -15363,14 +15387,22 @@ function initCloneArray$1(array) {
 
 var _initCloneArray = initCloneArray$1;
 
-var root = require_root();
+var _Uint8Array;
+var hasRequired_Uint8Array;
 
-/** Built-in value references. */
-var Uint8Array$2 = root.Uint8Array;
+function require_Uint8Array () {
+	if (hasRequired_Uint8Array) return _Uint8Array;
+	hasRequired_Uint8Array = 1;
+	var root = require_root();
 
-var _Uint8Array = Uint8Array$2;
+	/** Built-in value references. */
+	var Uint8Array = root.Uint8Array;
 
-var Uint8Array$1 = _Uint8Array;
+	_Uint8Array = Uint8Array;
+	return _Uint8Array;
+}
+
+var Uint8Array$1 = require_Uint8Array();
 
 /**
  * Creates a clone of `arrayBuffer`.
@@ -15557,7 +15589,7 @@ function initCloneObject$1(object) {
 var _initCloneObject = initCloneObject$1;
 
 var getTag$3 = _getTag,
-    isObjectLike$4 = requireIsObjectLike();
+    isObjectLike$4 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var mapTag$1 = '[object Map]';
@@ -15604,7 +15636,7 @@ var isMap$1 = nodeIsMap ? baseUnary$1(nodeIsMap) : baseIsMap;
 var isMap_1 = isMap$1;
 
 var getTag$2 = _getTag,
-    isObjectLike$3 = requireIsObjectLike();
+    isObjectLike$3 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var setTag$1 = '[object Set]';
@@ -15914,7 +15946,7 @@ var curry_1 = curry;
 
 var baseGetTag$1 = _baseGetTag,
     getPrototype = _getPrototype,
-    isObjectLike$2 = requireIsObjectLike();
+    isObjectLike$2 = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var objectTag = '[object Object]';
@@ -15976,7 +16008,7 @@ function isPlainObject$1(value) {
 var isPlainObject_1 = isPlainObject$1;
 
 var baseGetTag = _baseGetTag,
-    isObjectLike$1 = requireIsObjectLike(),
+    isObjectLike$1 = isObjectLike_1,
     isPlainObject = isPlainObject_1;
 
 /** `Object#toString` result references. */
@@ -16013,7 +16045,7 @@ function isError(value) {
 var isError_1 = isError;
 
 var getTag = _getTag,
-    isObjectLike = requireIsObjectLike();
+    isObjectLike = isObjectLike_1;
 
 /** `Object#toString` result references. */
 var weakMapTag = '[object WeakMap]';
@@ -16342,7 +16374,7 @@ function require_equalByTag () {
 	if (hasRequired_equalByTag) return _equalByTag;
 	hasRequired_equalByTag = 1;
 	var Symbol = _Symbol,
-	    Uint8Array = _Uint8Array,
+	    Uint8Array = require_Uint8Array(),
 	    eq = eq_1,
 	    equalArrays = require_equalArrays(),
 	    mapToArray = require_mapToArray(),
@@ -16654,7 +16686,7 @@ function require_baseIsEqual () {
 	if (hasRequired_baseIsEqual) return _baseIsEqual;
 	hasRequired_baseIsEqual = 1;
 	var baseIsEqualDeep = require_baseIsEqualDeep(),
-	    isObjectLike = requireIsObjectLike();
+	    isObjectLike = isObjectLike_1;
 
 	/**
 	 * The base implementation of `_.isEqual` which supports partial comparisons
