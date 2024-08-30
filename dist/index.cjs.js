@@ -10521,24 +10521,24 @@ _defineProperty$1(BCBaseMap, "initialViewport", {
 var legendAchromatic = {
   Boundary: {
     Level_2: {
-      color: "#1a1a1a",
+      color: "#a3a3a3",
       weight: 2,
       fill: false
     },
     Level_2_disputed: {
-      color: "#1a1a1a",
+      color: "#a3a3a3",
       weight: 2,
       fill: false,
       dashArray: "5, 5"
     },
     Level_4: {
-      color: "#2e2e2e",
+      color: "#8c8c8c",
       weight: 1.6,
       fill: false,
       dashArray: "5, 5"
     },
     Level_6: {
-      color: "#424242",
+      color: "#8c8c8c",
       weight: 1,
       fill: false,
       dashArray: "3, 3"
@@ -10546,36 +10546,36 @@ var legendAchromatic = {
   },
   Landcover: {
     glacier: "#fdfdfd",
-    forest: "#565656",
-    farmland: "#6a6a6a",
-    rock: "#2e2e2e",
-    sand: "#7e7e7e"
+    forest: "#d9d9d9",
+    farmland: "#e6e6e6",
+    rock: "#8f8f8f",
+    sand: "#e6e6e6"
   },
   Landuse: {
-    residentialAndCommunity: "#5c5c5c",
-    commercialAndPublicServices: "#424242",
-    specialAndInfrastructure: "#707070"
+    residentialAndCommunity: "#e6e6e6",
+    commercialAndPublicServices: "#d9d9d9",
+    specialAndInfrastructure: "#f0f0f0"
   },
   Park: {
-    default: "#4a4a4a"
+    default: "#d9d9d9"
   },
   Transportation: {
-    motorway: "#1a1a1a",
-    trunk: "#2e2e2e",
-    primary: "#424242",
-    secondary: "#565656",
-    tertiary: "#6a6a6a",
-    minor: "#7e7e7e",
-    path: "#3a3a3a",
-    network_us: "#2e2e2e",
-    network_ca: "#1a1a1a"
+    motorway: "#b3b3b3",
+    trunk: "#e6e6e6",
+    primary: "#d9d9d9",
+    secondary: "#ffffff",
+    tertiary: "#ffffff",
+    minor: "#ffffff",
+    path: "#aaaaaa",
+    network_us: "#d9d9d9",
+    network_ca: "#b3b3b3"
   },
   Aeroway: {
-    helipad: "#424242",
-    gate: "#565656",
-    runway: "#2e2e2e",
-    taxiway: "#424242",
-    aerodrome: "#4a4a4a"
+    helipad: "#bbbbbb",
+    gate: "#bbbbbb",
+    runway: "#bbbbbb",
+    taxiway: "#bbbbbb",
+    aerodrome: "#e6e6e6"
   },
   Water: {
     ocean: "#c9c9c9",
@@ -10875,7 +10875,7 @@ var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
         version: '1.1.0',
         crs: L__default["default"].CRS.EPSG3005,
         tiled: true,
-        buffer: 0,
+        buffer: 2,
         formatOptions: 'dpi:300;antialiasing:off'
       };
       return /*#__PURE__*/React__default["default"].createElement(GenericVectorBaseMap, _extends({
