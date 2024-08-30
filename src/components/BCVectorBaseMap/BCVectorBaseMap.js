@@ -56,7 +56,7 @@ export default class BCVectorBaseMap extends PureComponent {
             version: '1.1.0',
             crs: L.CRS.EPSG3005,
             tiled: true,
-            buffer: 2,
+            buffer: 0,
             formatOptions: 'dpi:300;antialiasing:off',
         };
         return (

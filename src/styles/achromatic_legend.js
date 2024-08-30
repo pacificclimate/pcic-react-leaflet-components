@@ -1,24 +1,24 @@
 export default {
     Boundary: {
         Level_2: {
-            color: "#a3a3a3",
+            color: "#1a1a1a",
             weight: 2,
             fill: false
         },
         Level_2_disputed: {
-            color: "#a3a3a3",
+            color: "#1a1a1a",
             weight: 2,
             fill: false,
             dashArray: "5, 5"
         },
         Level_4: {
-            color: "#8c8c8c",
+            color: "#2e2e2e",
             weight: 1.6,
             fill: false,
             dashArray: "5, 5"
         },
         Level_6: {
-            color: "#8c8c8c",
+            color: "#424242",
             weight: 1,
             fill: false,
             dashArray: "3, 3"
@@ -26,36 +26,36 @@ export default {
     },
     Landcover: {
         glacier: "#fdfdfd",
-        forest: "#d9d9d9",
-        farmland: "#e6e6e6",
-        rock: "#8f8f8f",
-        sand: "#e6e6e6"
+        forest: "#565656",
+        farmland: "#6a6a6a",
+        rock: "#2e2e2e",
+        sand: "#7e7e7e"
     },
     Landuse: {
-        residentialAndCommunity: "#e6e6e6",
-        commercialAndPublicServices: "#d9d9d9",
-        specialAndInfrastructure: "#f0f0f0"
+        residentialAndCommunity: "#5c5c5c",
+        commercialAndPublicServices: "#424242",
+        specialAndInfrastructure: "#707070"
     },
     Park: {
-        default: "#d9d9d9"
+        default: "#4a4a4a"
     },
     Transportation: {
-        motorway: "#b3b3b3",
-        trunk: "#e6e6e6",
-        primary: "#d9d9d9",
-        secondary: "#ffffff",
-        tertiary: "#ffffff",
-        minor: "#ffffff",
-        path: "#aaaaaa",
-        network_us: "#d9d9d9",
-        network_ca: "#b3b3b3"
+        motorway: "#1a1a1a",
+        trunk: "#2e2e2e",
+        primary: "#424242",
+        secondary: "#565656",
+        tertiary: "#6a6a6a",
+        minor: "#7e7e7e",
+        path: "#3a3a3a",
+        network_us: "#2e2e2e",
+        network_ca: "#1a1a1a"
     },
     Aeroway: {
-        helipad: "#bbbbbb",
-        gate: "#bbbbbb",
-        runway: "#bbbbbb",
-        taxiway: "#bbbbbb",
-        aerodrome: "#e6e6e6"
+        helipad: "#424242",
+        gate: "#565656",
+        runway: "#2e2e2e",
+        taxiway: "#424242",
+        aerodrome: "#4a4a4a"
     },
     Water: {
         ocean: "#c9c9c9",
