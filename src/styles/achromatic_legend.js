@@ -58,15 +58,15 @@ export default {
         aerodrome: "#b8b8b8"
     },
     Water: {
-        ocean: "#c9c9c9",
-        river: "#c9c9c9",
-        lake: "#c9c9c9",
-        pond: "#c9c9c9",
-        swimming_pool: "#c9c9c9"
+        ocean: "#b0b0b0",
+        river: "#b0b0b0",
+        lake: "#b0b0b0",
+        pond: "#b0b0b0",
+        swimming_pool: "#b0b0b0"
     },
     Waterway: {
-        stream: "#c9c9c9",
-        river: "#c9c9c9",
-        canal: "#c9c9c9"
+        stream: "#b0b0b0",
+        river: "#b0b0b0",
+        canal: "#b0b0b0"
     }
 };
