@@ -26,47 +26,47 @@ export default {
     },
     Landcover: {
         glacier: "#fdfdfd",
-        forest: "#ababab",
-        farmland: "#c4c4c4",
+        forest: "#d9d9d9",
+        farmland: "#e6e6e6",
         rock: "#8f8f8f",
-        sand: "#c4c4c4"
+        sand: "#e6e6e6"
     },
     Landuse: {
-        residentialAndCommunity: "#c4c4c4",
-        commercialAndPublicServices: "#ababab",
-        specialAndInfrastructure: "#d8d8d8"
+        residentialAndCommunity: "#e6e6e6",
+        commercialAndPublicServices: "#d9d9d9",
+        specialAndInfrastructure: "#f0f0f0"
     },
     Park: {
-        default: "#ababab"
+        default: "#d9d9d9"
     },
     Transportation: {
         motorway: "#666666",
         trunk: "#787878",
         primary: "#8a8a8a",
-        secondary: "#9c9c9c",
-        tertiary: "#aeaeae",
-        minor: "#c0c0c0",
-        path: "#949494",
+        secondary: "#ffffff",
+        tertiary: "#ffffff",
+        minor: "#ffffff",
+        path: "#aaaaaa",
         network_us: "#787878",
         network_ca: "#666666"
     },
     Aeroway: {
         helipad: "#9c9c9c",
-        gate: "#9c9c9c",
-        runway: "#9c9c9c",
+        gate: "#aeaeae",
+        runway: "#878787",
         taxiway: "#9c9c9c",
         aerodrome: "#b8b8b8"
     },
     Water: {
-        ocean: "#b3b3b3",
-        river: "#b3b3b3",
-        lake: "#b3b3b3",
-        pond: "#b3b3b3",
-        swimming_pool: "#b3b3b3"
+        ocean: "#c9c9c9",
+        river: "#c9c9c9",
+        lake: "#c9c9c9",
+        pond: "#c9c9c9",
+        swimming_pool: "#c9c9c9"
     },
     Waterway: {
-        stream: "#b3b3b3",
-        river: "#b3b3b3",
-        canal: "#b3b3b3"
+        stream: "#c9c9c9",
+        river: "#c9c9c9",
+        canal: "#c9c9c9"
     }
 };
