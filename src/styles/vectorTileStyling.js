@@ -1,19 +1,23 @@
-import legend from './legends.js';
+import legend from './legendSelector.js';
+
+const defaultStyle = {
+  fill: true,
+  fillOpacity: 1,
+  weight: 0
+};
 
 const vectorTileStyling = {
   boundary: function (properties, zoom) {
     if (zoom < 6 || zoom > 14) return [];
 
     const BoundaryStyle = legend.Boundary;
-    const adminLevel = properties.admin_level;
-    const isMaritime = properties.maritime;
-    const isDisputed = properties.disputed;
+    const { admin_level, maritime, disputed } = properties;
 
-    if (adminLevel == 4) return [BoundaryStyle.Level_4];
-    if (adminLevel == 6 && zoom >= 10) return [BoundaryStyle.Level_6];
-    if (adminLevel >= 3 && !isMaritime) return [];
-    if (adminLevel < 3 && isDisputed) return [BoundaryStyle.Level_2_disputed];
-    if (adminLevel < 3 && !isDisputed) return [BoundaryStyle.Level_2];
+    if (admin_level == 4) return [BoundaryStyle.Level_4];
+    if (admin_level == 6 && zoom >= 10) return [BoundaryStyle.Level_6];
+    if (admin_level >= 3 && !maritime) return [];
+    if (admin_level < 3 && disputed) return [BoundaryStyle.Level_2_disputed];
+    if (admin_level < 3 && !disputed) return [BoundaryStyle.Level_2];
 
     return [];
   },
@@ -28,15 +32,15 @@ const vectorTileStyling = {
     const landcoverSubClass = properties.subclass;
 
     if (forestClasses.includes(landcoverClass) || forestClasses.includes(landcoverSubClass))
-      return [{ color: legend.Landcover.forest, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landcover.forest, ...defaultStyle }];
     if (grassClasses.includes(landcoverClass) && zoom >= 8)
-      return [{ color: legend.Landcover.farmland, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landcover.farmland, ...defaultStyle }];
     if (glacierClasses.includes(landcoverClass))
-      return [{ color: legend.Landcover.glacier, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landcover.glacier, ...defaultStyle }];
     if (landcoverClass === 'rock' && zoom >= 10)
-      return [{ color: legend.Landcover.rock, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landcover.rock, ...defaultStyle }];
     if (landcoverClass === 'sand' && zoom >= 10)
-      return [{ color: legend.Landcover.sand, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landcover.sand, ...defaultStyle }];
 
     return [];
   },
@@ -50,11 +54,11 @@ const vectorTileStyling = {
     const specialClasses = ['railway', 'cemetery', 'military', 'garages', 'dam', 'quarry'];
 
     if (residentialClasses.includes(landuseClass))
-      return [{ color: legend.Landuse.residentialAndCommunity, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landuse.residentialAndCommunity, ...defaultStyle }];
     if (commercialClasses.includes(landuseClass))
-      return [{ color: legend.Landuse.commercialAndPublicServices, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landuse.commercialAndPublicServices, ...defaultStyle }];
     if (specialClasses.includes(landuseClass))
-      return [{ color: legend.Landuse.specialAndInfrastructure, fill: true, fillOpacity: 1, weight: 0 }];
+      return [{ color: legend.Landuse.specialAndInfrastructure, ...defaultStyle }];
 
     return [];
   },
@@ -68,9 +72,7 @@ const vectorTileStyling = {
       {
         color: legend.Park.default,
         fillColor: legend.Park.default,
-        fillOpacity: 1,
-        fill: true,
-        weight: 0
+        ...defaultStyle
       }];
   },
 
@@ -118,9 +120,7 @@ const vectorTileStyling = {
       {
         color: legend.Water[waterClass],
         fillColor: legend.Water[waterClass],
-        fillOpacity: 1,
-        fill: true,
-        weight: 0
+        ...defaultStyle
       }
     ] || [];
   },
@@ -134,9 +134,7 @@ const vectorTileStyling = {
       {
         color: legend.Waterway[waterwayClass],
         fillColor: legend.Waterway[waterwayClass],
-        fillOpacity: 1,
-        fill: true,
-        weight: 0
+        ...defaultStyle
       }
     ] || [];
   }

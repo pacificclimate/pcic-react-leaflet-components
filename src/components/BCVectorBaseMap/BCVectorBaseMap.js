@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import GenericVectorBaseMap from '../GenericVectorBaseMap';
-import vectorTileStyling from '../../styles/3005.js';
+import vectorTileStyling from '../../styles/vectorTileStyling.js';
 import L from 'leaflet';
 
 export default class BCVectorBaseMap extends PureComponent {
