@@ -16,11 +16,8 @@ const wmsLayerOptions = {
     tiled: true,
     buffer: 2,
     formatOptions: 'dpi:300;antialiasing:off',
+    zIndex: REACT_APP_LEGEND_TYPE === 'achromatic' ? 100 : undefined,
 };
-
-if (REACT_APP_LEGEND_TYPE === "achromatic") {
-    wmsLayerOptions.zIndex = 100; // Display labels above all other layers.
-}
 
 const tileset = {
     url: REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
@@ -40,11 +37,38 @@ const tileset = {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 };
 
+const vectorTileOptions = {
+    rendererFactory: L.canvas.tile,
+    interactive: false,
+    tolerance: (zoom) => {
+        if (zoom < 10) return 4;
+        if (zoom < 14) return 2;
+        return 1;
+    },
+    getFeatureId: (feature) => feature.properties.id,
+
+    // Not included in vector style below:
+    // - omt_place,               - omt_aeroway,
+    // - omt_aerodrome_label,     - omt_building,
+    // - omt_poi,                 - omt_mountain_peak,
+    // - omt_transportation_name, - omt_water_name.
+    vectorTileLayerStyles: {
+        omt_park: vectorTileStyling.park,
+        omt_landcover: vectorTileStyling.landcover,
+        omt_water: vectorTileStyling.water,
+        omt_boundary: vectorTileStyling.boundary,
+        omt_landuse: vectorTileStyling.landuse,
+        omt_waterway: vectorTileStyling.waterway,
+        omt_aeroway: vectorTileStyling.aeroway,
+        omt_transportation: vectorTileStyling.transportation,
+    },
+};
+
 const BCVectorBaseMap = React.memo(({ mapRef = () => null, children, ...rest }) => {
     return (
         <GenericVectorBaseMap
             tileset={tileset}
-            vectorTileStyling={vectorTileStyling}
+            vectorTileOptions={vectorTileOptions}
             wmsUrl={REACT_APP_LABELS_WMS_URL}
             wmsLayerOptions={wmsLayerOptions}
             mapRef={mapRef}
@@ -54,6 +78,7 @@ const BCVectorBaseMap = React.memo(({ mapRef = () => null, children, ...rest }) 
         </GenericVectorBaseMap>
     );
 });
+
 BCVectorBaseMap.displayName = 'BCVectorBaseMap';
 
 BCVectorBaseMap.propTypes = {

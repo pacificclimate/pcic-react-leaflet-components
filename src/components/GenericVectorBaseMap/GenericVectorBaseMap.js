@@ -14,7 +14,7 @@ const GenericVectorBaseMap = ({
     center,
     zoom,
     mapRef,
-    vectorTileStyling,
+    vectorTileOptions,
     wmsUrl,
     wmsLayerOptions,
     children,
@@ -39,7 +39,7 @@ const GenericVectorBaseMap = ({
         >
             <VectorGridLayer
                 tilesUrl={url}
-                vectorTileStyling={vectorTileStyling}
+                vectorTileOptions={vectorTileOptions}
                 {...rest}
             />
             <WMSTileLayer
@@ -67,7 +67,7 @@ GenericVectorBaseMap.propTypes = {
     }).isRequired,
     zoom: PropTypes.number.isRequired,
     mapRef: PropTypes.func,
-    vectorTileStyling: PropTypes.object.isRequired,
+    vectorTileOptions: PropTypes.object.isRequired,
     wmsUrl: PropTypes.string.isRequired,
     wmsLayerOptions: PropTypes.shape({
         layers: PropTypes.string,
