@@ -10299,6 +10299,14 @@ var LabelsLayer = function LabelsLayer(_ref) {
       wmsOptions = _ref.wmsOptions;
   var map = reactLeaflet.useMap();
   React.useEffect(function () {
+    var legendName = process.env.REACT_APP_LEGEND_TYPE;
+
+    if (legendName == "achromatic") {
+      wmsOptions = _objectSpread2(_objectSpread2({}, wmsOptions), {}, {
+        zIndex: 100
+      }); // Display labels above all other layers.
+    }
+
     var wmsLayer = L__default["default"].tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
     return function () {
       map.removeLayer(wmsLayer);
@@ -10792,69 +10800,24 @@ var vectorTileStyling = {
   }
 };
 
-var _excluded$3 = ["children"];
-
-var BCVectorBaseMap = /*#__PURE__*/function (_PureComponent) {
-  _inherits(BCVectorBaseMap, _PureComponent);
-
-  var _super = _createSuper(BCVectorBaseMap);
-
-  function BCVectorBaseMap() {
-    _classCallCheck(this, BCVectorBaseMap);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(BCVectorBaseMap, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          children = _this$props.children,
-          rest = _objectWithoutProperties(_this$props, _excluded$3);
-
-      var wmsLayerOptions = {
-        service: "WMS",
-        layers: 'OMT-NA-TEXT-ZF-LG',
-        //OpenMapTiles, North America, Text only, Zoom filtered, Layer group
-        format: 'image/png8',
-        transparent: true,
-        version: '1.1.0',
-        crs: L__default["default"].CRS.EPSG3005,
-        tiled: true,
-        buffer: 2,
-        formatOptions: 'dpi:300;antialiasing:off'
-      };
-      return /*#__PURE__*/React__default["default"].createElement(GenericVectorBaseMap, _extends({
-        tileset: BCVectorBaseMap.tileset,
-        vectorTileStyling: vectorTileStyling,
-        wmsUrl: process.env.REACT_APP_LABELS_WMS_URL,
-        wmsLayerOptions: wmsLayerOptions
-      }, rest), children);
-    }
-  }]);
-
-  return BCVectorBaseMap;
-}(React.PureComponent);
-
-_defineProperty$1(BCVectorBaseMap, "propTypes", {
-  center: propTypes.exports.shape({
-    lat: propTypes.exports.number.isRequired,
-    lng: propTypes.exports.number.isRequired
-  }).isRequired,
-  zoom: propTypes.exports.number.isRequired,
-  minZoom: propTypes.exports.number,
-  maxZoom: propTypes.exports.number,
-  mapRef: propTypes.exports.func
-});
-
-_defineProperty$1(BCVectorBaseMap, "defaultProps", {
-  mapRef: function mapRef() {
-    return null;
-  }
-});
-
-_defineProperty$1(BCVectorBaseMap, "tileset", {
-  url: process.env.REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
+var _excluded$3 = ["mapRef", "children"];
+var _process$env = process.env,
+    REACT_APP_LABELS_WMS_URL = _process$env.REACT_APP_LABELS_WMS_URL,
+    REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL = _process$env.REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL;
+var wmsLayerOptions = {
+  service: "WMS",
+  layers: 'OMT-NA-TEXT-ZF-LG',
+  //OpenMapTiles, North America, Text only, Zoom filtered, Layer group
+  format: 'image/png8',
+  transparent: true,
+  version: '1.1.0',
+  crs: L__default["default"].CRS.EPSG3005,
+  tiled: true,
+  buffer: 2,
+  formatOptions: 'dpi:300;antialiasing:off'
+};
+var tileset = {
+  url: REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
   projection: {
     code: 'EPSG:3005',
     proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs'
@@ -10869,15 +10832,41 @@ _defineProperty$1(BCVectorBaseMap, "tileset", {
     numResolutions: 14
   },
   attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-});
+};
+var BCVectorBaseMap = /*#__PURE__*/React__default["default"].memo(function (_ref) {
+  var _ref$mapRef = _ref.mapRef,
+      mapRef = _ref$mapRef === void 0 ? function () {
+    return null;
+  } : _ref$mapRef,
+      children = _ref.children,
+      rest = _objectWithoutProperties(_ref, _excluded$3);
 
-_defineProperty$1(BCVectorBaseMap, "initialViewport", {
+  return /*#__PURE__*/React__default["default"].createElement(GenericVectorBaseMap, _extends({
+    tileset: tileset,
+    vectorTileStyling: vectorTileStyling,
+    wmsUrl: REACT_APP_LABELS_WMS_URL,
+    wmsLayerOptions: wmsLayerOptions,
+    mapRef: mapRef
+  }, rest), children);
+});
+BCVectorBaseMap.displayName = 'BCVectorBaseMap';
+BCVectorBaseMap.propTypes = {
+  center: propTypes.exports.shape({
+    lat: propTypes.exports.number.isRequired,
+    lng: propTypes.exports.number.isRequired
+  }).isRequired,
+  zoom: propTypes.exports.number.isRequired,
+  minZoom: propTypes.exports.number,
+  maxZoom: propTypes.exports.number,
+  mapRef: propTypes.exports.func
+};
+BCVectorBaseMap.initialViewport = {
   center: {
     lat: 55.0,
     lng: -125
   },
   zoom: 6
-});
+};
 
 var _excluded$2 = ["children"];
 
