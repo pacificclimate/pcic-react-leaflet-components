@@ -8,82 +8,8 @@ import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
 
-const LabelsLayer = ({ wmsUrl, wmsOptions }) => {
-    const map = useMap();
-
-    useEffect(() => {
-        const wmsLayer = L.tileLayer.wms(wmsUrl, wmsOptions).addTo(map);
-        return () => {
-            map.removeLayer(wmsLayer);
-        };
-    }, [map]);
-
-    return null;
-};
-
-const VectorGridLayer = ({ tilesUrl, vectorTileStyling, zoom, center, crs, wmsUrl, wmsOptions }) => {
-
-    const map = useMap();
-
-
-    useEffect(() => {
-        const vectorTileOptions = {
-            rendererFactory: L.canvas.tile,
-            interactive: false,
-            tolerance: function (zoom) {
-                if (zoom < 10) return 4;
-                if (zoom < 14) return 2;
-                return 1;
-            },
-            getFeatureId: (feature) => feature.properties.id,
-            /* Not included in vector style below:
-              - omt_place,
-              - omt_aeroway,
-              - omt_aerodrome_label,
-              - omt_building,
-              - omt_poi,
-              - omt_mountain_peak,
-              - omt_transportation_name,
-              - omt_water_name.
-            */
-            vectorTileLayerStyles: {
-                omt_park: vectorTileStyling.park,
-                omt_landcover: vectorTileStyling.landcover,
-                omt_water: vectorTileStyling.water,
-                omt_boundary: vectorTileStyling.boundary,
-                omt_landuse: vectorTileStyling.landuse,
-                omt_waterway: vectorTileStyling.waterway,
-                omt_aeroway: vectorTileStyling.aeroway,
-                omt_transportation: vectorTileStyling.transportation,
-
-            }
-        };
-
-        try {
-            const vectorGrid = L.vectorGrid.protobuf(tilesUrl, vectorTileOptions).addTo(map);
-            return () => {
-                map.removeLayer(vectorGrid);
-            };
-        } catch (error) {
-            console.error('Error setting up vector grid:', error);
-        }
-    }, [map]);
-
-    return null;
-};
-
-VectorGridLayer.propTypes = {
-    tilesUrl: PropTypes.string.isRequired,
-    vectorTileStyling: PropTypes.object.isRequired,
-    zoom: PropTypes.number.isRequired,
-    center: PropTypes.shape({
-        lat: PropTypes.number.isRequired,
-        lng: PropTypes.number.isRequired
-    }).isRequired,
-    crs: PropTypes.instanceOf(L.CRS).isRequired,
-    wmsUrl: PropTypes.string.isRequired,
-    wmsOptions: PropTypes.object.isRequired,
-};
+import LabelsLayer from './LabelsLayer';
+import VectorGridLayer from './VectorGridLayer';
 
 const GenericVectorBaseMap = ({
     tileset: { url, projection, tileMatrix },
@@ -104,7 +30,7 @@ const GenericVectorBaseMap = ({
 
     return (
         <MapContainer
-            style={{ backgroundColor: '#EEEEEE' }} // alternative?:'#e7e5cf'
+            style={{ backgroundColor: '#EEEEEE' }} 
             crs={crs}
             minZoom={0}
             maxZoom={tileMatrix.numResolutions}
@@ -116,11 +42,6 @@ const GenericVectorBaseMap = ({
             <VectorGridLayer
                 tilesUrl={url}
                 vectorTileStyling={vectorTileStyling}
-                zoom={zoom}
-                center={center}
-                crs={crs}
-                wmsUrl={wmsUrl}
-                wmsOptions={wmsLayerOptions}
                 {...rest}
             />
             <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
