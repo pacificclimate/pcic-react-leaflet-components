@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { MapContainer, useMap } from 'react-leaflet';
+import { MapContainer, useMap, WMSTileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.vectorgrid';
 import L from 'leaflet';
 import 'proj4';
 import 'proj4leaflet';
 import { projCRSOptions } from '../../utils/crs';
-
-import LabelsLayer from './LabelsLayer';
 import VectorGridLayer from './VectorGridLayer';
 
 const GenericVectorBaseMap = ({
@@ -30,7 +28,7 @@ const GenericVectorBaseMap = ({
 
     return (
         <MapContainer
-            style={{ backgroundColor: '#EEEEEE' }} 
+            style={{ backgroundColor: '#EEEEEE' }}
             crs={crs}
             minZoom={0}
             maxZoom={tileMatrix.numResolutions}
@@ -44,7 +42,10 @@ const GenericVectorBaseMap = ({
                 vectorTileStyling={vectorTileStyling}
                 {...rest}
             />
-            <LabelsLayer wmsUrl={wmsUrl} wmsOptions={wmsLayerOptions} {...rest} />
+            <WMSTileLayer
+                url={wmsUrl}
+                {...wmsLayerOptions}
+            />
             {children}
         </MapContainer>
     );

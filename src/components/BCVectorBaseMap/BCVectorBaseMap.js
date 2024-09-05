@@ -4,7 +4,7 @@ import L from 'leaflet';
 import GenericVectorBaseMap from '../GenericVectorBaseMap';
 import vectorTileStyling from '../../styles/vectorTileStyling.js';
 
-const { REACT_APP_LABELS_WMS_URL, REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL } = process.env;
+const { REACT_APP_LABELS_WMS_URL, REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL, REACT_APP_LEGEND_TYPE } = process.env;
 
 const wmsLayerOptions = {
     service: "WMS",
@@ -17,6 +17,10 @@ const wmsLayerOptions = {
     buffer: 2,
     formatOptions: 'dpi:300;antialiasing:off',
 };
+
+if (REACT_APP_LEGEND_TYPE === "achromatic") {
+    wmsLayerOptions.zIndex = 100; // Display labels above all other layers.
+}
 
 const tileset = {
     url: REACT_APP_BC_VECTOR_BASE_MAP_TILES_URL,
