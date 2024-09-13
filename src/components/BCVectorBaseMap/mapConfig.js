@@ -38,11 +38,6 @@ export const tileset = {
 export const vectorTileOptions = {
     rendererFactory: L.canvas.tile,
     interactive: false,
-    tolerance: (zoom) => {
-        if (zoom < 10) return 4;
-        if (zoom < 14) return 2;
-        return 1;
-    },
     getFeatureId: (feature) => feature.properties.id,
 
     // Not included in vector style below:

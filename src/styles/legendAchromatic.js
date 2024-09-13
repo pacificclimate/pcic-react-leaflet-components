@@ -40,7 +40,7 @@ export default {
         default: "#d9d9d9"
     },
     Transportation: {
-        motorway: "#666666",
+        motorway: "#2c2c2c",
         trunk: "#787878",
         primary: "#8a8a8a",
         secondary: "#ffffff",
@@ -59,14 +59,14 @@ export default {
     },
     Water: {
         ocean: "#b0b0b0",
-        river: "#b0b0b0",
-        lake: "#b0b0b0",
-        pond: "#b0b0b0",
+        river: "#464646",
+        lake: "#464646",
+        pond: "#464646",
         swimming_pool: "#b0b0b0"
     },
     Waterway: {
-        stream: "#b0b0b0",
-        river: "#b0b0b0",
-        canal: "#b0b0b0"
+        stream: "#464646",
+        river: "#464646",
+        canal: "#464646"
     }
 };
