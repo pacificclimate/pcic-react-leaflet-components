@@ -88,9 +88,9 @@ const vectorTileStyling = {
     if (transportationClass === 'motorway') return [{ color: legend.Transportation.motorway, weight: zoom < 7 ? 0.8 : (zoom < 8 ? 1.2 : 2) }];
     if (transportationClass === 'trunk' && zoom >= 8) return [{ color: legend.Transportation.trunk, weight: 1.6 }];
     if (transportationClass === 'secondary' && zoom >= 10) return [{ color: legend.Transportation.secondary, weight: 1.2 }];
-    if (transportationClass === 'tertiary' && zoom >= 13) return [{ color: legend.Transportation.tertiary, weight: 1.0 }];
-    if (transportationClass === 'minor' && zoom > 14) return [{ color: legend.Transportation.minor, weight: 0.8 }];
-    if (transportationClass === 'path' && zoom > 14) return [{ color: legend.Transportation.path, weight: 0.6 }];
+    if (transportationClass === 'tertiary' && zoom >= 10) return [{ color: legend.Transportation.tertiary, weight: 1.2 }];
+    if (transportationClass === 'minor' && zoom > 11) return [{ color: legend.Transportation.minor, weight: 1.1 }];
+    if (transportationClass === 'path' && zoom > 12) return [{ color: legend.Transportation.path, weight: 1.0 }];
 
     return [];
   },

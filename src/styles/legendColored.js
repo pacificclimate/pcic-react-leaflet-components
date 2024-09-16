@@ -43,9 +43,9 @@ export default {
     motorway: "#fe9e9e",
     trunk: "#feef95",
     primary: "#fec784",
-    secondary: "#ffffff",
-    tertiary: "#ffffff",
-    minor: "#ffffff",
+    secondary: "#aaaaaa",
+    tertiary: "#aaaaaa",
+    minor: "#aaaaaa",
     path: "#aaaaaa",
     network_us: "#FCA1FD",
     network_ca: "#FF7B9B"
