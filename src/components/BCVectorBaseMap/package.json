@@ -1,0 +1,6 @@
+{
+    "name": "BCVectorBaseMap",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./BCVectorBaseMap.js"
+}

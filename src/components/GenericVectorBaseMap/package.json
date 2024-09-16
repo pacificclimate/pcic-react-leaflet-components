@@ -1,0 +1,6 @@
+{
+    "name": "GenericVectorBaseMap",
+    "version": "0.0.0",
+    "private": true,
+    "main": "./GenericVectorBaseMap.js"
+}
