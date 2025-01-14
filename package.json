@@ -1,6 +1,6 @@
 {
   "name": "pcic-react-leaflet-components",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
@@ -24,7 +24,7 @@
     "i-pg": "cd playground && npm i",
     "i-all": "npm i && cd playground && npm i",
     "rei-all": "(rm -rf node_modules ; npm i) && (cd playground && rm -rf node_modules ; npm i)",
-    "dev": "npm-run-all --parallel build-watch start-playground",
+    "dev": "npm-run-all --parallel build-watch start-pg",
     "start": "react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -25,7 +25,7 @@ function DemoStaticControl() {
               <Form.Select value={position} onChange={handleChangePosition}>
                 {
                   "topleft topright bottomleft bottomright".split(" ").map(
-                    pos => (<option value={pos}>{pos}</option>)
+                    pos => (<option key={pos} value={pos}>{pos}</option>)
                   )
                 }
               </Form.Select>

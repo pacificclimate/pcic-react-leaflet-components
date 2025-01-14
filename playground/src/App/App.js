@@ -23,6 +23,7 @@ const navSpec = [
         initialViewport={BCBaseMap.initialViewport}
         numMaps={2}
         markers={markers}
+        baseMapTilesUrl="https://swarm.pacificclimate.org/tiles/bc-albers-lite/{z}/{x}/{y}.png"
       />
     ),
   },
@@ -35,6 +36,7 @@ const navSpec = [
         initialViewport={YNWTBaseMap.initialViewport}
         numMaps={2}
         markers={markers}
+        baseMapTilesUrl="https://swarm.pacificclimate.org/tiles/yukon-albers-lite/{z}/{x}/{y}.png"
       />
     ),
   },

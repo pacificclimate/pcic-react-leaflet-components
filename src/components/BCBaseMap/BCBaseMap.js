@@ -26,6 +26,8 @@ export default class BCBaseMap extends PureComponent {
     mapRef: PropTypes.func,
     // Callback to which a ref to the Map component is passed.
     // Allows parent components to diddle with the map established here.
+
+    baseMapTilesUrl: PropTypes.string,
   };
 
   static defaultProps = {
@@ -62,7 +64,8 @@ export default class BCBaseMap extends PureComponent {
   };
 
   render() {
-    const { children, ...rest } = this.props;
+    const { children, baseMapTilesUrl, ...rest } = this.props;
+    BCBaseMap.tileset.url = baseMapTilesUrl || BCBaseMap.tileset.url || 'https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png';
     return (
       <GenericBaseMap tileset={BCBaseMap.tileset} {...rest}>
         {children}
