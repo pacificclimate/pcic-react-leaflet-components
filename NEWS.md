@@ -1,5 +1,9 @@
 # News / Release Notes
 
+## 3.1.0
+
+- [Allow tile url to be passed as a prop](https://github.com/pacificclimate/pcic-react-leaflet-components/pull/25)
+
 ## 3.0.1
 
 *2022-Jul-15*
