@@ -40,5 +40,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "24.x",
+    "npm": "12.x"
+  },
+  "allowScripts": {
+    "core-js": true,
+    "core-js-pure": true
   }
 }
