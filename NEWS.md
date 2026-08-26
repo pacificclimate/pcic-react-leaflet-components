@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 3.3.0
+
+*2026-08-26*
+
+- [Node 24 npm 12 security policy](https://github.com/pacificclimate/pcic-react-leaflet-components/pull/28)
+
 ## 3.2.0
 
 *2025-01-14*
