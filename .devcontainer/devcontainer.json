@@ -9,6 +9,7 @@
     "ghcr.io/devcontainers/features/node:1": { "version": "24" },
     "ghcr.io/devcontainers/features/docker-in-docker:2.11.0": {}
   },
+  "initializeCommand": "mkdir -p ${localEnv:HOME}/.claude && touch ${localEnv:HOME}/.claude.json",
   "postCreateCommand": "bash ./.devcontainer/post-install.sh",
   "postStartCommand": "bash ./.devcontainer/post-start.sh",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -24,7 +25,19 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
       }
     }
-  }
+  },
+  "runArgs": [
+    // give a nicer name to the container
+    "--name",
+    "${localEnv:USER}_prlc"
+  ],
+  "mounts": [
+    // Claude Code's config directory -- skills, plugins, agents, session
+    // history -- and its settings file, so they persist into the container
+    // instead of starting fresh each time.
+    "source=${localEnv:HOME}/.claude,target=/home/vscode/.claude,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.claude.json,target=/home/vscode/.claude.json,type=bind,consistency=cached"
+  ]
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
 }
