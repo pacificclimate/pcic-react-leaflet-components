@@ -10,6 +10,7 @@
 
 # production
 /build
+/playground/public/tiles/eez/
 
 # misc
 .DS_Store

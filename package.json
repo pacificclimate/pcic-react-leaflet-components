@@ -25,7 +25,7 @@
     "i-all": "npm ci && cd playground && npm ci",
     "rei-all": "npm ci && cd playground && npm ci",
     "dev": "npm-run-all --parallel build-watch start-pg",
-    "start": "react-scripts start",
+    "start": "npm run start-pg",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
