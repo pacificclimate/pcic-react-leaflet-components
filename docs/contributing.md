@@ -27,6 +27,25 @@ stored in the `dist/` directory.
    This compiles the library and runs the demonstration app, which will
    open at `localhost:3000`.
 
+### Local EEZ data for the playground
+
+The EEZ GeoJSON is deliberately not committed to this repository. To display
+the EEZ overlay in the playground, create this developer-local symlink after
+cloning the repository:
+
+```bash
+mkdir -p playground/public/tiles/eez
+ln -s \
+  /storage/.../swarm_files/dev/dev-tileserver-webp/tilestore/eez/eez_boundaries_canada_v12.geojson \
+  playground/public/tiles/eez/eez_boundaries_canada_v12.geojson
+```
+
+`playground/public/tiles/eez/` is ignored by Git, so neither the data nor the
+machine-specific symlink is committed. The playground loads it through the
+same-origin path `/tiles/eez/eez_boundaries_canada_v12.geojson`, avoiding a
+CORS requirement. Production applications should instead pass their hosted
+Services URL to `EEZLayer`'s `url` prop.
+
 ### Notes and caveats
 
 1. The development framework copied from the article looks as if it should

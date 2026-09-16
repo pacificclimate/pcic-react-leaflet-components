@@ -58,6 +58,24 @@ Children of this component are rendered inside the `MapContainer`.
 a particular `tileset`. See those components for examples of how to use
 this one.
 
+### Component `EEZLayer`
+
+Fetches and displays Canada's exclusive economic zone boundaries as an
+optional GeoJSON overlay. Render it as a child of a base map; it is not part
+of the raster tile set. It defaults to the EEZ GeoJSON hosted on Beehive;
+production applications can override this with their Services URL via the
+`url` prop. The GeoJSON must use WGS84 (EPSG:4326) coordinates; Leaflet
+projects it into the containing map's CRS. The default attribution identifies
+the Flanders Marine Institute World EEZ v12 source and its CC BY 4.0 license.
+
+```jsx
+import { BCBaseMap, EEZLayer } from 'pcic-react-leaflet-components';
+
+<BCBaseMap center={BCBaseMap.initialViewport.center} zoom={6}>
+  <EEZLayer url={window.env.REACT_APP_EEZ_GEOJSON_URL} />
+</BCBaseMap>
+```
+
 ### Tile server URLs
 
 A tile server URL must be a complete, valid Leaflet

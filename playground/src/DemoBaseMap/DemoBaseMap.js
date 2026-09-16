@@ -6,7 +6,11 @@ import { CircleMarker, LayerGroup, Popup } from 'react-leaflet';
 import map from 'lodash/fp/map';
 import range from 'lodash/fp/range';
 
-import { callbackOnMapEvents, SetView } from 'pcic-react-leaflet-components';
+import {
+  callbackOnMapEvents,
+  EEZLayer,
+  SetView,
+} from 'pcic-react-leaflet-components';
 
 import './DemoBaseMap.css';
 
@@ -54,6 +58,9 @@ function DemoBaseMap({ BaseMap, initialViewport, markers, numMaps, baseMapTilesU
               >
                 <SetView view={view} debug={true}/>
                 <UpdateViewState/>
+                <EEZLayer
+                  url="/tiles/eez/eez_boundaries_canada_v12.geojson"
+                />
                 <LayerGroup>
                   {
                     markers.map(
@@ -94,4 +101,3 @@ DemoBaseMap.defaultProps = {
 };
 
 export default DemoBaseMap;
-
