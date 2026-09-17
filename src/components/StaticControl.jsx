@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { useLeafletContext } from '@react-leaflet/core';
 import L from 'leaflet';
-import '../../leaflet-extensions/Control.Static';
+import '../leaflet-extensions/Control.Static.js';
 
 
 function StaticControl({ children, ...rest }) {

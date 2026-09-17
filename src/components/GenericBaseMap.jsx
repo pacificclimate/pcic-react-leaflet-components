@@ -12,7 +12,7 @@ import 'proj4';
 import 'proj4leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import { projCRSOptions } from '../../utils/crs';
+import { projCRSOptions } from '../utils/crs.js';
 
 
 function GenericBaseMap({

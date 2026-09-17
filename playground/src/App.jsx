@@ -4,14 +4,14 @@ import {
 } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import DemoBaseMap from '../DemoBaseMap';
+import DemoBaseMap from './DemoBaseMap.jsx';
 import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
-import { positions as markers } from '../markers';
+import { positions as markers } from './markers.js';
 
 import 'pcic-react-leaflet-components/src/leaflet-extensions/control-static.css';
-import Navigation from '../Navigation';
-import DemoStaticControl from '../DemoStaticControl';
-import DemoMapSpinner from '../DemoMapSpinner';
+import Navigation from './Navigation.jsx';
+import DemoStaticControl from './DemoStaticControl.jsx';
+import DemoMapSpinner from './DemoMapSpinner.jsx';
 
 const navSpec = [
   {
