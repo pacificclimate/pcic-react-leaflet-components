@@ -1,5 +1,11 @@
 # News / Release Notes
 
+## 3.4.0
+
+*2026-09-17*
+
+- [Add EEZ Layer](https://github.com/pacificclimate/pcic-react-leaflet-components/pull/30)
+
 ## 3.3.0
 
 *2026-08-26*
