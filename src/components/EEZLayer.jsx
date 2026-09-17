@@ -4,26 +4,24 @@
 // the CRS of the containing MapContainer, including the custom CRS used by the
 // base-map components in this package.
 
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { GeoJSON } from 'react-leaflet';
-
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { GeoJSON } from "react-leaflet";
 
 export const defaultEEZGeoJSONUrl =
-  'https://beehive.pacificclimate.org/tiles/eez/eez_boundaries_canada_v12.geojson';
+  "https://beehive.pacificclimate.org/tiles/eez/eez_boundaries_canada_v12.geojson";
 
 export const defaultEEZAttribution =
   '&copy; <a href="https://www.marineregions.org/">Flanders Marine Institute</a> ' +
   '(2023), <a href="https://doi.org/10.14284/632">World EEZ v12</a> (CC BY 4.0)';
 
 const defaultStyle = {
-  color: 'rgba(134, 161, 177, 0.4)',
+  color: "rgba(134, 161, 177, 0.4)",
   weight: 3,
-  lineJoin: 'round',
-  lineCap: 'round',
+  lineJoin: "round",
+  lineCap: "round",
   fill: false,
 };
-
 
 function EEZLayer({ url, style, attribution, onError, ...geoJSONProps }) {
   const [data, setData] = useState(null);
@@ -43,7 +41,7 @@ function EEZLayer({ url, style, attribution, onError, ...geoJSONProps }) {
       })
       .then((geoJSON) => setData(geoJSON))
       .catch((error) => {
-        if (error.name !== 'AbortError' && onError) {
+        if (error.name !== "AbortError" && onError) {
           onError(error);
         }
       });

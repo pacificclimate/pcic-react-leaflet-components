@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import { useEffect } from "react";
+import { createRoot } from "react-dom/client";
 
-import { useLeafletContext } from '@react-leaflet/core';
-import L from 'leaflet';
-import '../leaflet-extensions/Control.Static.js';
-
+import { useLeafletContext } from "@react-leaflet/core";
+import L from "leaflet";
+import "../leaflet-extensions/Control.Static.js";
 
 function StaticControl({ children, ...rest }) {
   const context = useLeafletContext();
@@ -22,6 +21,5 @@ function StaticControl({ children, ...rest }) {
 
   return null;
 }
-
 
 export default StaticControl;

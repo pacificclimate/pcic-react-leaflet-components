@@ -2,8 +2,8 @@
 
 ## Dependencies
 
-Package `pcic-react-leaflet-components` ver 2.0.0 and above has the following 
-peer dependencies. 
+Package `pcic-react-leaflet-components` ver 2.0.0 and above has the following
+peer dependencies.
 Client applications will need to install these as dependencies (or, possibly,
 peer dependencies).
 
@@ -17,7 +17,7 @@ peer dependencies).
 
 IMPORTANT: Note the exact (and out of date) version specifications for
 `@react-leaflet/core` and `react-leaflet`. This is a temporary (we sincerely
-hope) expedient to solve a 
+hope) expedient to solve a
 [known problem with React Leaflet](https://github.com/PaulLeCam/react-leaflet/issues/891); see, specifically,
 [this comment](https://github.com/PaulLeCam/react-leaflet/issues/891#issuecomment-924374035).
 
@@ -48,4 +48,3 @@ const App = ()  => {
 
 export default App;
 ```
-

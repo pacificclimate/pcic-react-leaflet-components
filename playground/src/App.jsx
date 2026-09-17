@@ -1,22 +1,25 @@
-import React from 'react';
+import React from "react";
 import {
-  BrowserRouter as Router, Route, Redirect, Switch
-} from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import { Container } from "react-bootstrap";
 
-import DemoBaseMap from './DemoBaseMap.jsx';
-import { BCBaseMap, YNWTBaseMap } from 'pcic-react-leaflet-components';
-import { positions as markers } from './markers.js';
+import DemoBaseMap from "./DemoBaseMap.jsx";
+import { BCBaseMap, YNWTBaseMap } from "pcic-react-leaflet-components";
+import { positions as markers } from "./markers.js";
 
-import 'pcic-react-leaflet-components/src/leaflet-extensions/control-static.css';
-import Navigation from './Navigation.jsx';
-import DemoStaticControl from './DemoStaticControl.jsx';
-import DemoMapSpinner from './DemoMapSpinner.jsx';
+import "pcic-react-leaflet-components/src/leaflet-extensions/control-static.css";
+import Navigation from "./Navigation.jsx";
+import DemoStaticControl from "./DemoStaticControl.jsx";
+import DemoMapSpinner from "./DemoMapSpinner.jsx";
 
 const navSpec = [
   {
-    label: 'BCBaseMap',
-    path: 'BCBaseMap',
+    label: "BCBaseMap",
+    path: "BCBaseMap",
     component: () => (
       <DemoBaseMap
         BaseMap={BCBaseMap}
@@ -28,8 +31,8 @@ const navSpec = [
     ),
   },
   {
-    label: 'YNWTBaseMap',
-    path: 'YNWTBaseMap',
+    label: "YNWTBaseMap",
+    path: "YNWTBaseMap",
     component: () => (
       <DemoBaseMap
         BaseMap={YNWTBaseMap}
@@ -41,31 +44,28 @@ const navSpec = [
     ),
   },
   {
-    label: 'StaticControl',
-    path: 'StaticControl',
+    label: "StaticControl",
+    path: "StaticControl",
     component: DemoStaticControl,
   },
   {
-    label: 'MapSpinner',
-    path: 'MapSpinner',
+    label: "MapSpinner",
+    path: "MapSpinner",
     component: DemoMapSpinner,
   },
 ];
-const defaultPath = 'BCBaseMap';
-
+const defaultPath = "BCBaseMap";
 
 export default function App() {
   return (
-    <Router basename={'/'}>
-      <Navigation spec={navSpec}/>
+    <Router basename={"/"}>
+      <Navigation spec={navSpec} />
       <Container fluid>
         <Switch>
-          {
-            navSpec.map(({path, component}) => (
-              <Route key={path} path={`/${path}`} component={component}/>
-            ))
-          }
-          <Redirect to={defaultPath}/>
+          {navSpec.map(({ path, component }) => (
+            <Route key={path} path={`/${path}`} component={component} />
+          ))}
+          <Redirect to={defaultPath} />
         </Switch>
       </Container>
     </Router>

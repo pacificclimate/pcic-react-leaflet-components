@@ -8,15 +8,14 @@
 //
 // Children of this component are rendered inside its <Map> component.
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
-import 'proj4';
-import 'proj4leaflet';
-import 'leaflet/dist/leaflet.css';
+import "proj4";
+import "proj4leaflet";
+import "leaflet/dist/leaflet.css";
 
-import GenericBaseMap from './GenericBaseMap.jsx';
-
+import GenericBaseMap from "./GenericBaseMap.jsx";
 
 export default class YNWTBaseMap extends PureComponent {
   static propTypes = {
@@ -31,17 +30,18 @@ export default class YNWTBaseMap extends PureComponent {
   };
 
   static defaultProps = {
-    mapRef: (() => null),
+    mapRef: () => null,
   };
 
   static tileset = {
     projection: {
-      code: 'EPSG:3578',
-      proj4def: '+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
+      code: "EPSG:3578",
+      proj4def:
+        "+proj=aea +lat_1=61.66666666666666 +lat_2=68 +lat_0=59 +lon_0=-132.5 +x_0=500000 +y_0=500000 +ellps=GRS80 +datum=NAD83 +units=m +no_defs",
     },
     tileMatrix: {
       // From the definition of the projection (SRS)
-      metersPerUnit: 1,  // Proj.4: +units=m
+      metersPerUnit: 1, // Proj.4: +units=m
 
       // From tile generation
       tileMatrixMinX: -20037508,
@@ -51,7 +51,8 @@ export default class YNWTBaseMap extends PureComponent {
       tileMatrixMaxY: 20037508,
       numResolutions: 14,
     },
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    attribution:
+      '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   };
 
   static initialViewport = {
@@ -64,7 +65,10 @@ export default class YNWTBaseMap extends PureComponent {
 
   render() {
     const { children, baseMapTilesUrl, ...rest } = this.props;
-    YNWTBaseMap.tileset.url = baseMapTilesUrl || YNWTBaseMap.tileset.url || "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png";
+    YNWTBaseMap.tileset.url =
+      baseMapTilesUrl ||
+      YNWTBaseMap.tileset.url ||
+      "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png";
     return (
       <GenericBaseMap tileset={YNWTBaseMap.tileset} {...rest}>
         {children}

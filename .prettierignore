@@ -1,0 +1,10 @@
+# Ignore artifacts:
+dist
+build
+node_modules
+
+# Ignore lockfiles (npm owns their format):
+package-lock.json
+
+# Local planning notes (untracked):
+.wayfinder

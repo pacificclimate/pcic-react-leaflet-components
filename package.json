@@ -20,6 +20,8 @@
   "scripts": {
     "build": "rollup -c",
     "build-watch": "rollup -c -w",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "start-pg": "cd playground && npm run start",
     "i-pg": "cd playground && npm ci",
     "i-all": "npm ci && cd playground && npm ci",
@@ -56,6 +58,7 @@
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "npm-run-all": "^4.1.5",
+    "prettier": "^3.9.6",
     "rollup": "^2.75.7",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4"

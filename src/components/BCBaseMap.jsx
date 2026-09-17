@@ -8,15 +8,14 @@
 //
 // Children of this component are rendered inside its <Map> component.
 
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React, { PureComponent } from "react";
+import PropTypes from "prop-types";
 
-import 'proj4';
-import 'proj4leaflet';
-import 'leaflet/dist/leaflet.css';
+import "proj4";
+import "proj4leaflet";
+import "leaflet/dist/leaflet.css";
 
-import GenericBaseMap from './GenericBaseMap.jsx';
-
+import GenericBaseMap from "./GenericBaseMap.jsx";
 
 export default class BCBaseMap extends PureComponent {
   static propTypes = {
@@ -31,18 +30,19 @@ export default class BCBaseMap extends PureComponent {
   };
 
   static defaultProps = {
-    mapRef: (() => null),
+    mapRef: () => null,
   };
 
   static tileset = {
     url: process.env.REACT_APP_BC_BASE_MAP_TILES_URL,
     projection: {
-      code: 'EPSG:3005',
-      proj4def: '+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs',
+      code: "EPSG:3005",
+      proj4def:
+        "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs",
     },
     tileMatrix: {
       // From the definition of the projection (SRS)
-      metersPerUnit: 1,  // Proj.4: +units=m
+      metersPerUnit: 1, // Proj.4: +units=m
 
       // From tile generation
       tileMatrixMinX: -20037508,
@@ -52,7 +52,8 @@ export default class BCBaseMap extends PureComponent {
       tileMatrixMaxY: 20037508,
       numResolutions: 14,
     },
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    attribution:
+      '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
   };
 
   static initialViewport = {
@@ -65,7 +66,10 @@ export default class BCBaseMap extends PureComponent {
 
   render() {
     const { children, baseMapTilesUrl, ...rest } = this.props;
-    BCBaseMap.tileset.url = baseMapTilesUrl || BCBaseMap.tileset.url || 'https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png';
+    BCBaseMap.tileset.url =
+      baseMapTilesUrl ||
+      BCBaseMap.tileset.url ||
+      "https://no-tileserver-set-in-BCBaseMap/{x}/{y}/{z}.png";
     return (
       <GenericBaseMap tileset={BCBaseMap.tileset} {...rest}>
         {children}

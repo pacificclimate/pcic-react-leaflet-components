@@ -2,14 +2,14 @@
 
 ## Development environment
 
-This repo is based 
+This repo is based
 [CRA + Rollup Component Library -- Example](https://github.com/pacificclimate/cra-rollup-private-pkg-lib-example),
 which in turn is based on the article
 [Build a React Component Library](https://hinammehra.medium.com/build-a-private-react-component-library-cra-rollup-material-ui-github-package-registry-1e14da93e790).
 
 In brief, it uses [Create React App](https://create-react-app.dev/) (CRA)
 and [Rollup](https://rollupjs.org/guide/en/) to build a component library.
-Rollup is configured to compile and bundle the library components 
+Rollup is configured to compile and bundle the library components
 into two standard module formats: CommonJS and ES Modules. The results are
 stored in the `dist/` directory.
 
@@ -51,7 +51,7 @@ Services URL to `EEZLayer`'s `url` prop.
 1. The development framework copied from the article looks as if it should
    provide live updates of changes to the library components in the playground
    (demo) app. It does not. When you make changes to _library_ components, you
-   must restart the demo (`npm run dev`) each time. 
+   must restart the demo (`npm run dev`) each time.
    Changes to the _demo_ code are however updated live.
 
 ## Publishing and releasing
@@ -64,14 +64,14 @@ the package directly from GitHub. (See [Installation](installation.md).)
 
 Important:
 
-* Only content under the `src` subtree
+- Only content under the `src` subtree
   is included in the package that is built.
 
-* Content outside the `src` subtree is excluded from the package,
+- Content outside the `src` subtree is excluded from the package,
   but is allowed and can be extremely useful; for example, to
   create demonstrations of package content (see `playground` subtree).
 
-* Each item exported by the package must be exported in the file
+- Each item exported by the package must be exported in the file
   `src/index.js`.
 
 ### Releasing a new version
@@ -90,8 +90,8 @@ When you modify this package (i.e., when you modify the contents of the
    ```text
    > pcic-react-leaflet-components@2.0.0 build
    > rollup -c
-   
-   
+
+
    src/index.js → dist/index.cjs.js, dist/index.esm.js...
    created dist/index.cjs.js, dist/index.esm.js in 3.7s
    ```

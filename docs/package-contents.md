@@ -16,7 +16,7 @@ Returns a React Leaflet `MapContainer` component containing the base map
 tile layer.
 Children of this component are rendered inside the `MapContainer`.
 
-Configuration: The base map tile server URL for this component is specified by the 
+Configuration: The base map tile server URL for this component is specified by the
 environment variable `REACT_APP_BC_BASE_MAP_TILES_URL`. See note
 [Tile server URLs](#tile-server-urls).
 
@@ -47,7 +47,7 @@ below.
 
 ### Component `GenericBaseMap`
 
-Creates and renders a map containing a tile layer defined by the `tileset` 
+Creates and renders a map containing a tile layer defined by the `tileset`
 prop.
 
 Returns a React Leaflet `MapContainer` component containing the base map
@@ -69,11 +69,11 @@ projects it into the containing map's CRS. The default attribution identifies
 the Flanders Marine Institute World EEZ v12 source and its CC BY 4.0 license.
 
 ```jsx
-import { BCBaseMap, EEZLayer } from 'pcic-react-leaflet-components';
+import { BCBaseMap, EEZLayer } from "pcic-react-leaflet-components";
 
 <BCBaseMap center={BCBaseMap.initialViewport.center} zoom={6}>
   <EEZLayer url={window.env.REACT_APP_EEZ_GEOJSON_URL} />
-</BCBaseMap>
+</BCBaseMap>;
 ```
 
 ### Tile server URLs
@@ -107,7 +107,7 @@ Supplementary controls useful in building map apps.
 
 Places its children inside the map as a
 Leaflet [`Control`](https://leafletjs.com/reference-1.7.1.html#control).
-This control in itself does nothing except display its contents. 
+This control in itself does nothing except display its contents.
 It can be used to display messages or to establish interactive controls
 by rendering suitable content.
 (The latter, however, may be better done as another specialized control.)
@@ -120,11 +120,11 @@ classes `leaflet-control-static`, `leaflet-control`.
 ### Component `MapSpinner`
 
 Overlays a spinner on the map. Super simple. Spinner proper is one of the
-[svg-loaders-react](https://www.npmjs.com/package/svg-loaders-react) 
-loaders (spinners), selected by name from the package by the `spinner` prop. 
+[svg-loaders-react](https://www.npmjs.com/package/svg-loaders-react)
+loaders (spinners), selected by name from the package by the `spinner` prop.
 Example
 
-`<MapSpinner spinner="Oval" ... />`. 
+`<MapSpinner spinner="Oval" ... />`.
 
 Any other props are passed into the rendered `svg-loaders-react` element.
 
@@ -132,10 +132,9 @@ The spinner stays centered in the map viewport.
 It tracks zoom and pan events, but see note below.
 
 Note: Even with zoom/pan tracking, the spinner doesn't always render as
-expected; specifically, on small pans, its "window" seems to become 
-significantly smaller than the actual visible bounds of the map and the 
+expected; specifically, on small pans, its "window" seems to become
+significantly smaller than the actual visible bounds of the map and the
 spinner is clipped.
-
 
 ### Component `SetView`
 
@@ -165,12 +164,12 @@ playground component `DemoBaseMap`.
 
 ### `projCRSOptions`
 
-Compute options for `L.Proj.CRS` from CRS info and 
+Compute options for `L.Proj.CRS` from CRS info and
 [tile matrix parameters](#tile-matrix-parameters).
 See code for more detailed documentation.
 
 ### `resolutions`
 
-Compute resolutions from CRS info and 
+Compute resolutions from CRS info and
 [tile matrix parameters](#tile-matrix-parameters).
 See code for more detailed documentation.
