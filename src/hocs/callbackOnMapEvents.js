@@ -5,10 +5,10 @@
 // should be rendered inside a `MapContainer`. It causes the callback to be
 // called whenever any of the named events is triggered.
 
-import { useMapEvents } from 'react-leaflet';
-import flow from 'lodash/fp/flow';
-import map from 'lodash/fp/map';
-import fromPairs from 'lodash/fp/fromPairs';
+import { useMapEvents } from "react-leaflet";
+import flow from "lodash/fp/flow";
+import map from "lodash/fp/map";
+import fromPairs from "lodash/fp/fromPairs";
 
 // TODO: Memoize.
 
@@ -16,9 +16,14 @@ const callbackOnMapEvents = (eventNames, callback) => {
   return () => {
     const leafletMap = useMapEvents(
       flow(
-        map(name => [name, () => { callback(leafletMap); }]),
+        map((name) => [
+          name,
+          () => {
+            callback(leafletMap);
+          },
+        ]),
         fromPairs,
-      )(eventNames)
+      )(eventNames),
     );
     return null;
   };

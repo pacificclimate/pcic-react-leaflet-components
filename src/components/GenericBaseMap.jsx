@@ -2,18 +2,17 @@
 // containing a tile layer defined by the `tileset` prop. Children of this
 // component are rendered inside the MapContainer.
 
-import React  from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { MapContainer, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
+import { MapContainer, TileLayer } from "react-leaflet";
+import L from "leaflet";
 
-import 'proj4';
-import 'proj4leaflet';
-import 'leaflet/dist/leaflet.css';
+import "proj4";
+import "proj4leaflet";
+import "leaflet/dist/leaflet.css";
 
-import { projCRSOptions } from '../../utils/crs';
-
+import { projCRSOptions } from "../utils/crs.js";
 
 function GenericBaseMap({
   tileset: { url, projection, tileMatrix, attribution },
@@ -26,12 +25,10 @@ function GenericBaseMap({
   // Create Leaflet CRS object. This is where the magic of this component
   // lies ... converting the tileMatrix specification to a correct CRS.
   // TODO: Memoize?
-  const crs = new L.Proj.CRS(
-    projection.code,
-    projection.proj4def,
-    { ...projCRSOptions(tileMatrix), ...projection.options },
-  );
-
+  const crs = new L.Proj.CRS(projection.code, projection.proj4def, {
+    ...projCRSOptions(tileMatrix),
+    ...projection.options,
+  });
 
   return (
     <MapContainer
@@ -79,6 +76,5 @@ GenericBaseMap.propTypes = {
     attribution: PropTypes.string,
   }).isRequired,
 };
-
 
 export default GenericBaseMap;

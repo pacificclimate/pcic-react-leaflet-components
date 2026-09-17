@@ -7,16 +7,17 @@
 // and all code allowing for approximate setting has been removed. Correct hook
 // usage FTW!
 
-import React, { useEffect } from 'react';
-import { useMap } from 'react-leaflet';
+import React, { useEffect } from "react";
+import { useMap } from "react-leaflet";
 
+const printView = (view) =>
+  JSON.stringify({
+    lat: view.center.lat,
+    lng: view.center.lng,
+    zoom: view.zoom,
+  });
 
-const printView = view => JSON.stringify({
-  lat: view.center.lat, lng: view.center.lng, zoom: view.zoom,
-});
-
-
-const SetView = ({ view, debug=false }) => {
+const SetView = ({ view, debug = false }) => {
   const map = useMap();
   const currCenter = map.getCenter();
   const currZoom = map.getZoom();
@@ -24,9 +25,11 @@ const SetView = ({ view, debug=false }) => {
   if (debug) {
     console.log(
       tag,
-      `from:`, printView({ center: currCenter, zoom: currZoom }),
-      `to:`, printView(view),
-    )
+      `from:`,
+      printView({ center: currCenter, zoom: currZoom }),
+      `to:`,
+      printView(view),
+    );
   }
 
   // It's important to wrap side-effect updates like this with useEffect!
@@ -36,13 +39,14 @@ const SetView = ({ view, debug=false }) => {
       currCenter.lng !== view.center.lng ||
       currZoom !== view.zoom
     ) {
-      if (debug) {console.log(tag, `!setting`)}
+      if (debug) {
+        console.log(tag, `!setting`);
+      }
       map.setView(view.center, view.zoom, { animate: false });
     }
   });
 
   return null;
-
 };
 
 export default SetView;

@@ -13,4 +13,3 @@ use the contents of this package.
 - [Installation and usage](docs/installation.md)
 - [Package contents](docs/package-contents.md)
 - [Contributing](docs/contributing.md)
-

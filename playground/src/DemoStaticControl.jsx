@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
-import { MapContainer } from 'react-leaflet';
+import React, { useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+import { MapContainer } from "react-leaflet";
 
-import { StaticControl } from 'pcic-react-leaflet-components';
-
+import { StaticControl } from "pcic-react-leaflet-components";
 
 function DemoStaticControl() {
   const [position, setPosition] = useState("topright");
-  const handleChangePosition = e=> {
-    setPosition(e.target.value)
-  }
+  const handleChangePosition = (e) => {
+    setPosition(e.target.value);
+  };
   const [content, setContent] = useState("content");
-  const handleChangeContent = e => {
-    setContent(e.target.value)
+  const handleChangeContent = (e) => {
+    setContent(e.target.value);
   };
 
   return (
@@ -23,11 +22,13 @@ function DemoStaticControl() {
             <Form.Group>
               <Form.Label>Position</Form.Label>
               <Form.Select value={position} onChange={handleChangePosition}>
-                {
-                  "topleft topright bottomleft bottomright".split(" ").map(
-                    pos => (<option key={pos} value={pos}>{pos}</option>)
-                  )
-                }
+                {"topleft topright bottomleft bottomright"
+                  .split(" ")
+                  .map((pos) => (
+                    <option key={pos} value={pos}>
+                      {pos}
+                    </option>
+                  ))}
               </Form.Select>
             </Form.Group>
           </Form>
@@ -36,7 +37,7 @@ function DemoStaticControl() {
           <Form>
             <Form.Group>
               <Form.Label>Content</Form.Label>
-              <Form.Control value={content} onChange={handleChangeContent}/>
+              <Form.Control value={content} onChange={handleChangeContent} />
             </Form.Group>
           </Form>
         </Col>
@@ -49,8 +50,7 @@ function DemoStaticControl() {
         </Col>
       </Row>
     </React.Fragment>
-  )
+  );
 }
-
 
 export default DemoStaticControl;
