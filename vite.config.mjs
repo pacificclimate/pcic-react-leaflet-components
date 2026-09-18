@@ -60,4 +60,11 @@ export default defineConfig({
     minify: false,
     target: "es2015",
   },
+  test: {
+    environment: "jsdom",
+    include: ["test/**/*.test.{js,jsx}"],
+    setupFiles: "./test/setup.js",
+    // Measured (`npm run test:coverage`), never gated: no thresholds.
+    coverage: { include: ["src/**/*.{js,jsx}"] },
+  },
 });

@@ -17,6 +17,8 @@
     "dev:pg": "npm --prefix playground run dev",
     "build": "vite build",
     "build:watch": "vite build --watch",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "install:all": "npm ci && npm --prefix playground ci"
