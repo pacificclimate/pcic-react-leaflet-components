@@ -13,13 +13,13 @@
     "svg-loaders-react": "^2.2.1"
   },
   "scripts": {
+    "dev": "concurrently -n lib,pg -c blue,green \"npm:build:watch\" \"npm:dev:pg\"",
+    "dev:pg": "npm --prefix playground run dev",
     "build": "vite build",
     "build:watch": "vite build --watch",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "i-pg": "cd playground && npm ci",
-    "i-all": "npm ci && cd playground && npm ci",
-    "rei-all": "npm ci && cd playground && npm ci"
+    "install:all": "npm ci && npm --prefix playground ci"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.1",
@@ -27,6 +27,7 @@
     "@testing-library/react": "^16.3.3",
     "@vitejs/plugin-react": "^6.1.1",
     "@vitest/coverage-v8": "^5.0.0",
+    "concurrently": "^10.0.5",
     "jsdom": "^30.0.1",
     "prettier": "^3.9.6",
     "vite": "^8.3.0",
