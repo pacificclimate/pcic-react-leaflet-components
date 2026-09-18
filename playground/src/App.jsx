@@ -10,6 +10,7 @@ import { Container } from "react-bootstrap";
 import DemoBaseMap from "./DemoBaseMap.jsx";
 import { BCBaseMap, YNWTBaseMap } from "pcic-react-leaflet-components";
 import { positions as markers } from "./markers.js";
+import { bcBaseMapTilesUrl, ynwtBaseMapTilesUrl } from "./config.js";
 
 import "pcic-react-leaflet-components/src/leaflet-extensions/control-static.css";
 import Navigation from "./Navigation.jsx";
@@ -26,7 +27,7 @@ const navSpec = [
         initialViewport={BCBaseMap.initialViewport}
         numMaps={2}
         markers={markers}
-        baseMapTilesUrl="https://swarm.pacificclimate.org/tiles/bc-albers-lite/{z}/{x}/{y}.png"
+        baseMapTilesUrl={bcBaseMapTilesUrl}
       />
     ),
   },
@@ -39,7 +40,7 @@ const navSpec = [
         initialViewport={YNWTBaseMap.initialViewport}
         numMaps={2}
         markers={markers}
-        baseMapTilesUrl="https://swarm.pacificclimate.org/tiles/yukon-albers-lite/{z}/{x}/{y}.png"
+        baseMapTilesUrl={ynwtBaseMapTilesUrl}
       />
     ),
   },

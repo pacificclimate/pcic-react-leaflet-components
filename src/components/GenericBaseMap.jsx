@@ -18,7 +18,6 @@ function GenericBaseMap({
   tileset: { url, projection, tileMatrix, attribution },
   center,
   zoom,
-  mapRef,
   children,
   ...rest
 }) {
