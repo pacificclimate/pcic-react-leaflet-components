@@ -16,14 +16,17 @@ Returns a React Leaflet `MapContainer` component containing the base map
 tile layer.
 Children of this component are rendered inside the `MapContainer`.
 
-Configuration: The base map tile server URL for this component is specified by the
-environment variable `REACT_APP_BC_BASE_MAP_TILES_URL`. See note
-[Tile server URLs](#tile-server-urls).
+Props:
+
+- `baseMapTilesUrl` (required): the base map tile server URL. See
+  [Tile server URLs](#tile-server-urls).
+- Any other props are passed through to `MapContainer`; typically `center`
+  and `zoom` (see `BCBaseMap.initialViewport`).
 
 The tiles must be in BC Albers projection and must have been generated in
 a way consistent with the tile matrix parameters defined for this
-component. For the parameter values, see `BCBaseMap.tileset`. For details
-more information, see [Tile matrix parameters](#tile-matrix-parameters)
+component. For the parameter values, see `BCBaseMap.tileset`. For more
+information, see [Tile matrix parameters](#tile-matrix-parameters)
 below.
 
 ### Component `YNWTBaseMap`
@@ -35,20 +38,24 @@ Returns a React Leaflet `MapContainer` component containing the base map
 tile layer.
 Children of this component are rendered inside the `MapContainer`.
 
-Configuration: The base map tile server URL for this component is specified by the
-environment variable `REACT_APP_YNWT_BASE_MAP_TILES_URL`. See note
-[Tile server URLs](#tile-server-urls).
+Props:
+
+- `baseMapTilesUrl` (required): the base map tile server URL. See
+  [Tile server URLs](#tile-server-urls).
+- Any other props are passed through to `MapContainer`; typically `center`
+  and `zoom` (see `YNWTBaseMap.initialViewport`).
 
 The tiles must be in Yukon Albers projection and must have been generated in
 a way consistent with the tile matrix parameters defined for this
-component. For the parameter values, see `YNWTBaseMap.tileset`. For details
-more information, see [Tile matrix parameters](#tile-matrix-parameters)
+component. For the parameter values, see `YNWTBaseMap.tileset`. For more
+information, see [Tile matrix parameters](#tile-matrix-parameters)
 below.
 
 ### Component `GenericBaseMap`
 
 Creates and renders a map containing a tile layer defined by the `tileset`
-prop.
+prop: the tile server `url`, the `projection`, the `tileMatrix` parameters and
+an optional `attribution`.
 
 Returns a React Leaflet `MapContainer` component containing the base map
 tile layer.
@@ -71,15 +78,25 @@ the Flanders Marine Institute World EEZ v12 source and its CC BY 4.0 license.
 ```jsx
 import { BCBaseMap, EEZLayer } from "pcic-react-leaflet-components";
 
-<BCBaseMap center={BCBaseMap.initialViewport.center} zoom={6}>
+<BCBaseMap
+  baseMapTilesUrl={tilesUrl}
+  center={BCBaseMap.initialViewport.center}
+  zoom={6}
+>
   <EEZLayer url={window.env.REACT_APP_EEZ_GEOJSON_URL} />
 </BCBaseMap>;
 ```
 
 ### Tile server URLs
 
+The base maps take their tile server URL from the `baseMapTilesUrl` prop (or,
+for `GenericBaseMap`, `tileset.url`); nothing is read from environment
+variables. The prop is required, and omitting it is not handled gracefully:
+Leaflet throws a `TypeError` when it builds the first tile URL, which unmounts
+the React tree. In development, a PropTypes warning names the missing prop.
+
 A tile server URL must be a complete, valid Leaflet
-[`TileLayer`](https://leafletjs.com/reference-1.7.1.html#tilelayer)  
+[`TileLayer`](https://leafletjs.com/reference-1.7.1.html#tilelayer)
 URL template. Example:
 
 ```
@@ -96,8 +113,33 @@ in the tileset has exactly twice the resolution of the previous zoom
 level. The tile matrix parameters describe zoom level zero.)
 
 For details on the parameters, see the documentation for module
-[`crs`](src/utils/crs.js) and our Confluence page
+[`crs`](../src/utils/crs.js) and our Confluence page
 [How to create a Leaflet CRS object for a tileset in an arbitrary CRS](https://pcic.uvic.ca/confluence/display/CSG/How+to+create+a+Leaflet+CRS+object+for+a+tileset+in+an+arbitrary+CRS).
+
+### Reaching the Leaflet map
+
+The base maps do not expose the Leaflet map object through a prop or a `ref`.
+To reach it, render a child component that calls React Leaflet's
+[`useMap()`](https://react-leaflet.js.org/docs/api-map/#usemap) hook:
+
+```jsx
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
+import { BCBaseMap } from "pcic-react-leaflet-components";
+
+function FitToBounds({ bounds }) {
+  const map = useMap();
+  useEffect(() => map.fitBounds(bounds), [map, bounds]);
+  return null;
+}
+
+<BCBaseMap baseMapTilesUrl={tilesUrl} center={center} zoom={zoom}>
+  <FitToBounds bounds={bounds} />
+</BCBaseMap>;
+```
+
+(The `mapRef` prop that once did this had not worked since 3.0.0, and has
+been removed.)
 
 ## Map controls
 
@@ -113,7 +155,13 @@ by rendering suitable content.
 (The latter, however, may be better done as another specialized control.)
 
 The children of this component are wrapped in a `<div>` with
-classes `leaflet-control-static`, `leaflet-control`.
+classes `leaflet-control-static`, `leaflet-control`. The border and background
+for `leaflet-control-static` come from a stylesheet that the package does not
+import for you:
+
+```js
+import "pcic-react-leaflet-components/src/leaflet-extensions/control-static.css";
+```
 
 ## Other components
 

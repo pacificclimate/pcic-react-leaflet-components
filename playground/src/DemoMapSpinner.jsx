@@ -4,6 +4,7 @@ import * as SVGLoaders from "svg-loaders-react";
 import keys from "lodash/fp/keys";
 
 import { MapSpinner, BCBaseMap } from "pcic-react-leaflet-components";
+import { bcBaseMapTilesUrl } from "./config.js";
 
 function DemoMapSpinner() {
   const [spinner, setSpinner] = useState("Bars");
@@ -82,6 +83,7 @@ function DemoMapSpinner() {
           <BCBaseMap
             center={BCBaseMap.initialViewport.center}
             zoom={BCBaseMap.initialViewport.zoom}
+            baseMapTilesUrl={bcBaseMapTilesUrl}
           >
             <MapSpinner
               spinner={spinner}
