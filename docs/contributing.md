@@ -117,7 +117,7 @@ Services URL to `EEZLayer`'s `url` prop.
 
 ```
 npm test                 # run once
-npx vitest               # watch mode
+npm run test:watch       # watch mode
 npm run test:coverage    # with a coverage report
 ```
 
