@@ -26,11 +26,11 @@ GitHub, at a version tag:
 npm install git+https://github.com/pacificclimate/pcic-react-leaflet-components.git#<tag>
 ```
 
-where `<tag>` is the version (e.g., `3.4.0`). This adds an entry like this to
+where `<tag>` is the version (e.g., `4.0.0`). This adds an entry like this to
 `dependencies`:
 
 ```json
-"pcic-react-leaflet-components": "git+https://github.com/pacificclimate/pcic-react-leaflet-components.git#3.4.0"
+"pcic-react-leaflet-components": "git+https://github.com/pacificclimate/pcic-react-leaflet-components.git#4.0.0"
 ```
 
 If your project follows the pacificclimate npm security policy, its `.npmrc`

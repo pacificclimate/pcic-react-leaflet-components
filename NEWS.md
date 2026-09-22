@@ -1,5 +1,37 @@
 # News / Release Notes
 
+## 4.0.0
+
+_2026-09-22_
+
+- [Vite conversion](https://github.com/pacificclimate/pcic-react-leaflet-components/pull/32)
+- [Source layout](https://github.com/pacificclimate/pcic-react-leaflet-components/pull/31)
+
+Breaking changes:
+
+- `baseMapTilesUrl` is now **required** on `BCBaseMap` and `YNWTBaseMap`.
+  The fallbacks are gone: `BCBaseMap` no longer reads
+  `REACT_APP_BC_BASE_MAP_TILES_URL`, and `YNWTBaseMap` no longer substitutes a
+  placeholder URL. Omitting the prop does not fail gracefully: Leaflet throws
+  `TypeError: Cannot read properties of undefined (reading 'replace')` and the
+  map's React tree unmounts. The only warning is a development-only PropTypes
+  message.
+- The `mapRef` prop of `GenericBaseMap`, `BCBaseMap` and `YNWTBaseMap` is
+  **removed**. It has not worked since 3.0.0. To reach the Leaflet map, call React Leaflet's `useMap()` in a child
+  component (see
+  [Package contents](docs/package-contents.md#reaching-the-leaflet-map)).
+
+Other changes:
+
+- The exported components, `main`/`module` bundle paths and peer dependencies
+  are unchanged, and so is the `control-static.css` import path.
+- `react-scripts`, `web-vitals` and Testing Library are no longer runtime
+  `dependencies`, so consumers no longer install them transitively.
+- Development only: the build moves from Rollup and Babel to Vite, tests move
+  from `react-scripts test` to Vitest, the repo is formatted with Prettier,
+  the playground runs on Vite, and CI checks formatting, tests and that the
+  committed `dist/` matches `src/`. See [Contributing](docs/contributing.md).
+
 ## 3.4.0
 
 _2026-09-17_
