@@ -1,10 +1,9 @@
 // YNWTBaseMap: Component that establishes a base map of the Yukon and NWT,
 // in Yukon Albers projection, and nothing more.
 //
-// The tile server URL is specified by the environment variable
-// REACT_APP_YNWT_BASE_MAP_TILES_URL. The tiles must be in Yukon Albers
-// projection and must have been generated in a way consistent with the
-// `tileset.tileMatrix` parameters below.
+// The tile server URL is specified by the required `baseMapTilesUrl` prop.
+// The tiles must be in Yukon Albers projection and must have been generated in
+// a way consistent with the `tileset.tileMatrix` parameters below.
 //
 // Children of this component are rendered inside its <Map> component.
 
@@ -22,17 +21,11 @@ export default class YNWTBaseMap extends PureComponent {
     // Only props added by this component are defined here.
     // All other valid props for Map component are passed through to it.
 
-    mapRef: PropTypes.func,
-    // Callback to which a ref to the Map component is passed.
-    // Allows parent components to diddle with the map established here.
-
-    baseMapTilesUrl: PropTypes.string,
+    // Full URL of the tileset, including `x`, `y`, `z` params.
+    baseMapTilesUrl: PropTypes.string.isRequired,
   };
 
-  static defaultProps = {
-    mapRef: () => null,
-  };
-
+  // The tileset less its `url`, which comes from `baseMapTilesUrl` per render.
   static tileset = {
     projection: {
       code: "EPSG:3578",
@@ -65,12 +58,9 @@ export default class YNWTBaseMap extends PureComponent {
 
   render() {
     const { children, baseMapTilesUrl, ...rest } = this.props;
-    YNWTBaseMap.tileset.url =
-      baseMapTilesUrl ||
-      YNWTBaseMap.tileset.url ||
-      "https://no-tileserver-set-in-YNWTBaseMap/{x}/{y}/{z}.png";
+    const tileset = { ...YNWTBaseMap.tileset, url: baseMapTilesUrl };
     return (
-      <GenericBaseMap tileset={YNWTBaseMap.tileset} {...rest}>
+      <GenericBaseMap tileset={tileset} {...rest}>
         {children}
       </GenericBaseMap>
     );
